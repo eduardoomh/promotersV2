@@ -88,14 +88,14 @@ const LoginForm = () => {
                             type='text'
                             placeholder='introduce tu usuario'
                             valueContainerName='email'
-                            style={{ padding: '0.6rem' }}
+                            style={{ padding: '0.6rem', fontSize: '1rem' }}
                         />
                         <h3 className={styles.label}>Contraseña</h3>
                         <InputContainer
                             type='password'
                             placeholder='introduce tu contraseña'
                             valueContainerName='password'
-                            style={{ padding: '0.6rem' }}
+                            style={{ padding: '0.6rem', fontSize: '1rem' }}
                         />
                         <CustomButton>Ingresar</CustomButton>
                     </Form>

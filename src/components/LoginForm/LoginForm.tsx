@@ -50,7 +50,7 @@ const LoginForm = () => {
         try {
             const email = form.getFieldValue('forgot_email')
             setIsLoadingForgot(true)
-            const result = await axios.post(`${process.env.API_URL}/api/auth/forget-password`, {
+            const result = await axios.post(`/api/auth/forget-password`, {
                 email,
             })
             notification.success({

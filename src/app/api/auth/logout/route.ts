@@ -1,0 +1,53 @@
+import { connectMongoDB } from '@/libs/mongodb'
+import User, { IUserSchema } from '@/models/User'
+import { validateEmail } from '@/utils/isValidEmail'
+import { messages } from '@/utils/messages'
+import { NextRequest, NextResponse } from 'next/server'
+import bcryptjs from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+
+export async function POST(req: NextRequest) {
+    try {
+        await connectMongoDB()
+        const body = await req.json()
+        const {email} = body
+
+        const userFind = await User.findOne({email})
+
+        if(!userFind){
+            return NextResponse.json({
+                message: messages.error.emailExist
+            },{
+                status: 400
+            })
+        }
+
+        const token = jwt.sign({data: userFind}, 'secretch@mos@',{
+            expiresIn: 0
+        })
+
+        const response =  NextResponse.json({
+            user: userFind,
+            message: messages.success.logout
+        },{
+            status: 200
+        })
+
+        response.cookies.set('auth_cookie', token,{
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 0, 
+            path: '/'
+        })
+
+        return response
+
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({
+            message: messages.error.default, error
+        },{
+            status: 500
+        })
+    }
+}

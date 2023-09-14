@@ -1,9 +1,7 @@
 import { connectMongoDB } from '@/libs/mongodb'
-import User, { IUserSchema } from '@/models/User'
-import { validateEmail } from '@/utils/isValidEmail'
+import User from '@/models/User'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
-import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 export async function POST(req: NextRequest) {

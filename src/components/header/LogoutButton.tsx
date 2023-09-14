@@ -4,14 +4,17 @@ import { useRouter } from 'next/navigation'
 import styles from './LogoutButton.module.css'
 import { Tooltip, notification } from "antd"
 import axios from "axios"
+import { useContext } from "react"
+import { GlobalContext } from "@/context/globalContext"
 
 const LogoutButton = () => {
     const router = useRouter()
+    const {userData} = useContext(GlobalContext)
 
     const logout = async () =>{
         try{
             const response = await axios.post(`/api/auth/logout`,{
-                email: 'juan@juan4.com'
+                email: userData.email
             })
             if(response.status === 200){
                 notification.success({

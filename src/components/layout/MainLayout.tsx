@@ -6,6 +6,7 @@ import { FC, PropsWithChildren } from "react"
 import LogoutButton from "../header/LogoutButton"
 import { usePathname } from 'next/navigation'
 import Menu from "../menu/Menu"
+import { GlobalContextProvider } from "@/context/globalContext"
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -59,7 +60,7 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
                                 <Menu />
                             </aside>
                             <main className={styles.main}>
-                                {children}
+                                    {children}
                             </main>
                         </div>
                     </div>

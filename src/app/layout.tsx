@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Barlow } from 'next/font/google'
 import MainLayout from '../components/layout/MainLayout'
+import { GlobalContextProvider } from '@/context/globalContext'
 
 const barlow = Barlow({
   subsets: ['latin'],
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={barlow.className}>
-        <MainLayout>
-          {children}
-        </MainLayout>
+        <GlobalContextProvider>
+          <MainLayout>
+            {children}
+          </MainLayout>
+        </GlobalContextProvider>
       </body>
     </html>
   )

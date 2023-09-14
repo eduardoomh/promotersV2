@@ -6,13 +6,15 @@ import InputContainer from "../InputContainer"
 import styles from './LoginForm.module.css'
 import { useForm } from "antd/es/form/Form"
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import CustomModal from "../Modal/CustomModal"
+import { GlobalContext } from "@/context/globalContext"
 
 const LoginForm = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingForgot, setIsLoadingForgot] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const {updateUserData} = useContext(GlobalContext)
     const [form] = useForm()
     const router = useRouter()
 
@@ -34,6 +36,7 @@ const LoginForm = () => {
             notification.success({
                 message: result.data.messages
             })
+            updateUserData(result.data.userLogged)
             router.push('/')
             setIsLoading(false)
         } catch (error: any) {

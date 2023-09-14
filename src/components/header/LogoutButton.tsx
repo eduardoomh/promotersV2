@@ -10,7 +10,7 @@ const LogoutButton = () => {
 
     const logout = async () =>{
         try{
-            const response = await axios.post(`${process.env.API_URL}/api/auth/logout`,{
+            const response = await axios.post(`/api/auth/logout`,{
                 email: 'juan@juan4.com'
             })
             if(response.status === 200){

@@ -21,7 +21,7 @@ const LoginForm = () => {
             const email = form.getFieldValue('email')
             const password = form.getFieldValue('password')
             setIsLoading(true)
-            const result = await axios.post(`${process.env.API_URL}/api/auth/login`, {
+            const result = await axios.post(`/api/auth/login`, {
                 email,
                 password
             })

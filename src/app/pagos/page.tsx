@@ -1,7 +1,10 @@
+import EndLoading from "@/components/EndLoading/EndLoading";
+
 export default function Pagos() {
     return (
       <main>
-        <h1>Promotores</h1>
+          <EndLoading />
+        <h1>Pagos</h1>
       </main>
   
     )

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root{
+  --chamosa-red: #EC1912;
+  --chamosa-red-hover: #ff7570;
+}
 .custom-min-width {
     min-width: 600px;
   }

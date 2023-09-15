@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { Barlow } from 'next/font/google'
 import MainLayout from '../components/layout/MainLayout'
 import { GlobalContextProvider } from '@/context/globalContext'
+import Loader from '../components/Loader/Loader'
+import { Suspense } from 'react'
 
 const barlow = Barlow({
   subsets: ['latin'],
@@ -24,9 +26,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={barlow.className}>
         <GlobalContextProvider>
-          <MainLayout>
-            {children}
-          </MainLayout>
+            <MainLayout>
+              <Suspense fallback={'cargando......'}>
+                {children}
+              </Suspense>
+              
+            </MainLayout>
         </GlobalContextProvider>
       </body>
     </html>

@@ -83,14 +83,14 @@ const LoginForm = () => {
                             type='password'
                             placeholder='introduce una contraseña'
                             valueContainerName='newPassword'
-                            style={{ padding: '0.6rem' }}
+                            style={{ padding: '0.6rem',fontSize: '1rem' }}
                         />
                         <h3 className={styles.label}>Repetir Contraseña</h3>
                         <InputContainer
                             type='password'
                             placeholder='repite la conmtraseña'
                             valueContainerName='confirmPassword'
-                            style={{ padding: '0.6rem' }}
+                            style={{ padding: '0.6rem', fontSize: '1rem' }}
                         />
                         <CustomButton>Reasignar contraseña</CustomButton>
                         <p className={`flex justify-center ${styles.forgot_password}`}

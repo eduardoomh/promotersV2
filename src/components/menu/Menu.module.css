@@ -1,4 +1,3 @@
-
 .nav{
 margin-top: 1rem;
 }
@@ -14,7 +13,14 @@ margin-top: 1rem;
 }
 
 .nav ul li a:hover{
-    color: red;
-    background-color: white;
+    color: rgba(255, 255, 255, 0.914);
+    background-color: var(--chamosa-red-hover);
     cursor: pointer;
+}
+
+.active_menu{
+    color: var(--chamosa-red) !important;
+    background-color: white !important;
+    cursor: pointer;
+    z-index: 999;
 }

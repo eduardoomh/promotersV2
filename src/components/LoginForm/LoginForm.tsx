@@ -133,7 +133,7 @@ const LoginForm = () => {
                                 type='email'
                                 placeholder='introduce tu correo electrónico'
                                 valueContainerName='forgot_email'
-                                style={{ padding: '0.6rem' }}
+                                style={{ padding: '0.6rem', fontSize: '1rem' }}
                             />
                             <CustomButton>Enviar correo</CustomButton>
                         </Spin>

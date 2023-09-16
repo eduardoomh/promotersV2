@@ -3,48 +3,122 @@ import { usePathname } from 'next/navigation'
 import { ContactsOutlined, DollarOutlined, FileDoneOutlined, HomeOutlined, SettingOutlined, SolutionOutlined, UserOutlined } from '@ant-design/icons'
 import styles from './Menu.module.css'
 import Link from '../CustomLink/CustomLink'
-const Menu = () => {
+import { FC, useEffect } from 'react'
+
+interface props {
+    expand?: boolean
+}
+interface InlineStyles {
+    no_expand: React.CSSProperties;
+}
+
+
+const inlineStyles: InlineStyles = {
+    no_expand: {
+        fontSize: '1.2rem',
+        display: 'flex',
+        justifyContent: 'center'
+    }
+}
+const Menu: FC<props> = ({ expand = true }) => {
     const pathname = usePathname()
-    
-    const isActive = (path: string) =>{
+
+    const isActive = (path: string) => {
         return pathname === path
     }
+
+    useEffect(() => {
+        console.log(expand, "se modifica")
+    }, [expand])
 
     return (
         <nav className={styles.nav}>
             <ul>
                 <li>
                     <Link href='/' className={isActive('/') ? styles.active_menu : ''}>
-                        <span><HomeOutlined /></span>Resúmen
-                        </Link>
+                        <span
+                            style={expand ? {} : inlineStyles.no_expand}>
+                            <HomeOutlined />
+                        </span>
+                        {expand ? <span className={styles.menu_text}>
+                            Resúmen
+                        </span> : ''
+                        }
+                    </Link>
                 </li>
                 <li>
                     <Link href='/usuarios' className={isActive('/usuarios') ? styles.active_menu : ''}>
-                        <span><UserOutlined /></span>Usuarios
-                        </Link>
+                        <span
+                            style={expand ? {} : inlineStyles.no_expand}>
+                            <UserOutlined />
+                        </span>
+                        {expand ? <span className={styles.menu_text}>
+                            Usuarios
+                        </span> : ''
+                        }
+
+                    </Link>
                 </li>
                 <li>
                     <Link href='/promotores' className={isActive('/promotores') ? styles.active_menu : ''}>
-                        <span><ContactsOutlined /></span>Promotores
+                        <span
+                            style={expand ? {} : inlineStyles.no_expand}>
+                            <ContactsOutlined />
+                        </span>
+                        {expand ? <span className={styles.menu_text}>
+                            Promotores
+                        </span> : ''
+                        }
+
                     </Link>
                 </li>
                 <li>
                     <Link href='/promociones' className={isActive('/promociones') ? styles.active_menu : ''}>
-                        <span><SolutionOutlined /></span>Promociones
-                        </Link>
+                        <span
+                            style={expand ? {} : inlineStyles.no_expand}>
+                            <SolutionOutlined />
+                        </span>
+                        {expand ? <span className={styles.menu_text}>
+                            Promociones
+                        </span> : ''
+                        }
+                    </Link>
                 </li>
                 <li>
                     <Link href='/pagos' className={isActive('/pagos') ? styles.active_menu : ''}>
-                        <span><DollarOutlined /></span>Pagos</Link>
+                        <span
+                            style={expand ? {} : inlineStyles.no_expand}>
+                            <DollarOutlined />
+                        </span>
+                        {expand ? <span className={styles.menu_text}>
+                            Pagos
+                        </span> : ''
+                        }
+
+                    </Link>
                 </li>
                 <li>
                     <Link href='/estado-de-cuenta' className={isActive('/estado-de-cuenta') ? styles.active_menu : ''}>
-                        <span><FileDoneOutlined /></span>Estado de cuenta
-                        </Link>
+                        <span
+                            style={expand ? {} : inlineStyles.no_expand}>
+                            <FileDoneOutlined />
+                        </span>
+                        {expand ? <span className={styles.menu_text}>
+                            Estado de cuenta
+                        </span> : ''
+                        }
+                    </Link>
                 </li>
                 <li>
                     <Link href='/ajustes' className={isActive('/ajustes') ? styles.active_menu : ''}>
-                        <span><SettingOutlined /></span>Ajustes
+                        <span
+                            style={expand ? {} : inlineStyles.no_expand}>
+                            <SettingOutlined />
+                        </span>
+                        {expand ? <span className={styles.menu_text}>
+                            Ajustes
+                        </span> : ''
+                        }
                     </Link>
                 </li>
             </ul>

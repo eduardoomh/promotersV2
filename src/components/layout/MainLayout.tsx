@@ -1,6 +1,6 @@
 'use client'
 import { CloseOutlined, MenuOutlined } from "@ant-design/icons"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import styles from './MainLayout.module.css'
 import { FC, PropsWithChildren } from "react"
 import LogoutButton from "../header/LogoutButton"
@@ -10,9 +10,10 @@ import Loader from "../Loader/Loader"
 import { GlobalContext } from "@/context/globalContext"
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {
-    const {isMobileMenuOpen, openMobileMenu, closeMobileMenu} = useContext(GlobalContext)
+    const { isMobileMenuOpen, openMobileMenu, closeMobileMenu } = useContext(GlobalContext)
     const pathname = usePathname()
     const shouldHideLayout = pathname === '/login' || pathname === '/change-password';
+    const [expand, setExpand] = useState(false)
 
     return (
         <>
@@ -21,6 +22,9 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
                     <div className={styles.container}>
                         <header className={`flex items-center justify-between ${styles.header}`}>
                             <section className='flex'>
+                                <div className={`${styles.hamburguer_web}`} onClick={() =>setExpand(!expand)}>
+                                    <MenuOutlined />
+                                </div>
                                 <div
                                     className={styles.hamburguer}
                                     onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
@@ -32,16 +36,16 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
                                     }
 
                                 </div>
-                                <div className={`flex justify-center ${styles.logo_content}`}>
+                                <div className={`flex justify-center align-middle ${styles.logo_content}`}>
                                     <img src="/logo-Chamosa.png" alt="Mi Imagen" width={75} />
                                 </div>
-                                <p className={styles.title}>SISTEMA DE <br />PROMOTORES</p>
+                              
                             </section>
                             <section>
                                 <LogoutButton />
                             </section>
                         </header>
-                        <div className={styles.content}>
+                        <div className={expand ? `${styles.content}` : `${styles.content} ${styles.content_no_expand}`}>
                             {
                                 isMobileMenuOpen && <article className={styles.mobile_menu}>
                                     <section className={styles.logo_container}>
@@ -55,12 +59,12 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
                             }
 
                             <aside className={`bg-chamosa-red ${styles.aside}`}>
-                                <Menu />
+                                <Menu expand={expand} />
                             </aside>
                             <main className={styles.main}>
-                                
+
                                 <Loader />
-                          
+
 
                                 {children}
                             </main>

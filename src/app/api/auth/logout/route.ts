@@ -7,8 +7,21 @@ import jwt from 'jsonwebtoken'
 export async function POST(req: NextRequest) {
     try {
         await connectMongoDB()
-        const body = await req.json()
-        const {email} = body
+        //@ts-ignore
+        const cookie = req.cookies.get('auth_cookie')
+        console.log(cookie, "auth_cookie")
+
+        if(!cookie){
+            return NextResponse.json({
+                message: messages.error.default
+            },{
+                status: 400
+            })
+        }
+
+        const tokenBody = jwt.verify(cookie.value, 'secretch@mos@')
+        //@ts-ignore
+        const {email} = tokenBody.data
 
         const userFind = await User.findOne({email})
 

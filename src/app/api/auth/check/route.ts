@@ -31,7 +31,9 @@ export async function GET(){
                 })
             }
             return NextResponse.json({
-                isAuthorized: true, message: messages.success.authorized
+                isAuthorized: true, 
+                message: messages.success.authorized,
+                user: userFind
             },{
                 status: 200
             })

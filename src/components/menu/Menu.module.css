@@ -24,3 +24,18 @@ margin-top: 1rem;
     cursor: pointer;
     z-index: 999;
 }
+
+.icon_no_expand_size{
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+}
+.icon_expand{
+    font-size: 1.2rem;
+    padding: 0;
+    display: block;
+}
+
+.menu_text{
+    transition: text 0.5s ease;
+}

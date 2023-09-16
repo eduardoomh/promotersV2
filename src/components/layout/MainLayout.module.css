@@ -9,6 +9,11 @@
     grid-template-rows: 1fr;
     height: calc(100vh - 5rem);
     box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    transition: grid-template-columns 0.3s ease;
+}
+
+.content_no_expand{
+    grid-template-columns: 80px 1fr;
 }
 
 .header {
@@ -21,7 +26,8 @@
 }
 
 .logo_content {
-    width: 120px;
+    width: 100px;
+    height: 50px;
 }
 
 .title {
@@ -45,6 +51,15 @@
     display: none;
 }
 
+.hamburguer_web {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+    cursor: pointer;
+    padding: 1rem 1rem 1rem 0;
+}
+
 @media (max-width: 999px) {
     .hamburguer {
         display: flex;
@@ -53,6 +68,9 @@
         font-size: 1.7rem;
         cursor: pointer;
         padding: 1rem 1rem 1rem 0;
+    }
+    .hamburguer_web {
+        display: none;
     }
 
     .logo_content,

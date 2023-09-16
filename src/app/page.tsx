@@ -1,12 +1,7 @@
 import styles from './home.module.css'
 import EndLoading from '@/components/EndLoading/EndLoading'
 
-interface NextPageProps {
-  user: any
-}
-
-export default function Home(props: NextPageProps) {
-  console.log(props, "las props")
+export default function Home() {
   return (
     <>
       <EndLoading />

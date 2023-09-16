@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    return NextResponse.next(data.user)
+    return NextResponse.next()
   } catch (error) {
     return NextResponse.redirect(new URL('/login', request.url))
   }

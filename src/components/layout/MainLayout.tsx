@@ -18,8 +18,9 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
     return (
         <>
             {
-                shouldHideLayout ? <>{children}</> : (
+                shouldHideLayout ? <> <Loader/>{children}</> : (
                     <div className={styles.container}>
+                        <Loader/>
                         <header className={`flex items-center justify-between ${styles.header}`}>
                             <section className='flex'>
                                 <div className={`${styles.hamburguer_web}`} onClick={() =>setExpand(!expand)}>
@@ -62,11 +63,9 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
                                 <Menu expand={expand} />
                             </aside>
                             <main className={styles.main}>
-
-                                <Loader />
-
-
+                              
                                 {children}
+                              
                             </main>
                         </div>
                     </div>

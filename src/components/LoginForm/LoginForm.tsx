@@ -14,12 +14,12 @@ const LoginForm = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingForgot, setIsLoadingForgot] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const {updateUserData} = useContext(GlobalContext)
+    const {updateUserData, startLoading, endLoading} = useContext(GlobalContext)
     const [form] = useForm()
     const router = useRouter()
 
     const onSubmit = async () => {
-        try {
+        try {startLoading()
             const email = form.getFieldValue('email')
             const password = form.getFieldValue('password')
             setIsLoading(true)
@@ -32,10 +32,12 @@ const LoginForm = () => {
                     message: 'Usuario o contraseña incorrectos, intenta de nuevo.'
                 })
                 setIsLoading(false)
+                endLoading()
             }
             notification.success({
                 message: result.data.messages
             })
+            
             updateUserData(result.data.userLogged)
             router.push('/')
             setIsLoading(false)
@@ -45,6 +47,7 @@ const LoginForm = () => {
                 message: error.response.data.message
             })
             setIsLoading(false)
+            endLoading()
             console.log(error)
         }
     }

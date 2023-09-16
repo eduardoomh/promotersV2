@@ -45,6 +45,7 @@
     min-height: 100%;
     background-color: #F4F4F4;
     padding: 2rem;
+    position: relative;
 }
 
 .mobile_menu {

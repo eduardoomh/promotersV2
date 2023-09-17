@@ -4,6 +4,7 @@ import UsersTable from "@/components/tables/UsersTable";
 import TitleCard from "@/components/TitleCard/TitleCard";
 import SubitleCard from "@/components/SubtitleCard/SubtitleCard";
 import UsersTableMob from "@/components/tables/UsersTableMob";
+import { Suspense } from "react";
 
 async function loadUsers() {
   const users = await fetch(`${process.env.API_URL}/api/users`)
@@ -16,7 +17,8 @@ export default async function Usuarios() {
   return (
     <main className={styles.main}>
       <EndLoading />
-      <TitleCard>USUARIOS</TitleCard>
+      <Suspense>
+      <TitleCard>USUARIOS</TitleCard> 
       <section className={styles.content}>
         <div className={styles.form}>
           <h3>CREAR NUEVO USUARIO</h3>
@@ -26,18 +28,20 @@ export default async function Usuarios() {
           <div className={styles.table_title}>
             <SubitleCard>USUARIOS REGISTRADOS</SubitleCard>
           </div>
+       
           <div className={styles.table_desktop}>
              <UsersTable users={users} />
           </div>
           <div className={styles.table_mobile}>
              <UsersTableMob users={users} />
           </div>
-         
+    
         </div>
         <section className={styles.add_user}>
           Agregar nuevo usuario
         </section>
       </section>
+      </Suspense>
     </main>
 
   )

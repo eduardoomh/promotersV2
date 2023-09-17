@@ -1,16 +1,10 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
 import { ISettingSchema } from "@/models/Settings";
 
-async function loadSettings() {
-  const settings = await fetch(`${process.env.API_URL}/api/settings`)
-  const response = await settings.json()
-  return response.settings
-}
 
 export default async function Ajustes() {
 
-  const ssds = await loadSettings()
-  console.log(ssds)
+
   const settings: any = []
 
   return (

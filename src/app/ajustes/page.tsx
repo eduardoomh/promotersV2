@@ -9,7 +9,9 @@ async function loadSettings() {
 
 export default async function Ajustes() {
 
-  const settings = await loadSettings()
+  const ssds = await loadSettings()
+  console.log(ssds)
+  const settings: any = []
 
   return (
     <main>

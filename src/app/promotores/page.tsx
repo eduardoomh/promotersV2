@@ -16,7 +16,7 @@ export default async function Promotores() {
       <div>
         {
           promoters.map((el: any) => (
-            <p>{el.personal_info.name}</p>
+            <p key={el._id}>{el.personal_info.name}</p>
           ))
         }
       </div>

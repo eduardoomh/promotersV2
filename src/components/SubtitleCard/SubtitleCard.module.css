@@ -1,0 +1,10 @@
+.card{
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    background-color: white;
+}
+
+.card h2{
+    font-size: 1.4rem;
+    font-weight: 400;
+}

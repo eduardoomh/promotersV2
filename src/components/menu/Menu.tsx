@@ -35,7 +35,11 @@ const Menu: FC<props> = ({ expand = true }) => {
         <nav className={styles.nav}>
             <ul>
                 <li>
-                    <Link href='/' className={isActive('/') ? styles.active_menu : ''}>
+                    <Link 
+                        href='/' 
+                        className={isActive('/') ? styles.active_menu : ''}
+                        disabled={pathname === '/'}
+                        >
                         <span
                             style={expand ? {} : inlineStyles.no_expand}>
                             <HomeOutlined />
@@ -47,7 +51,11 @@ const Menu: FC<props> = ({ expand = true }) => {
                     </Link>
                 </li>
                 <li>
-                    <Link href='/usuarios' className={isActive('/usuarios') ? styles.active_menu : ''}>
+                    <Link 
+                        href='/usuarios' 
+                        className={isActive('/usuarios') ? styles.active_menu : ''}
+                        disabled={pathname === '/usuarios'}
+                        >
                         <span
                             style={expand ? {} : inlineStyles.no_expand}>
                             <UserOutlined />
@@ -60,7 +68,11 @@ const Menu: FC<props> = ({ expand = true }) => {
                     </Link>
                 </li>
                 <li>
-                    <Link href='/promotores' className={isActive('/promotores') ? styles.active_menu : ''}>
+                    <Link 
+                        href='/promotores' 
+                        className={isActive('/promotores') ? styles.active_menu : ''}
+                        disabled={pathname === '/promotores'}
+                        >
                         <span
                             style={expand ? {} : inlineStyles.no_expand}>
                             <ContactsOutlined />
@@ -73,7 +85,11 @@ const Menu: FC<props> = ({ expand = true }) => {
                     </Link>
                 </li>
                 <li>
-                    <Link href='/promociones' className={isActive('/promociones') ? styles.active_menu : ''}>
+                    <Link 
+                        href='/promociones' 
+                        className={isActive('/promociones') ? styles.active_menu : ''}
+                        disabled={pathname === '/promociones'}
+                        >
                         <span
                             style={expand ? {} : inlineStyles.no_expand}>
                             <SolutionOutlined />
@@ -85,7 +101,11 @@ const Menu: FC<props> = ({ expand = true }) => {
                     </Link>
                 </li>
                 <li>
-                    <Link href='/pagos' className={isActive('/pagos') ? styles.active_menu : ''}>
+                    <Link 
+                        href='/pagos' 
+                        className={isActive('/pagos') ? styles.active_menu : ''}
+                        disabled={pathname === '/pagos'}
+                        >
                         <span
                             style={expand ? {} : inlineStyles.no_expand}>
                             <DollarOutlined />
@@ -98,7 +118,11 @@ const Menu: FC<props> = ({ expand = true }) => {
                     </Link>
                 </li>
                 <li>
-                    <Link href='/estado-de-cuenta' className={isActive('/estado-de-cuenta') ? styles.active_menu : ''}>
+                    <Link 
+                        href='/estado-de-cuenta' 
+                        className={isActive('/estado-de-cuenta') ? styles.active_menu : ''}
+                        disabled={pathname === '/estado-de-cuenta'}
+                        >
                         <span
                             style={expand ? {} : inlineStyles.no_expand}>
                             <FileDoneOutlined />
@@ -110,7 +134,11 @@ const Menu: FC<props> = ({ expand = true }) => {
                     </Link>
                 </li>
                 <li>
-                    <Link href='/ajustes' className={isActive('/ajustes') ? styles.active_menu : ''}>
+                    <Link 
+                        href='/ajustes' 
+                        className={isActive('/ajustes') ? styles.active_menu : ''}
+                        disabled={pathname === '/ajustes'}
+                        >
                         <span
                             style={expand ? {} : inlineStyles.no_expand}>
                             <SettingOutlined />

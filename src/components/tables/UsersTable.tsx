@@ -10,7 +10,7 @@ const columns: ColumnsType<IUserSchema> = [
         title: 'Nombre',
         dataIndex: 'name',
         key: 'name',
-        render: (text) => <a>{text}</a>,
+        render: (text) => <a>{text}</a>
     },
     {
         title: 'Email',

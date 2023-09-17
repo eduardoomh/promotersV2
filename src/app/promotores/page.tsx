@@ -1,13 +1,13 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
-
+/*
 async function loadPromoters() {
   const promoters = await fetch(`${process.env.API_URL}/api/promoters`)
   const response = await promoters.json()
   return response.promoters
 }
-
+*/
 export default async function Promotores() {
-  const promoters = await loadPromoters()
+  const promoters: any = [] //await loadPromoters()
 
   return (
     <main>

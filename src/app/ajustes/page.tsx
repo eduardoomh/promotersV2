@@ -1,6 +1,5 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
 import { ISettingSchema } from "@/models/Settings";
-/*
 
 async function loadSettings() {
   const settings = await fetch(`${process.env.API_URL}/api/settings`)
@@ -11,10 +10,10 @@ async function loadSettings() {
   return response
   
 }
-*/
+
 export default async function Ajustes() {
 
-  const settings: any = [] //await loadSettings()
+  const settings: any = await loadSettings()
 
   return (
     <main>

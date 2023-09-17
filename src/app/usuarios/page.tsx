@@ -4,15 +4,15 @@ import UsersTable from "@/components/tables/UsersTable";
 import TitleCard from "@/components/TitleCard/TitleCard";
 import SubitleCard from "@/components/SubtitleCard/SubtitleCard";
 import UsersTableMob from "@/components/tables/UsersTableMob";
-/*
+
 async function loadUsers() {
   const users = await fetch(`${process.env.API_URL}/api/users`)
   const response = await users.json()
   return response.users
 }
-*/
+
 export default async function Usuarios() {
-  const users: any = [] //await loadUsers()
+  const users: any = await loadUsers()
 
   return (
     <main className={styles.main}>

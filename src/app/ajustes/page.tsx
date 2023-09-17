@@ -1,7 +1,6 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
 import { ISettingSchema } from "@/models/Settings";
 
-
 async function loadSettings() {
   const settings = await fetch(`${process.env.API_URL}/api/settings`)
   const response = await settings.json()
@@ -19,11 +18,11 @@ export default async function Ajustes() {
       <div>
         {
           settings.map((el: ISettingSchema) => (
-            <>
+            <div key={el._id}>
               <p>{el.woo_keys.client_id}</p>
               <p>{el.woo_keys.client_secret}</p>
               <p>{el.woo_keys.store_url}</p>
-            </>
+            </div>
 
           ))
         }

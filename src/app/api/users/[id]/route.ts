@@ -2,7 +2,28 @@ import User from "@/models/User";
 import { messages } from "@/utils/messages";
 import { NextRequest, NextResponse } from "next/server";
 
+
 export async function POST(req: NextRequest) {
+    try {
+        const response = NextResponse.json({
+            message: 'Usuario encontrado',
+            user: null
+        }, {
+            status: 200
+        })
+
+        return response
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({
+            message: messages.error.default, error
+        }, {
+            status: 500
+        })
+    }
+}
+
+export async function GET(req: NextRequest) {
     try {
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/users/')[1]

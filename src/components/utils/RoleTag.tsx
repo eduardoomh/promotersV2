@@ -1,3 +1,4 @@
+'use client'
 import { Tag } from "antd"
 import { FC } from "react"
 

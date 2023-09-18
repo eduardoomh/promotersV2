@@ -1,0 +1,18 @@
+.info{
+    border-radius: 12px;
+    background-color: white;
+    padding: 0.5rem;
+}
+
+.info p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    background-color: white;
+}
+
+.info p:nth-child(odd) {
+    background-color: #FAFAFA; /* Cambia este color al que desees */
+  }

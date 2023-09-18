@@ -1,5 +1,5 @@
 'use client'
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { Table, Tooltip, Input } from 'antd';
 import { IUserSchema } from '@/models/User';
 import RoleTag from '../utils/RoleTag';
@@ -8,6 +8,7 @@ import { ArrowRightOutlined, DeleteOutlined, EditOutlined, EllipsisOutlined } fr
 import { useRouter } from 'next/navigation';
 import SubitleSearch from '../SubtitleSearch/SubtitleSearch';
 import { Link as ScrollLink, Element } from 'react-scroll'
+import { GlobalContext } from '@/context/globalContext';
 
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 
 const UsersTable: FC<Props> = ({ users }) => {
     const router = useRouter()
+    const { startLoading } = useContext(GlobalContext)
     const [searchText, setSearchText] = useState<string>('');
 
     const handleDeleteClick = (_id: string, email: string) => {
@@ -25,8 +27,9 @@ const UsersTable: FC<Props> = ({ users }) => {
     const handleUpdateClick = (_id: string) => {
         router.push(`/usuarios?actualizar=${_id}`);
     };
-    
+
     const handleDetailClick = (_id: string) => {
+        startLoading()
         router.push(`/usuarios/${_id}`);
     };
 
@@ -63,7 +66,7 @@ const UsersTable: FC<Props> = ({ users }) => {
                         />
                     </Tooltip>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <ArrowRightOutlined  onClick={() => handleDetailClick(data._id)}/>
+                        <ArrowRightOutlined onClick={() => handleDetailClick(data._id)} />
                     </Tooltip>
 
                 </div>

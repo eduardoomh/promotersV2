@@ -1,8 +1,9 @@
 'use client'
 import React, { FC } from 'react';
-import { Space, Table, Tag } from 'antd';
+import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { IUserSchema } from '@/models/User';
+import RoleTag from '../utils/RoleTag';
 
 
 const columns: ColumnsType<IUserSchema> = [
@@ -17,7 +18,7 @@ const columns: ColumnsType<IUserSchema> = [
         dataIndex: 'role',
         key: 'role',
         render: (role) => {
-            return  <Tag color={role === 'promoter' ? '#EC1912' : '#108ee9'}>{role === 'promoter' ? 'Promotor' : 'Admin'}</Tag>
+            return <RoleTag role={role} />
         }
     }
 ];

@@ -31,11 +31,13 @@ const userSchema = new Schema({
         default: 'promoter'
     },
     created_at: {
-        type: Number,
+        type: Schema.Types.Date,
+        default: Date.now
     },
     updated_at: {
-        type: Number,
-    }
+        type: Schema.Types.Date,
+        default: Date.now
+    },
 })
 
 const UserModel: Model<IUserSchema> = mongoose.models.User || mongoose.model('User', userSchema)

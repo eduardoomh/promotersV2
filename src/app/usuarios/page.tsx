@@ -4,10 +4,14 @@ import UsersTable from "@/components/tables/UsersTable";
 import TitleCard from "@/components/TitleCard/TitleCard";
 import SubitleCard from "@/components/SubtitleCard/SubtitleCard";
 import UsersTableMob from "@/components/tables/UsersTableMob";
+import NewUserForm from "@/components/forms/NewUserForm";
+import FormCard from "@/components/FomCard/FormCard";
 
 async function loadUsers() {
-  const users = await fetch(`${process.env.API_URL}/api/users`)
+  console.log(process.env.API_URL, "laurl")
+  const users = await fetch(`${process.env.API_URL}/api/users`,{ cache: 'no-store' })
   const response = await users.json()
+  console.log(response.users, `${process.env.API_URL}/api/users`)
   return response.users
 }
 
@@ -17,23 +21,24 @@ export default async function Usuarios() {
   return (
     <main className={styles.main}>
       <EndLoading />
-      <TitleCard>USUARIOS</TitleCard> 
+      <TitleCard>USUARIOS</TitleCard>
       <section className={styles.content}>
         <div className={styles.form}>
-          <h3>CREAR NUEVO USUARIO</h3>
-          <hr />
+          <FormCard title="crear nuevo usuario">
+            <NewUserForm />
+          </FormCard>
         </div>
         <div className={styles.table_content}>
           <div className={styles.table_title}>
             <SubitleCard>USUARIOS REGISTRADOS</SubitleCard>
           </div>
           <div className={styles.table_desktop}>
-             <UsersTable users={users} />
+            <UsersTable users={users} />
           </div>
           <div className={styles.table_mobile}>
-             <UsersTableMob users={users} />
+            <UsersTableMob users={users} />
           </div>
-         
+
         </div>
         <section className={styles.add_user}>
           Agregar nuevo usuario

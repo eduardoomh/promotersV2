@@ -12,18 +12,6 @@
     gap: 1rem;
 }
 
-.form{
-    background-color: white;
-    padding: 1rem;
-    border-radius: 12px;
-}
-
-.form h3{
-    font-size: 1.3rem;
-    font-weight: 400;
-    margin-bottom: 0.4rem;
-}
-
 .add_user{
     display: none;
 }

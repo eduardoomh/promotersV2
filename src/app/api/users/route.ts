@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server'
 export async function GET() {
     try {
         await connectMongoDB()
-        const users = await User.find()
+        const users = await User.find().sort({$natural: -1})
         const response =  NextResponse.json({
             users,
             messages: messages.success.userCreated

@@ -1,0 +1,16 @@
+.form_card{
+    background-color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+}
+
+.form_card h3{
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+}
+
+.form_card article{
+    padding: 1rem 0;
+}

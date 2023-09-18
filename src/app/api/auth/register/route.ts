@@ -10,11 +10,11 @@ export async function POST(req: NextRequest) {
     try {
         await connectMongoDB()
         const body = await req.json()
-        const {email, password, confirmPassword} = body
+        const {name, email, password, confirm_password, role} = body
         console.log(body)
 
         //validar campos enviados
-        if(!email || !password || !confirmPassword){
+        if(!email || !password || !confirm_password){
             return NextResponse.json({
                 message: messages.error.needProps
             },{
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        if(password !== confirmPassword){
+        if(password !== confirm_password){
             return NextResponse.json({
                 message: messages.error.passwordNotMatch
             },{
@@ -50,7 +50,9 @@ export async function POST(req: NextRequest) {
         const hashedPassword = await bcryptjs.hash(password, 10)
 
         const newUser: IUserSchema = new User({
+            name,
             email,
+            role,
             password: hashedPassword
         })
 
@@ -65,7 +67,7 @@ export async function POST(req: NextRequest) {
 
         const response =  NextResponse.json({
             newUser: rest,
-            messages: messages.success.userCreated
+            message: messages.success.userCreated
         },{
             status: 200
         })

@@ -1,8 +1,11 @@
 'use client'
 import React, { FC } from 'react';
-import { Space, Table, Tag } from 'antd';
+import { Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { IUserSchema } from '@/models/User';
+import RoleTag from '../utils/RoleTag';
+import moment from 'moment';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 
 const columns: ColumnsType<IUserSchema> = [
@@ -22,21 +25,40 @@ const columns: ColumnsType<IUserSchema> = [
         dataIndex: 'role',
         key: 'role',
         render: (role) => {
-            return  <Tag color={role === 'promoter' ? '#EC1912' : '#108ee9'}>{role === 'promoter' ? 'Promotor' : 'Admin'}</Tag>
+            return <RoleTag role={role} />
         }
     },
     {
-        title: 'Fecha de creación',
+        title: 'Fecha',
         dataIndex: 'created_at',
         key: 'created_at',
+        render: (date) => moment(date).format('DD/MM/YYYY')
+    },
+    {
+        title: 'Acciones',
+        dataIndex: 'updated_at',
+        key: 'updated_at',
+        render: () => (
+            <div className='flex gap-3'>
+                <Tooltip 
+                    placement="top"
+                    title={'Actualizar usuario'}
+                    >
+                    <EditOutlined style={{cursor: 'pointer'}} />
+                </Tooltip>
+                <Tooltip placement="top" title={'Eliminar usuario'}>
+                    <DeleteOutlined style={{ color: '#ec1912', cursor: 'pointer' }} />
+                </Tooltip>
+            </div>
+        )
     }
 ];
 
 
-interface props{
+interface props {
     users: IUserSchema[]
 }
-const UsersTable:FC<props> = ({users}) => {
+const UsersTable: FC<props> = ({ users }) => {
     return (
         <Table columns={columns} dataSource={users} />
     )

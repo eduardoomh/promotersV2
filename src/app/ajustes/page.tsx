@@ -2,7 +2,7 @@ import EndLoading from "@/components/EndLoading/EndLoading";
 import { ISettingSchema } from "@/models/Settings";
 
 async function loadSettings() {
-  const settings = await fetch(`${process.env.API_URL}/api/settings`)
+  const settings = await fetch(`${process.env.API_URL}/api/settings`,{ cache: 'no-store' })
   const response = await settings.json()
   if(response.settings){
     return response.settings

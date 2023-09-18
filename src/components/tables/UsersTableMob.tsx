@@ -25,7 +25,10 @@ const UsersTable: FC<Props> = ({ users }) => {
     const handleUpdateClick = (_id: string) => {
         router.push(`/usuarios?actualizar=${_id}`);
     };
-
+    
+    const handleDetailClick = (_id: string) => {
+        router.push(`/usuarios/${_id}`);
+    };
 
     const columns = [
         {
@@ -60,7 +63,7 @@ const UsersTable: FC<Props> = ({ users }) => {
                         />
                     </Tooltip>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <ArrowRightOutlined />
+                        <ArrowRightOutlined  onClick={() => handleDetailClick(data._id)}/>
                     </Tooltip>
 
                 </div>

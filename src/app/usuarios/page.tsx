@@ -6,12 +6,11 @@ import SubitleCard from "@/components/SubtitleCard/SubtitleCard";
 import UsersTableMob from "@/components/tables/UsersTableMob";
 import NewUserForm from "@/components/forms/NewUserForm";
 import FormCard from "@/components/FomCard/FormCard";
+import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
 
 async function loadUsers() {
-  console.log(process.env.API_URL, "laurl")
   const users = await fetch(`${process.env.API_URL}/api/users`,{ cache: 'no-store' })
   const response = await users.json()
-  console.log(response.users, `${process.env.API_URL}/api/users`)
   return response.users
 }
 
@@ -44,6 +43,7 @@ export default async function Usuarios() {
           Agregar nuevo usuario
         </section>
       </section>
+      <DeleteConfirm />
     </main>
 
   )

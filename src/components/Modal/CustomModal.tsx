@@ -1,6 +1,6 @@
 'use client'
 import { Modal } from "antd"
-import { FC, PropsWithChildren, Suspense, useState } from "react"
+import { FC, PropsWithChildren, Suspense } from "react"
 
 interface props{
     isModalOpen: boolean;

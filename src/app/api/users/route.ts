@@ -5,6 +5,7 @@ import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import Promoter from '@/models/Promoter'
 
 export async function GET() {
     try {
@@ -111,5 +112,48 @@ export async function POST(req: NextRequest) {
         },{
             status: 500
         })
+    }
+}
+
+export async function DELETE(req: NextRequest){
+    try{
+        const {search} = new URL(req.url)
+        const params = new URLSearchParams(search);
+        const id = params.get('id')
+        
+        const deleteUser = await User.deleteOne({_id: id})
+        if(deleteUser.deletedCount < 1){
+            return NextResponse.json({
+                message: 'El usuario no pudo ser eliminado',
+            },{
+                status: 500
+            })
+        }
+
+        //check if exist promoter with the same id
+        const deletePromoter = await Promoter.findOne({_id: id})
+
+        if(deletePromoter){
+            const deletePromoter = await Promoter.deleteOne({_id: id})
+            if(deletePromoter.deletedCount < 1){
+                return NextResponse.json({
+                    message: 'El promotor no pudo ser eliminado',
+                },{
+                    status: 500
+                })
+            }
+        }
+
+
+        const response =  NextResponse.json({
+            message: 'Usuario eliminado exitosamente'
+        },{
+            status: 200
+        })
+
+        return response
+
+    }catch(error){
+        console.log(error)
     }
 }

@@ -36,9 +36,6 @@ export default async function Usuarios() {
           </div>
 
         </div>
-        <section className={styles.add_user}>
-          Agregar nuevo usuario
-        </section>
       </section>
       <DeleteConfirm />
     </main>

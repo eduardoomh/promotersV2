@@ -1,6 +1,5 @@
 .container {
     min-height: 100vh;
-    max-height: 100vh;
 }
 
 .content {
@@ -42,7 +41,6 @@
 
 .main {
     grid-column: 2/3;
-    min-height: 100%;
     background-color: #F4F4F4;
     padding: 2rem;
     position: relative;
@@ -91,6 +89,7 @@
 
     .main {
         grid-column: 1/2;
+        padding: 2rem 1rem;
     }
 
     .mobile_menu {

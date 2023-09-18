@@ -39,3 +39,9 @@ margin-top: 1rem;
 .menu_text{
     transition: text 0.5s ease;
 }
+
+@media (max-width: 999px) {
+    .nav{
+        min-height: 100vh;
+    }
+}

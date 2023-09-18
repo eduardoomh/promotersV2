@@ -14,3 +14,9 @@
 .form_card article{
     padding: 1rem 0;
 }
+
+@media (max-width: 999px){
+    .form_card{
+        padding: 1rem;
+    }
+}

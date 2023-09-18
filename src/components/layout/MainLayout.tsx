@@ -1,5 +1,5 @@
 'use client'
-import { CloseOutlined, MenuOutlined } from "@ant-design/icons"
+import { CloseOutlined, MenuFoldOutlined, MenuOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 import React, { useContext, useState } from "react"
 import styles from './MainLayout.module.css'
 import { FC, PropsWithChildren } from "react"
@@ -24,7 +24,9 @@ const MainLayout: FC<PropsWithChildren> = ({ children }) => {
                         <header className={`flex items-center justify-between ${styles.header}`}>
                             <section className='flex'>
                                 <div className={`${styles.hamburguer_web}`} onClick={() =>setExpand(!expand)}>
-                                    <MenuOutlined />
+                                    {
+                                        expand ? <MenuFoldOutlined /> :  <MenuUnfoldOutlined />
+                                    }
                                 </div>
                                 <div
                                     className={styles.hamburguer}

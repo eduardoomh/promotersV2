@@ -9,7 +9,6 @@ import { FC, useEffect, useState } from 'react'
 import { IUserSchema } from '@/models/User'
 import { usePatch } from '@/hooks/usePatch'
 import styles from './NewUser.module.css'
-import { CloseOutlined } from '@ant-design/icons'
 interface props {
     users: IUserSchema[]
 }
@@ -80,7 +79,7 @@ const NewUserForm: FC<props> = ({ users }) => {
 
     return (
         <Form form={form} onFinish={currentUser ? onUpdate : onSubmit}>
-            <h3 className={styles.title}>{currentUser ? 'ACTUALIZAR USUARIO' : 'CREAR NUEVO USUARIO'}</h3>
+            <h3 id='nuevo-usuario' className={styles.title}>{currentUser ? 'ACTUALIZAR USUARIO' : 'CREAR NUEVO USUARIO'}</h3>
             <br />
             <label>Nombre</label>
             <InputContainer

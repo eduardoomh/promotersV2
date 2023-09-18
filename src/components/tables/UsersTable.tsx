@@ -84,7 +84,7 @@ const UsersTable: FC<Props> = ({ users }) => {
                 <Input.Search
                 placeholder="Buscar"
                 onChange={(e) => setSearchText(e.target.value)}
-                style={{  width: 300, fontSize: '1rem', marginLeft: '1rem' }}
+                style={{  width: 300, fontSize: '1rem'}}
             />
             </SubitleSearch>
             <br/>

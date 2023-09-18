@@ -1,12 +1,11 @@
 'use client'
 import React, { FC, useState } from 'react';
-import { Table, Tooltip, Input, Space, Button } from 'antd';
+import { Table, Tooltip, Input } from 'antd';
 import { IUserSchema } from '@/models/User';
 import RoleTag from '../utils/RoleTag';
 import moment from 'moment';
-import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import SubitleCard from '../SubtitleCard/SubtitleCard';
 import SubitleSearch from '../SubtitleSearch/SubtitleSearch';
 
 interface Props {
@@ -16,58 +15,15 @@ interface Props {
 const UsersTable: FC<Props> = ({ users }) => {
     const router = useRouter()
     const [searchText, setSearchText] = useState<string>('');
-    const [searchedColumn, setSearchedColumn] = useState<string>('');
 
     const handleDeleteClick = (_id: string, email: string) => {
         router.push(`/usuarios?eliminar=${_id}&correo=${email}`);
     };
 
-
-    const handleSearch = (selectedKeys: string[], confirm: () => void) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
+    const handleUpdateClick = (_id: string) => {
+        router.push(`/usuarios?actualizar=${_id}`);
     };
 
-    const handleReset = (clearFilters: () => void) => {
-        clearFilters();
-        setSearchText('');
-    };
-
-    const getColumnSearchProps = (dataIndex: string) => ({
-        //@ts-ignore
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-            <div style={{ padding: 8 }}>
-                <Input
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm)}
-                    style={{ width: 188, marginBottom: 8, display: 'block' }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{ width: 90 }}
-                    >
-                        Search
-                    </Button>
-                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-                        Reset
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered: boolean) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-        onFilter: (value: string, record: IUserSchema) =>
-            //@ts-ignore
-            record[dataIndex]
-                .toString()
-                .toLowerCase()
-                .includes(value.toLowerCase()),
-    });
 
     const columns = [
         {
@@ -98,7 +54,10 @@ const UsersTable: FC<Props> = ({ users }) => {
             render: (data: IUserSchema) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Actualizar usuario'}>
-                        <EditOutlined style={{ cursor: 'pointer' }} />
+                        <EditOutlined 
+                            onClick={() => handleUpdateClick(data._id)}
+                            style={{ cursor: 'pointer' }} 
+                            />
                     </Tooltip>
                     <Tooltip placement="top" title={'Eliminar usuario'}>
                         <DeleteOutlined

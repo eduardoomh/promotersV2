@@ -155,5 +155,60 @@ export async function DELETE(req: NextRequest){
 
     }catch(error){
         console.log(error)
+        return NextResponse.json({
+            message: messages.error.default, error
+        },{
+            status: 500
+        })
+    }
+}
+
+export async function PATCH(req: NextRequest){
+    try{
+        const {search} = new URL(req.url)
+        const params = new URLSearchParams(search);
+        const id = params.get('id')
+
+        const findUser: IUserSchema | null = await User.findOne({_id: id})
+
+        if(!findUser){
+            return NextResponse.json({
+                message: 'El usuario no existe',
+            },{
+                status: 500
+            })
+        }
+
+        const {name, email} = await req.json()
+        const updateUser = await User.updateOne({_id: id},{
+            $set: {
+                name,
+                email
+            }
+        })
+
+        if(updateUser.modifiedCount < 1){
+            return NextResponse.json({
+                message: 'El usuario no pudo ser actualizado',
+            },{
+                status: 500
+            })
+        }
+
+        const response =  NextResponse.json({
+            message: 'El usuario se ha actualizado'
+        },{
+            status: 200
+        })
+
+        return response
+
+    }catch(error){
+        console.log(error)
+        return NextResponse.json({
+            message: messages.error.default, error
+        },{
+            status: 500
+        })
     }
 }

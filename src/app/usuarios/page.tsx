@@ -28,9 +28,6 @@ export default async function Usuarios() {
           </FormCard>
         </div>
         <div className={styles.table_content}>
-          <div className={styles.table_title}>
-            <SubitleCard>USUARIOS REGISTRADOS</SubitleCard>
-          </div>
           <div className={styles.table_desktop}>
             <UsersTable users={users} />
           </div>

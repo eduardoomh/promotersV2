@@ -26,12 +26,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={barlow.className}>
         <GlobalContextProvider>
-            <MainLayout>
-              <Suspense fallback={'cargando......'}>
+          <MainLayout>
+            <Suspense fallback={'cargando......'}>
+              <div className={barlow.className}>
                 {children}
-              </Suspense>
-              
-            </MainLayout>
+              </div>
+            </Suspense>
+
+          </MainLayout>
         </GlobalContextProvider>
       </body>
     </html>

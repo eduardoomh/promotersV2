@@ -8,7 +8,8 @@ import { usePost } from '@/hooks/usePost'
 import { FC, useEffect, useState } from 'react'
 import { IUserSchema } from '@/models/User'
 import { usePatch } from '@/hooks/usePatch'
-
+import styles from './NewUser.module.css'
+import { CloseOutlined } from '@ant-design/icons'
 interface props {
     users: IUserSchema[]
 }
@@ -35,7 +36,7 @@ const NewUserForm: FC<props> = ({ users }) => {
                     role: currentUser.role,
                     password: 'norealpassword',
                     repeat_password: 'norealpassword'
-                    
+
                 })
             }
             console.log(currentUser)
@@ -79,6 +80,8 @@ const NewUserForm: FC<props> = ({ users }) => {
 
     return (
         <Form form={form} onFinish={currentUser ? onUpdate : onSubmit}>
+            <h3 className={styles.title}>{currentUser ? 'ACTUALIZAR USUARIO' : 'CREAR NUEVO USUARIO'}</h3>
+            <br />
             <label>Nombre</label>
             <InputContainer
                 type='text'
@@ -133,6 +136,17 @@ const NewUserForm: FC<props> = ({ users }) => {
                 style={{ padding: '0.6rem', fontSize: '1rem' }}
             />
             <CustomButton>{currentUser ? 'Actualizar Usuario' : 'Crear Usuario'}</CustomButton>
+            {
+                currentUser && (
+                    <section className="mt-4">
+                        <p className='flex justify-center text-base' onClick={finishEditMode}>
+                            <a>Cancelar</a>
+                            </p>
+                    </section>
+
+                )
+            }
+
         </Form>
     )
 }

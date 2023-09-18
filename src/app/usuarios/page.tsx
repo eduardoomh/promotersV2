@@ -23,7 +23,7 @@ export default async function Usuarios() {
       <TitleCard>USUARIOS</TitleCard>
       <section className={styles.content}>
         <div className={styles.form}>
-          <FormCard title="crear nuevo usuario">
+          <FormCard>
             <NewUserForm users={users} />
           </FormCard>
         </div>

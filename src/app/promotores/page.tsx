@@ -1,7 +1,7 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
 
 async function loadPromoters() {
-  const promoters = await fetch(`${process.env.API_URL}/api/promoters`,{ cache: 'no-store' })
+  const promoters = await fetch(`${process.env.API_URL}/api/promoters`,{ cache: 'no-store'  })
   const response = await promoters.json()
   return response.promoters
 }

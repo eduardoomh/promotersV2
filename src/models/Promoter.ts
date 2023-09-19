@@ -4,8 +4,6 @@ export interface IPromoterSchema extends Document {
     _id: string;
     user: string;
     personal_info: {
-        name: string;
-        last_name: string;
         phone: string;
         mobile_phone: string;
         rfc: string;
@@ -30,14 +28,6 @@ const promoterSchema = new mongoose.Schema({
         required: true
     },
     personal_info: {
-        name: {
-            type: String,
-            required: true,
-        },
-        last_name: {
-            type: String,
-            required: true,
-        },
         phone: {
             type: String,
             required: true,

@@ -64,7 +64,7 @@ const NewUserForm: FC<props> = ({ users }) => {
 
     const onUpdate = async (data: any) => {
         await fetchPatch({
-            endpoint: `users?id=${searchParams.get('actualizar')}`,
+            endpoint: `users/${searchParams.get('actualizar')}`,
             formData: {
                 name: data.name,
                 email: data.email,

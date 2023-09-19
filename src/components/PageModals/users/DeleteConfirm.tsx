@@ -27,7 +27,7 @@ const DeleteConfirm = () => {
 
     const onSubmit = () =>{
         fetchDelete({
-            endpoint: `users?id=${searchParams.get('eliminar')}`,
+            endpoint: `users/${searchParams.get('eliminar')}`,
             redirectRoute: undefined,
             reloadPage: true
         })

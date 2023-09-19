@@ -1,10 +1,9 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from './Users.module.css'
-import UsersTable from "@/components/tables/UsersTable";
+import UsersTable from "@/components/tables/users/UsersTable";
 import TitleCard from "@/components/TitleCard/TitleCard";
-import SubitleCard from "@/components/SubtitleCard/SubtitleCard";
-import UsersTableMob from "@/components/tables/UsersTableMob";
-import NewUserForm from "@/components/forms/NewUserForm";
+import UsersTableMob from "@/components/tables/users/UsersTableMob";
+import NewUserForm from "@/components/forms/users/NewUserForm";
 import FormCard from "@/components/FomCard/FormCard";
 import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
 

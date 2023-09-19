@@ -9,9 +9,9 @@ export async function GET(req: NextRequest) {
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
 
-        const findPromoter = await  Promoter.findOne({_id: id})
+        const findPromoter = await Promoter.findOne({ _id: id })
 
-        if(!findPromoter){
+        if (!findPromoter) {
             return NextResponse.json({
                 message: messages.error.default,
             }, {
@@ -38,98 +38,99 @@ export async function GET(req: NextRequest) {
 }
 
 
-export async function PATCH(req: NextRequest){
-    try{
+export async function PATCH(req: NextRequest) {
+    try {
         await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
 
-        const findPromoter: IPromoterSchema | null = await Promoter.findOne({_id: id})
+        const findPromoter: IPromoterSchema | null = await Promoter.findOne({ _id: id })
 
-        if(!findPromoter){
+        if (!findPromoter) {
             return NextResponse.json({
                 message: 'El promotor no existe',
-            },{
+            }, {
                 status: 500
             })
         }
 
-        const {name, email} = await req.json()
-        const updatePromoter = await Promoter.updateOne({_id: id},{
+        const { update_promoter } = await req.json()
+        const { personal_info, address } = update_promoter
+        const updatePromoter = await Promoter.updateOne({ _id: id }, {
             $set: {
-                name,
-                email
+                personal_info,
+                address
             }
         })
 
-        if(updatePromoter.modifiedCount < 1){
+        if (updatePromoter.modifiedCount < 1) {
             return NextResponse.json({
                 message: 'El promotor no pudo ser actualizado',
-            },{
+            }, {
                 status: 500
             })
         }
 
-        const updatedPromoter = await Promoter.findOne({_id: id})
+        const updatedPromoter = await Promoter.findOne({ _id: id })
 
-        const response =  NextResponse.json({
+        const response = NextResponse.json({
             message: 'El promotor se ha actualizado',
             updated_promoter: updatedPromoter
-        },{
+        }, {
             status: 200
         })
 
         return response
 
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return NextResponse.json({
             message: messages.error.default, error
-        },{
+        }, {
             status: 500
         })
     }
 }
 
-export async function DELETE(req: NextRequest){
-    try{
+export async function DELETE(req: NextRequest) {
+    try {
         await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
 
-        const existPromoter = await Promoter.findOne({_id: id})
+        const existPromoter = await Promoter.findOne({ _id: id })
 
-        if(!existPromoter){
+        if (!existPromoter) {
             return NextResponse.json({
                 message: 'El promotor no existe',
-            },{
-                status: 500
-            })
-        }
-        
-        const deletePromoter = await Promoter.deleteOne({_id: id})
-        if(deletePromoter.deletedCount < 1){
-            return NextResponse.json({
-                message: 'El promotor no pudo ser eliminado',
-            },{
+            }, {
                 status: 500
             })
         }
 
-        const response =  NextResponse.json({
+        const deletePromoter = await Promoter.deleteOne({ _id: id })
+        if (deletePromoter.deletedCount < 1) {
+            return NextResponse.json({
+                message: 'El promotor no pudo ser eliminado',
+            }, {
+                status: 500
+            })
+        }
+
+        const response = NextResponse.json({
             message: 'Promotor eliminado exitosamente',
             deleted_promoter: existPromoter
-        },{
+        }, {
             status: 200
         })
 
         return response
 
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return NextResponse.json({
             message: messages.error.default, error
-        },{
+        }, {
             status: 500
         })
     }

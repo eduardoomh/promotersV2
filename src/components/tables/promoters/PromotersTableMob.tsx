@@ -2,50 +2,47 @@
 import React, { FC, useContext, useState } from 'react';
 import { Table, Tooltip, Input } from 'antd';
 import { IUserSchema } from '@/models/User';
-import RoleTag from '../utils/RoleTag';
-import moment from 'moment';
-import { ArrowRightOutlined, DeleteOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import SubitleSearch from '../SubtitleSearch/SubtitleSearch';
+import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
+import { IPromoterSchema } from '@/models/Promoter';
 import { Link as ScrollLink, Element } from 'react-scroll'
 import { GlobalContext } from '@/context/globalContext';
 
-
 interface Props {
-    users: IUserSchema[];
+    promoters: IPromoterSchema[];
 }
 
-const UsersTable: FC<Props> = ({ users }) => {
+const PromotersTableMob: FC<Props> = ({ promoters }) => {
     const router = useRouter()
     const { startLoading } = useContext(GlobalContext)
     const [searchText, setSearchText] = useState<string>('');
 
     const handleDeleteClick = (_id: string, email: string) => {
-        router.push(`/usuarios?eliminar=${_id}&correo=${email}`);
+        router.push(`/promotores?eliminar=${_id}&correo=${email}`);
     };
 
     const handleUpdateClick = (_id: string) => {
-        router.push(`/usuarios?actualizar=${_id}`);
+        router.push(`/promotores?actualizar=${_id}`);
     };
 
     const handleDetailClick = (_id: string) => {
         startLoading()
-        router.push(`/usuarios/${_id}`);
+        router.push(`/promotores/${_id}`);
     };
 
     const columns = [
         {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
+            title: 'Nombre',
+            render: (data: any) => <a>{data.user?.name}</a>,
         },
         {
             title: 'Acciones',
             render: (data: IUserSchema) => (
                 <div className='flex gap-3'>
-                    <Tooltip placement="top" title={'Actualizar usuario'}>
+                    <Tooltip placement="top" title={'Actualizar promotor'}>
                         <ScrollLink
-                            to="nuevo-usuario" // ID del elemento al que deseas desplazarte
+                            to="nuevo-promotor" // ID del elemento al que deseas desplazarte
                             spy={true}
                             smooth={true}
                             duration={500} // Duración de la animación en milisegundos
@@ -58,7 +55,7 @@ const UsersTable: FC<Props> = ({ users }) => {
                         </ScrollLink>
 
                     </Tooltip>
-                    <Tooltip placement="top" title={'Eliminar usuario'}>
+                    <Tooltip placement="top" title={'Eliminar promotor'}>
                         <DeleteOutlined
                             //@ts-ignore
                             onClick={() => handleDeleteClick(data._id, data.email)}
@@ -74,8 +71,8 @@ const UsersTable: FC<Props> = ({ users }) => {
         },
     ];
 
-    const filteredUsers = users.filter((user) =>
-        Object.values(user)
+    const filteredPromoters = promoters.filter((promoter) =>
+        Object.values(promoter)
             .join(' ')
             .toLowerCase()
             .includes(searchText.toLowerCase())
@@ -83,7 +80,7 @@ const UsersTable: FC<Props> = ({ users }) => {
 
     return (
         <>
-            <SubitleSearch title='USUARIOS REGISTRADOS'>
+            <SubitleSearch title='PROMOTORES REGISTRADOS'>
                 <Input.Search
                     placeholder="Buscar"
                     onChange={(e) => setSearchText(e.target.value)}
@@ -94,13 +91,12 @@ const UsersTable: FC<Props> = ({ users }) => {
             {/* @ts-ignore */}
             <Table
                 columns={columns}
-                dataSource={filteredUsers}
+                dataSource={filteredPromoters}
                 scroll={{ x: 200 }}
-
             />
         </>
     );
 };
 
-export default UsersTable;
+export default PromotersTableMob;
 

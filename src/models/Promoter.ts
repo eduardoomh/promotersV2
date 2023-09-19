@@ -1,8 +1,9 @@
 import mongoose, { Schema, Document, ObjectId, Model } from 'mongoose'
+import { IUserSchema } from './User';
 
 export interface IPromoterSchema extends Document {
     _id: string;
-    user: string;
+    user: string | IUserSchema;
     personal_info: {
         phone: string;
         mobile_phone: string;

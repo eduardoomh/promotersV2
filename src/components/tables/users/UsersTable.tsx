@@ -2,11 +2,11 @@
 import React, { FC, useState } from 'react';
 import { Table, Tooltip, Input } from 'antd';
 import { IUserSchema } from '@/models/User';
-import RoleTag from '../utils/RoleTag';
+import RoleTag from '../../utils/RoleTag';
 import moment from 'moment';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import SubitleSearch from '../SubtitleSearch/SubtitleSearch';
+import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
 
 interface Props {
     users: IUserSchema[];

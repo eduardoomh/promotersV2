@@ -5,12 +5,19 @@ import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import Promoter from '@/models/Promoter'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
     try {
         await connectMongoDB()
-        const users = await User.find().sort({ $natural: -1 })
+        const { searchParams } = new URL(req.url)
+        const filtered_role = searchParams.get('role')
+        let users
+        if(filtered_role !== null){
+            users = await User.find({role: filtered_role}).sort({ $natural: -1 })
+        }else{
+            users = await User.find().sort({ $natural: -1 })
+        }
+        
         const response = NextResponse.json({
             users,
             messages: messages.success.userCreated

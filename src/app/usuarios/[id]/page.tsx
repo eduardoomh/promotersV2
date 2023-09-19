@@ -1,5 +1,3 @@
-import TitleCard from "@/components/TitleCard/TitleCard"
-import { ArrowLeftOutlined } from "@ant-design/icons"
 import styles from './Usuario.module.css'
 import EndLoading from "@/components/EndLoading/EndLoading"
 import RoleTag from "@/components/utils/RoleTag"

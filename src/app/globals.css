@@ -7,9 +7,11 @@
   --chamosa-red: #EC1912;
   --chamosa-red-hover: #ff7570;
 }
+/*
 *{
   font-family: 'Barlow', sans-serif !important;
 }
+*/
 .custom-min-width {
     min-width: 600px;
   }

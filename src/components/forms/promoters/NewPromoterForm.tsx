@@ -114,11 +114,13 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
             <Form form={form} onFinish={currentPromoter ? onUpdate : onSubmit}>
                 <label>Usuario</label>
                 <InputContainer
-                    type='select'
+                    type='searchSelect'
                     valueContainerName='user'
                     placeholder='Usuario'
                     style={{ fontSize: '1rem' }}
+                    canSearch
                     required={true}
+                    filter={(input: any, option: any) => (option?.label.toLowerCase() ?? '').includes(input)}
                     disabled={currentPromoter ? true : false}
                     optionsList={users.map((el: IUserSchema) => {
                         return{

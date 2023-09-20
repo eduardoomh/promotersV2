@@ -35,13 +35,14 @@ export async function POST(req: NextRequest) {
         })
 
         const forgetUrl = `${process.env.API_URL}/change-password?token=${token}`
+        const prod_url = `${process.env.API_URL}`
 
         //@ts-ignore
         await resend.emails.send({
             from: 'onboarding@resend.dev',
             to: email,
             subject: 'Cambio de contraseña - Chamosa Promotores',
-            html: chamosa_mail(forgetUrl)
+            html: chamosa_mail(forgetUrl, prod_url, email)
         })
 
         return NextResponse.json({

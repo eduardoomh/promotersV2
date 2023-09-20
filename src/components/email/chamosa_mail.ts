@@ -1,8 +1,6 @@
-export const chamosa_mail = (url: string) => {
-    const prod_url = 'https://promotoresv2.vercel.app/'
-
+export const chamosa_mail = (url: string, prod_url: string, email: string,) => {
     return `
-    <!doctype html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
         <!-- NAME: EDUCATE -->
@@ -361,7 +359,7 @@ export const chamosa_mail = (url: string) => {
 			padding-top:9px !important;
 		}
 
-}	@media only screen and (max-width: 480px){
+nly scree}	@media on and (max-width: 480px){
 		.mcnImageCardTopImageContent,.mcnCaptionBottomContent:last-child .mcnCaptionBottomImageContent,.mcnCaptionBlockInner .mcnCaptionTopContent:last-child .mcnTextContent{
 			padding-top:18px !important;
 		}
@@ -490,12 +488,10 @@ export const chamosa_mail = (url: string) => {
 			/*@editable*/line-height:150% !important;
 		}
 
-}</style>
-                    <script>var w=window;if(w.performance||w.mozPerformance||w.msPerformance||w.webkitPerformance){var d=document;AKSB=w.AKSB||{},AKSB.q=AKSB.q||[],AKSB.mark=AKSB.mark||function(e,_){AKSB.q.push(["mark",e,_||(new Date).getTime()])},AKSB.measure=AKSB.measure||function(e,_,t){AKSB.q.push(["measure",e,_,t||(new Date).getTime()])},AKSB.done=AKSB.done||function(e){AKSB.q.push(["done",e])},AKSB.mark("firstbyte",(new Date).getTime()),AKSB.prof={custid:"141233",ustr:"",originlat:"0",clientrtt:"36",ghostip:"23.200.39.21",ipv6:false,pct:"10",clientip:"189.218.0.179",requestid:"2af745b8",region:"44872",protocol:"h2",blver:14,akM:"x",akN:"ae",akTT:"O",akTX:"1",akTI:"2af745b8",ai:"199322",ra:"false",pmgn:"",pmgi:"",pmp:"",qc:""},function(e){var _=d.createElement("script");_.async="async",_.src=e;var t=d.getElementsByTagName("script"),t=t[t.length-1];t.parentNode.insertBefore(_,t)}(("https:"===d.location.protocol?"https:":"http:")+"//ds-aksb-a.akamaihd.net/aksb.min.js")}</script>
-                    </head>
+}</style></head>
     <body>
         <!--*|IF:MC_PREVIEW_TEXT|*-->
-        <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">CHAMOSA PROMOTORES</span><!--<![endif]-->
+        <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">PROMOTORES - CHAMOSA</span><!--<![endif]-->
         <!--*|END:IF|*-->
         <center>
             <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
@@ -566,9 +562,14 @@ export const chamosa_mail = (url: string) => {
                         
                         <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
                         
-                            <h2 style="text-align: center;">Cambio de contraseña</h2>
+                            <h2 style="text-align: center;"><strong>SISTEMA DE PROMOTORES</strong><br>
+<br>
+<span style="font-size:17px">CAMBIO DE CONTRASEÑA</span></h2>
 
-<p style="font-size: 18px !important; text-align: center;"><span style="font-size:14px">Hemos recibido una solicitud para restablecer tu contraseña. Por favor, haz clic en el enlace proporcionado para ser redirigido al sistema de promotores y proceder con la reasignación de una nueva contraseña.<br>
+<p style="font-size: 18px !important; text-align: center;"><br>
+<span style="font-size:14px">hola <strong>${email}</strong><br>
+<br>
+Hemos recibido una solicitud para restablecer tu contraseña. Por favor, haz clic en el enlace proporcionado para ser redirigido al sistema de promotores y proceder con la reasignación de una nueva contraseña.<br>
 <br>
 Si no has realizado esta solicitud, te pedimos que la ignores y contactes con nuestro equipo de soporte de Chamarras Monterrey para cualquier asistencia adicional.</span></p>
 

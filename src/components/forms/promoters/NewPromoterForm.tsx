@@ -12,9 +12,10 @@ import styles from '../users/NewUser.module.css'
 import { IPromoterSchema } from '@/models/Promoter'
 
 interface props {
-    promoters: IPromoterSchema[]
+    promoters: IPromoterSchema[];
+    users: IUserSchema[];
 }
-const NewPromoterForm: FC<props> = ({ promoters }) => {
+const NewPromoterForm: FC<props> = ({ promoters, users }) => {
     const [form] = useForm()
     const fetchPost = usePost()
     const fetchPatch = usePatch()
@@ -32,6 +33,8 @@ const NewPromoterForm: FC<props> = ({ promoters }) => {
             if (currentPromoter) {
                 setCurrentPromoter(currentPromoter)
                 form.setFieldsValue({
+                    //@ts-ignore
+                    user: currentPromoter.user._id,
                     phone: currentPromoter.personal_info.phone,
                     mobile_phone: currentPromoter.personal_info.mobile_phone,
                     rfc: currentPromoter.personal_info.rfc,
@@ -55,6 +58,7 @@ const NewPromoterForm: FC<props> = ({ promoters }) => {
             endpoint: 'promoters',
             formData: {
                 new_promoter: {
+                    user: data.user,
                     personal_info: {
                         phone: data.phone,
                         mobile_phone: data.mobile_phone,
@@ -111,21 +115,17 @@ const NewPromoterForm: FC<props> = ({ promoters }) => {
                 <label>Usuario</label>
                 <InputContainer
                     type='select'
-                    valueContainerName='role'
+                    valueContainerName='user'
                     placeholder='Usuario'
                     style={{ fontSize: '1rem' }}
                     required={true}
                     disabled={currentPromoter ? true : false}
-                    optionsList={[
-                        {
-                            value: 'promoter',
-                            label: 'Promotor'
-                        },
-                        {
-                            value: 'admin',
-                            label: 'Administrador'
+                    optionsList={users.map((el: IUserSchema) => {
+                        return{
+                            label: el.email,
+                            value: el._id
                         }
-                    ]}
+                    })}
                 />
                 <Row gutter={[20, 20]}>
                     <Col xs={24} md={24} lg={24} xl={12}>

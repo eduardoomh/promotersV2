@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
 import { Resend } from 'resend'
 import { EmailTemplate } from '@/components/email/EmailComponent'
+import { chamosa_mail } from '@/components/email/chamosa_mail'
 
 const resend = new Resend('re_ALvhXBZJ_ABRwANWRg5Tw6XzuNNjydDe8')
 
@@ -39,8 +40,8 @@ export async function POST(req: NextRequest) {
         await resend.emails.send({
             from: 'onboarding@resend.dev',
             to: email,
-            subject: 'Cambio de contraseña',
-            react: EmailTemplate({email, url: forgetUrl})
+            subject: 'Cambio de contraseña - Chamosa Promotores',
+            html: chamosa_mail(forgetUrl)
         })
 
         return NextResponse.json({

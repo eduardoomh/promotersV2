@@ -8,12 +8,18 @@ import NewPromoterForm from "@/components/forms/promoters/NewPromoterForm";
 
 async function loadPromoters() {
   const promoters = await fetch(`${process.env.API_URL}/api/promoters`, { cache: 'no-store' })
-  const response = await promoters.json()
-  return response.promoters
+  const users = await fetch(`${process.env.API_URL}/api/users?role=promoter`, { cache: 'no-store' })
+  const promoters_response = await promoters.json()
+  const users_response = await users.json()
+
+  return {
+    promoters: promoters_response.promoters,
+    users: users_response.users
+  }
 }
 
 export default async function Promotores() {
-  const promoters: any = await loadPromoters()
+  const { promoters, users }: any = await loadPromoters()
 
   return (
     <main className={styles.main}>
@@ -22,7 +28,7 @@ export default async function Promotores() {
       <section className={styles.content}>
         <div className={styles.form}>
           <FormCard>
-            <NewPromoterForm promoters={promoters} />
+            <NewPromoterForm promoters={promoters} users={users} />
           </FormCard>
         </div>
         <div className={styles.table_content}>

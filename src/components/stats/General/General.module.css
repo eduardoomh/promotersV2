@@ -1,0 +1,37 @@
+.general{
+    background-color: white;
+    border-radius: 6px;
+    padding: 1rem;
+}
+.general h2{
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: 0.5rem 0 1.5rem 0;
+}
+
+.stats_section{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem 0;
+    gap: 2rem;
+}
+
+.stats_section strong{
+    font-size: 1.4rem;
+}
+
+.stats_item{
+    display: grid;
+    place-items: center;
+}
+
+@media (max-width: 999px){
+    .general h2{
+        display: flex;
+        justify-content: center;
+    }
+    .stats_section{
+        flex-direction: column;
+    }
+}

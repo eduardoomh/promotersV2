@@ -18,6 +18,7 @@ export interface IPromoterSchema extends Document {
     }
     balance: number;
     type: 'promoter'
+    made_by?:  string | IUserSchema;
     created_at: string;
     updated_at: string;
 }
@@ -75,6 +76,11 @@ const promoterSchema = new mongoose.Schema({
             message: '{VALUE} no es un estado permitido'
         },
         default: 'pending'
+    },
+    made_by: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        rquired: false
     },
     created_at: {
         type: Schema.Types.Date,

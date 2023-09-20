@@ -6,6 +6,7 @@ export interface IUserSchema extends Document {
     email: string;
     password: string
     role: 'promoter' | 'admin';
+    made_by?:  string | IUserSchema;
     created_at: number;
     updated_at: number;
 }
@@ -29,6 +30,11 @@ const userSchema = new Schema({
             message: '{VALUE} no es un rol permitido'
         },
         default: 'promoter'
+    },
+    made_by: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        rquired: false
     },
     created_at: {
         type: Schema.Types.Date,

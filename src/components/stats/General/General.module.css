@@ -2,6 +2,7 @@
     background-color: white;
     border-radius: 6px;
     padding: 1rem;
+    animation: fadeIn 3s ease;
 }
 .general h2{
     font-size: 1.3rem;
@@ -33,5 +34,14 @@
     }
     .stats_section{
         flex-direction: column;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }

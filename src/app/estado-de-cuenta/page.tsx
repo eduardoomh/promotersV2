@@ -1,10 +1,11 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
+import TitleCard from "@/components/TitleCard/TitleCard";
 
 export default function AccountState() {
     return (
       <main>
         <EndLoading />
-        <h1>Estado de cuenta</h1>
+        <TitleCard>ESTADOS DE CUENTA</TitleCard>
       </main>
   
     )

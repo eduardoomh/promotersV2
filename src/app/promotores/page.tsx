@@ -5,6 +5,7 @@ import TitleCard from "@/components/TitleCard/TitleCard";
 import PromotersTable from "@/components/tables/promoters/PromotersTable";
 import DeleteConfirm from "@/components/PageModals/promoters/DeleteConfirm";
 import NewPromoterForm from "@/components/forms/promoters/NewPromoterForm";
+import PromotersTableMob from "@/components/tables/promoters/PromotersTableMob";
 
 async function loadPromoters() {
   const promoters = await fetch(`${process.env.API_URL}/api/promoters`, { cache: 'no-store' })
@@ -36,7 +37,7 @@ export default async function Promotores() {
             <PromotersTable promoters={promoters} />
           </div>
           <div className={styles.table_mobile}>
-            <PromotersTable promoters={promoters} />
+            <PromotersTableMob promoters={promoters} />
           </div>
 
         </div>

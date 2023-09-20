@@ -86,16 +86,16 @@ const Menu: FC<props> = ({ expand = true }) => {
                 </li>
                 <li>
                     <Link 
-                        href='/promociones' 
-                        className={isActive('/promociones') ? styles.active_menu : ''}
-                        disabled={pathname === '/promociones'}
+                        href='/cupones' 
+                        className={isActive('/cupones') ? styles.active_menu : ''}
+                        disabled={pathname === '/cupones'}
                         >
                         <span
                             style={expand ? {} : inlineStyles.no_expand}>
                             <SolutionOutlined />
                         </span>
                         {expand ? <span className={styles.menu_text}>
-                            Promociones
+                            Cupones
                         </span> : ''
                         }
                     </Link>

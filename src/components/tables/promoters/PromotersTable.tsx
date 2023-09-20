@@ -1,12 +1,13 @@
 'use client'
-import React, { FC, useState } from 'react';
-import { Table, Tooltip, Input } from 'antd';
+import React, { FC, useContext, useState } from 'react';
+import { Table, Tooltip, Input, Avatar } from 'antd';
 import { IUserSchema } from '@/models/User';
 import moment from 'moment';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
 import { IPromoterSchema } from '@/models/Promoter';
+import { GlobalContext } from '@/context/globalContext';
 
 interface Props {
     promoters: IPromoterSchema[];
@@ -14,6 +15,7 @@ interface Props {
 
 const PromotersTable: FC<Props> = ({ promoters }) => {
     const router = useRouter()
+    const { startLoading } = useContext(GlobalContext)
     const [searchText, setSearchText] = useState<string>('');
 
     const handleDeleteClick = (_id: string, email: string) => {
@@ -24,11 +26,28 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
         router.push(`/promotores?actualizar=${_id}`);
     };
 
+    const handleDetailClick = (_id: string) => {
+        startLoading()
+        router.push(`/promotores/${_id}`);
+    };
+
 
     const columns = [
         {
             title: 'Nombre',
-            render: (data: any) => <a>{data.user?.name}</a>,
+            render: (data: any) => <a>
+                <Avatar
+                    style={{
+                        backgroundColor: '#EC1912',
+                        verticalAlign: 'middle',
+                        marginRight: '0.4rem'
+                    }}
+                    size='default' 
+                    gap={1}>
+                    {data.user.name[0].toUpperCase()}
+                </Avatar>
+                {data.user.name}
+                </a>,
         },
         {
             title: 'Email',
@@ -49,10 +68,10 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
             render: (data: IPromoterSchema) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Actualizar promotor'}>
-                        <EditOutlined 
+                        <EditOutlined
                             onClick={() => handleUpdateClick(data._id)}
-                            style={{ cursor: 'pointer' }} 
-                            />
+                            style={{ cursor: 'pointer' }}
+                        />
                     </Tooltip>
                     <Tooltip placement="top" title={'Eliminar promotor'}>
                         <DeleteOutlined
@@ -61,13 +80,16 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
                             style={{ color: '#ec1912', cursor: 'pointer' }}
                         />
                     </Tooltip>
+                    <Tooltip placement="top" title={'Ver más información'}>
+                        <ArrowRightOutlined onClick={() => handleDetailClick(data._id)} />
+                    </Tooltip>
                 </div>
             ),
         },
     ];
 
     const filteredPromoters = promoters.filter((promoter) =>
-        Object.values(promoter)
+        Object.values(promoter.user)
             .join(' ')
             .toLowerCase()
             .includes(searchText.toLowerCase())
@@ -77,12 +99,12 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
         <>
             <SubitleSearch title='PROMOTORES REGISTRADOS'>
                 <Input.Search
-                placeholder="Buscar"
-                onChange={(e) => setSearchText(e.target.value)}
-                style={{  width: 300, fontSize: '1rem'}}
-            />
+                    placeholder="Buscar"
+                    onChange={(e) => setSearchText(e.target.value)}
+                    style={{ width: 300, fontSize: '1rem' }}
+                />
             </SubitleSearch>
-            <br/>
+            <br />
             {/* @ts-ignore */}
             <Table columns={columns} dataSource={filteredPromoters} />
         </>

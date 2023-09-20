@@ -1,6 +1,6 @@
 'use client'
 import React, { FC, useContext, useState } from 'react';
-import { Table, Tooltip, Input } from 'antd';
+import { Table, Tooltip, Input, Avatar } from 'antd';
 import { IUserSchema } from '@/models/User';
 import { ArrowRightOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -34,7 +34,19 @@ const PromotersTableMob: FC<Props> = ({ promoters }) => {
     const columns = [
         {
             title: 'Nombre',
-            render: (data: any) => <a>{data.user?.name}</a>,
+            render: (data: any) => <a>
+                <Avatar
+                    style={{
+                        backgroundColor: '#EC1912',
+                        verticalAlign: 'middle',
+                        marginRight: '0.4rem'
+                    }}
+                    size='small' 
+                    gap={1}>
+                    {data.user.name[0].toUpperCase()}
+                </Avatar>
+                {data.user.name}
+                </a>,
         },
         {
             title: 'Acciones',
@@ -72,7 +84,7 @@ const PromotersTableMob: FC<Props> = ({ promoters }) => {
     ];
 
     const filteredPromoters = promoters.filter((promoter) =>
-        Object.values(promoter)
+        Object.values(promoter.user)
             .join(' ')
             .toLowerCase()
             .includes(searchText.toLowerCase())
@@ -84,7 +96,7 @@ const PromotersTableMob: FC<Props> = ({ promoters }) => {
                 <Input.Search
                     placeholder="Buscar"
                     onChange={(e) => setSearchText(e.target.value)}
-                    style={{ width: 300, fontSize: '1rem', marginLeft: '1rem' }}
+                    style={{ width: 250, fontSize: '1rem', marginLeft: '1rem' }}
                 />
             </SubitleSearch>
             <br />

@@ -1,10 +1,11 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
+import TitleCard from "@/components/TitleCard/TitleCard";
 
-export default function Promociones() {
+export default function Cupones() {
     return (
       <main>
         <EndLoading />
-        <h1>Promociones</h1>
+        <TitleCard>CUPONES</TitleCard>
       </main>
   
     )

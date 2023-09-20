@@ -1,10 +1,11 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
+import TitleCard from "@/components/TitleCard/TitleCard";
 
 export default function Pagos() {
     return (
       <main>
           <EndLoading />
-        <h1>Pagos</h1>
+          <TitleCard>PAGOS</TitleCard>
       </main>
   
     )

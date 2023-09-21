@@ -1,5 +1,4 @@
 import TitleCard from '@/components/TitleCard/TitleCard'
-import styles from './home.module.css'
 import EndLoading from '@/components/EndLoading/EndLoading'
 import General from '@/components/stats/General/General'
 import ProfileCard from '@/components/stats/ProfileCard/ProfileCard'
@@ -7,7 +6,6 @@ import { Col, Row } from 'antd'
 import PromotersCard from '@/components/stats/Promoters/Promoters'
 import UsersCard from '@/components/stats/users/UsersCard'
 import CouponsCard from '@/components/stats/coupons/CouponsCard'
-import { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 
 async function loadStats(cookie: any) {

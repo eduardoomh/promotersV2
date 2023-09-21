@@ -13,6 +13,10 @@
     background-color: white;
 }
 
+.info p:nth-child(even) {
+    background-color: #FAFAFA; /* Cambia este color al que desees */
+  }
+
 .info h2{
     display: flex;
     justify-content: center;
@@ -22,6 +26,20 @@
     padding: 1rem 0.5rem;
   }
 
-.info p:nth-child(even) {
-    background-color: #FAFAFA; /* Cambia este color al que desees */
+  .card{
+    background-color: white;
+    padding: 1rem;
+  }
+
+  .card h2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .card section{
+    padding: 1rem;
   }

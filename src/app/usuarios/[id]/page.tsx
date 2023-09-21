@@ -3,6 +3,7 @@ import EndLoading from "@/components/EndLoading/EndLoading"
 import RoleTag from "@/components/utils/RoleTag"
 import DateItem from "@/components/utils/DateItem"
 import TitleReturn from "@/components/utils/TitleBack"
+import AvatarUser from '@/components/stats/AvatarUser/AvatarUser'
 
 async function loadUser({ params }: any) {
     const users = await fetch(`${process.env.API_URL}/api/users/${params.id}`, { cache: 'no-store' })
@@ -16,10 +17,14 @@ export default async function Usuario(props: any) {
         <>
             <EndLoading />
             <TitleReturn path='/usuarios'>
-                {user.name.split(' ')[0]}
+                <AvatarUser
+                    letter={user?.name[0].toUpperCase()}
+                    size='large'>{user.name}
+                </AvatarUser>
             </TitleReturn>
             <br />
             <article className={styles.info}>
+                <h2>DATOS PERSONALES</h2>
                 <p><strong>Nombre completo</strong></p>
                 <p>{user.name}</p>
                 <p><strong>Correo</strong></p>

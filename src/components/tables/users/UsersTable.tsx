@@ -1,12 +1,13 @@
 'use client'
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { Table, Tooltip, Input } from 'antd';
 import { IUserSchema } from '@/models/User';
 import RoleTag from '../../utils/RoleTag';
 import moment from 'moment';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
+import { GlobalContext } from '@/context/globalContext';
 
 interface Props {
     users: IUserSchema[];
@@ -14,6 +15,7 @@ interface Props {
 
 const UsersTable: FC<Props> = ({ users }) => {
     const router = useRouter()
+    const { startLoading } = useContext(GlobalContext)
     const [searchText, setSearchText] = useState<string>('');
 
     const handleDeleteClick = (_id: string, email: string) => {
@@ -24,6 +26,10 @@ const UsersTable: FC<Props> = ({ users }) => {
         router.push(`/usuarios?actualizar=${_id}`);
     };
 
+    const handleDetailClick = (_id: string) => {
+        startLoading()
+        router.push(`/usuarios/${_id}`);
+    };
 
     const columns = [
         {
@@ -54,10 +60,10 @@ const UsersTable: FC<Props> = ({ users }) => {
             render: (data: IUserSchema) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Actualizar usuario'}>
-                        <EditOutlined 
+                        <EditOutlined
                             onClick={() => handleUpdateClick(data._id)}
-                            style={{ cursor: 'pointer' }} 
-                            />
+                            style={{ cursor: 'pointer' }}
+                        />
                     </Tooltip>
                     <Tooltip placement="top" title={'Eliminar usuario'}>
                         <DeleteOutlined
@@ -66,6 +72,10 @@ const UsersTable: FC<Props> = ({ users }) => {
                             style={{ color: '#ec1912', cursor: 'pointer' }}
                         />
                     </Tooltip>
+                    <Tooltip placement="top" title={'Ver más información'}>
+                        <ArrowRightOutlined onClick={() => handleDetailClick(data._id)} />
+                    </Tooltip>
+
                 </div>
             ),
         },
@@ -82,12 +92,12 @@ const UsersTable: FC<Props> = ({ users }) => {
         <>
             <SubitleSearch title='USUARIOS REGISTRADOS'>
                 <Input.Search
-                placeholder="Buscar"
-                onChange={(e) => setSearchText(e.target.value)}
-                style={{  width: 300, fontSize: '1rem'}}
-            />
+                    placeholder="Buscar"
+                    onChange={(e) => setSearchText(e.target.value)}
+                    style={{ width: 300, fontSize: '1rem' }}
+                />
             </SubitleSearch>
-            <br/>
+            <br />
             {/* @ts-ignore */}
             <Table columns={columns} dataSource={filteredUsers} />
         </>

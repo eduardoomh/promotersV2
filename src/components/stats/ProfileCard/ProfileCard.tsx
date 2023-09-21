@@ -4,6 +4,7 @@ import styles from './ProfileCard.module.css'
 import AvatarUser from '../AvatarUser/AvatarUser'
 import { IUserSchema } from '@/models/User'
 import { FC } from 'react'
+import RoleTag from '@/components/utils/RoleTag'
 
 interface props {
     user: IUserSchema;
@@ -20,10 +21,10 @@ const ProfileCard: FC<props> = ({ user, stats }) => {
                 </div>
                 <div className={styles.profile_content}>
                     <p><strong>Correo:</strong> {user.email}</p>
-                    <p><strong>Rol:</strong> {user.role}</p>
                     <p><strong>Alta de usuarios:</strong>{stats.usuariosCount}</p>
                     <p><strong>Alta de promotores:</strong>{stats.promotoresCount}</p>
                     <p><strong>Alta de cupones:</strong> 0</p>
+                    <p><RoleTag role={user.role} /></p>
                 </div>
 
             </section>

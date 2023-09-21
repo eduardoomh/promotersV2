@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
 
-        const findPromoter = await Promoter.findOne({ _id: id })
+        const findPromoter = await Promoter.findOne({ _id: id }).populate('user')
 
         if (!findPromoter) {
             return NextResponse.json({

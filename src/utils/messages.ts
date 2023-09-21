@@ -13,6 +13,7 @@ export const messages = {
     success: {
         userCreated: 'Usuario creado correctamente',
         userLogged: 'Que bueno verte de vuelta',
+        promoterCreated: 'El promotor se ha guardado',
         emailSent: 'El correo ha sido enviado correctamente',
         passwordChanged: 'Contraseña actualizada correctamente',
         authorized: 'Acceso autorizado',

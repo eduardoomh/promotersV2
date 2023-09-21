@@ -5,13 +5,28 @@ import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { cookies } from 'next/headers'
 
 export async function POST(req: NextRequest) {
     try {
         await connectMongoDB()
         const body = await req.json()
         const {name, email, password, confirm_password, role} = body
-        console.log(body)
+
+        const cookieStore = cookies()
+        const auth_cookie: any = cookieStore.get('auth_cookie')
+
+        if (!auth_cookie.value) {
+            return NextResponse.json({
+                message: messages.error.notAuthorized
+            }, {
+                status: 400
+            })
+        }
+
+        const IsTokenValid = jwt.verify(auth_cookie.value, 'secretch@mos@')
+        //@ts-ignore
+        const { data } = IsTokenValid
 
         //validar campos enviados
         if(!email || !password || !confirm_password){
@@ -53,6 +68,7 @@ export async function POST(req: NextRequest) {
             name,
             email,
             role,
+            made_by: data._id,
             password: hashedPassword
         })
 
@@ -60,11 +76,6 @@ export async function POST(req: NextRequest) {
         const {password: passw, ...rest} = newUser._doc
 
         await newUser.save()
-
-        const token = jwt.sign({data: rest}, 'secretch@mos@',{
-            expiresIn: 86400
-        })
-
         const response =  NextResponse.json({
             newUser: rest,
             message: messages.success.userCreated
@@ -72,12 +83,6 @@ export async function POST(req: NextRequest) {
             status: 200
         })
 
-        response.cookies.set('auth_cookie', token,{
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 86400,
-            path: '/'
-        })
 
         return response
 

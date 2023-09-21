@@ -88,6 +88,8 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
         },
     ];
 
+    
+
     const filteredPromoters = promoters.filter((promoter) =>
         Object.values(promoter.user)
             .join(' ')

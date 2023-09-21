@@ -7,8 +7,27 @@ import { Col, Row } from 'antd'
 import PromotersCard from '@/components/stats/Promoters/Promoters'
 import UsersCard from '@/components/stats/users/UsersCard'
 import CouponsCard from '@/components/stats/coupons/CouponsCard'
+import { NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
+ 
+/*
+async function loadStats(cookie: any) {
+  const token = cookie.value
+  const allStats = await fetch(`${process.env.API_URL}/api/stats`, { 
+    cache: 'no-store',
+    headers:{
+      'token': token
+    }
+  })
+  const users_response = await allStats.json()
 
-export default function Home() {
+  return users_response
+}
+*/
+export default function Home(request: NextRequest) {
+  const cookieStore = cookies()
+  console.log(cookieStore.get('auth_cookie'), "cokiedas")
+  //const data = loadStats(cookieStore.get('auth_cookie'))
   return (
     <>
       <EndLoading />

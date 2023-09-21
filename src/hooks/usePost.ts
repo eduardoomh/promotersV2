@@ -1,4 +1,5 @@
 import { GlobalContext } from '@/context/globalContext'
+import { getToken } from '@/libs/token'
 import { notification } from 'antd'
 import axios, { AxiosRequestConfig } from 'axios'
 import { useRouter } from 'next/navigation'
@@ -15,7 +16,7 @@ interface AuthFetchProps {
 export function usePost() {
     const { startLoading, endLoading } = useContext(GlobalContext)
     const router = useRouter()
-
+    
     const fetchPost = async ({
         endpoint,
         formData,

@@ -59,7 +59,8 @@ export async function PATCH(req: NextRequest) {
         const updatePromoter = await Promoter.updateOne({ _id: id }, {
             $set: {
                 personal_info,
-                address
+                address,
+                updated_at: Date.now()
             }
         })
 

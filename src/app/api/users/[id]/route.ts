@@ -60,7 +60,8 @@ export async function PATCH(req: NextRequest) {
         const updateUser = await User.updateOne({ _id: id }, {
             $set: {
                 name,
-                email
+                email,
+                updated_at: Date.now()
             }
         })
 
@@ -127,10 +128,10 @@ export async function DELETE(req: NextRequest) {
         }
 
         //check if exist promoter with the same id
-        const deletePromoter = await Promoter.findOne({ _id: id })
+        const deletePromoter = await Promoter.findOne({ user: id })
 
         if (deletePromoter) {
-            const deletePromoter = await Promoter.deleteOne({ _id: id })
+            const deletePromoter = await Promoter.deleteOne({ user: id })
             if (deletePromoter.deletedCount < 1) {
                 return NextResponse.json({
                     message: 'El promotor no pudo ser eliminado',

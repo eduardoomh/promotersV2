@@ -84,7 +84,7 @@ const PromotersTableMob: FC<Props> = ({ promoters }) => {
     ];
 
     const filteredPromoters = promoters.filter((promoter) =>
-        Object.values(promoter.user)
+        Object?.values(promoter.user)
             .join(' ')
             .toLowerCase()
             .includes(searchText.toLowerCase())

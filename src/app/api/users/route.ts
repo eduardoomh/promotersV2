@@ -91,23 +91,11 @@ export async function POST(req: NextRequest) {
         const { password: passw, ...rest } = newUser._doc
 
         await newUser.save()
-
-        const token = jwt.sign({ data: rest }, 'secretch@mos@', {
-            expiresIn: 86400
-        })
-
         const response = NextResponse.json({
             newUser: rest,
             message: messages.success.userCreated
         }, {
             status: 200
-        })
-
-        response.cookies.set('auth_cookie', token, {
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 86400,
-            path: '/'
         })
 
         return response

@@ -1,8 +1,7 @@
 import { connectMongoDB } from '@/libs/mongodb'
-import Promoter, { IPromoterSchema } from '@/models/Promoter'
 import User from '@/models/User'
 import { messages } from '@/utils/messages'
-import { cookies, headers } from 'next/headers'
+import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 const mongoose = require('mongoose');
 import jwt from 'jsonwebtoken'

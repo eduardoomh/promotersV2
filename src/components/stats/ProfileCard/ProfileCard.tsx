@@ -2,22 +2,28 @@
 import { Avatar } from 'antd'
 import styles from './ProfileCard.module.css'
 import AvatarUser from '../AvatarUser/AvatarUser'
+import { IUserSchema } from '@/models/User'
+import { FC } from 'react'
 
-const ProfileCard = () => {
+interface props {
+    user: IUserSchema;
+    stats: any;
+}
+const ProfileCard: FC<props> = ({ user, stats }) => {
     return (
         <article className={styles.general}>
             <h2>PERFIL DEL USUARIO</h2>
             <hr />
             <section className={styles.profile_section}>
                 <div className={styles.profile_title}>
-                    <AvatarUser letter={'J'} size='default'>Joselu hernandez</AvatarUser>
+                    <AvatarUser letter={user?.name[0].toUpperCase()} size='default'>{user.name}</AvatarUser>
                 </div>
                 <div className={styles.profile_content}>
-                        <p><strong>Correo:</strong> joselu@joselu.com</p>
-                        <p><strong>Rol:</strong> Administrador</p>
-                        <p><strong>Alta de usuarios:</strong> 5</p>
-                        <p><strong>Alta de promotores:</strong> 4</p>
-                        <p><strong>Alta de cupones:</strong> 0</p>
+                    <p><strong>Correo:</strong> {user.email}</p>
+                    <p><strong>Rol:</strong> {user.role}</p>
+                    <p><strong>Alta de usuarios:</strong>{stats.usuariosCount}</p>
+                    <p><strong>Alta de promotores:</strong>{stats.promotoresCount}</p>
+                    <p><strong>Alta de cupones:</strong> 0</p>
                 </div>
 
             </section>

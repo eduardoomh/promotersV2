@@ -1,6 +1,10 @@
+import { FC } from 'react'
 import styles from './General.module.css'
 
-const General = () =>{
+interface props{
+    stats: any
+}
+const General:FC<props> = ({stats}) =>{
     return(
     <article className={styles.general}>
         <h2>RESÚMEN GENERAL</h2>
@@ -8,23 +12,23 @@ const General = () =>{
         <section className={styles.stats_section}>
             <div className={styles.stats_item}>
                 <h3>USUARIOS ACTIVOS</h3>
-                <strong>5</strong>
+                <strong>{stats.totalUsers}</strong>
             </div>
             <div className={styles.stats_item}>
                 <h3>PROMOTORES ACTIVOS</h3>
-                <strong>5</strong>
+                <strong>{stats.promoter_count}</strong>
             </div>
             <div className={styles.stats_item}> 
                 <h3>ADMINISTRADORES</h3>
-                <strong>5</strong>
+                <strong>{stats.admin_count}</strong>
             </div>
             <div className={styles.stats_item}>
                 <h3>CUPONES ACTIVOS</h3>
-                <strong>5</strong>
+                <strong>0</strong>
             </div>
             <div className={styles.stats_item}>
                 <h3>PAGOS REALIZADOS</h3>
-                <strong>5</strong>
+                <strong>0</strong>
             </div>
         </section>
     </article>

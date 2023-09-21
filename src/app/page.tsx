@@ -10,7 +10,6 @@ import CouponsCard from '@/components/stats/coupons/CouponsCard'
 import { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 
-/*
 async function loadStats(cookie: any) {
   const token = cookie.value
   const allStats = await fetch(`${process.env.API_URL}/api/stats`, { 
@@ -23,28 +22,29 @@ async function loadStats(cookie: any) {
 
   return users_response
 }
-*/
-export default function Home() {
+
+export default async function Home() {
   const cookieStore = cookies()
   console.log(cookieStore.get('auth_cookie'), "cokiedas")
-  //const data = loadStats(cookieStore.get('auth_cookie'))
+  const data = await loadStats(cookieStore.get('auth_cookie'))
+  console.log(data, "respp")
   return (
     <>
       <EndLoading />
       <TitleCard>BIENVENIDO DE VUELTA</TitleCard>
       <br/>
-      <General />
+      <General stats={data.stats[0]} />
       <br/>
       <Row gutter={[20,20]}>
         <Col xs={24} sm={24} md={24} xl={12}> 
-          <ProfileCard />
+          <ProfileCard user={data.user[0]} stats={data.user[0]}/>
           <br/>
           <CouponsCard />
         </Col>
         <Col xs={24} sm={24} md={24} xl={12}> 
-          <PromotersCard />
+          <PromotersCard data={data.recent[0].recentUsers} />
           <br/>
-          <UsersCard />
+          <UsersCard data={data.recent[0].recentPromoters} />
         </Col>
       </Row>
      

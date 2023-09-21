@@ -1,4 +1,4 @@
-import CouponItem from '../CouponItem/CouponItem'
+import EmptyImg from '@/components/EmptyImg/EmptyImg'
 import styles from './CouponsCard.module.css'
 
 const CouponsCard = () =>{
@@ -8,9 +8,7 @@ const CouponsCard = () =>{
         <hr />
         <section className={styles.profile_section}>
             <div className={styles.profile_content}>
-                <CouponItem><strong>CHAFIME123 -</strong> 120MXN</CouponItem>
-                <CouponItem><strong>TESTCOUPION23 -</strong> 120MXN</CouponItem>
-                <CouponItem><strong>TEDTCOUPON3342 -</strong> 15%</CouponItem>
+                <EmptyImg />
             </div>
 
         </section>

@@ -9,7 +9,7 @@ import UsersCard from '@/components/stats/users/UsersCard'
 import CouponsCard from '@/components/stats/coupons/CouponsCard'
 import { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
- 
+
 /*
 async function loadStats(cookie: any) {
   const token = cookie.value
@@ -24,7 +24,7 @@ async function loadStats(cookie: any) {
   return users_response
 }
 */
-export default function Home(request: NextRequest) {
+export default function Home() {
   const cookieStore = cookies()
   console.log(cookieStore.get('auth_cookie'), "cokiedas")
   //const data = loadStats(cookieStore.get('auth_cookie'))

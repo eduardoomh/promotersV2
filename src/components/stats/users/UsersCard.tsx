@@ -18,6 +18,7 @@ const UsersCard: FC<props> = ({ data }) => {
                     {
                         data.length > 0 ? data.map((el: IUserSchema) => (
                             <AvatarUser
+                                key={el._id}
                                 letter={el.name[0].toUpperCase()}
                                 size='default'>{el.name} - <strong>{el.email}</strong>
                             </AvatarUser>

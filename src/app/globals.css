@@ -19,3 +19,38 @@
   .custom-min-height {
     min-height: 500px;
   }
+
+  .ant-select-selector{
+    height: 3rem !important;
+    font-size: 1rem;
+  }
+
+  .ant-select-selection-search{
+    height: 3rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .ant-select-selection-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 2.7rem;
+    height: 2.7rem !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 1rem;
+  }
+
+.ant-select-selection-placeholder{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 2.5rem;
+  font-size: 1rem;
+  font-weight: normal;
+}

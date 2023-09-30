@@ -70,6 +70,7 @@ export async function POST(req: NextRequest) {
                 postal_code: address.postal_code,
                 district: address.district,
                 state: address.state,
+                city: address.city,
                 country: address.country,
             },
             balance: 0,

@@ -14,6 +14,7 @@ export interface IPromoterSchema extends Document {
         postal_code: string;
         district: string;
         state: string;
+        city: string;
         country: string;
     }
     balance: number;
@@ -57,6 +58,10 @@ const promoterSchema = new mongoose.Schema({
             required: true,
         },
         state: {
+            type: String,
+            required: true,
+        },
+        city: {
             type: String,
             required: true,
         },

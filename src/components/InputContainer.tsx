@@ -388,8 +388,48 @@ const InputContainer: React.FC<inputContainerProps> = (inputProps) => {
                 ? inputProps.optionsList.map((value, index) => {
                   if (value.label && value.value) {
                     return (
-                      <Option key={index} value={value.value}>
-                        {value.label}
+                      <Option
+                        key={index}
+                        value={value.value}
+                        style={{ 
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {
+                          value?.icon && (
+                            <span role="img" style={{marginTop: '0.2rem'}}>
+                              <img
+                                src={value.icon}
+                                alt={'d'}
+                                style={{
+                                  width: '15px',
+                                  height: '15px',
+                                  marginRight: '5px',
+                                  marginBottom: '2.5px'
+                                }}
+                              />
+                              {
+                                value.secondIcon && (
+                                  <img
+                                    src={value.secondIcon}
+                                    alt={'d'}
+                                    style={{
+                                      width: '15px',
+                                      height: '15px',
+                                      marginRight: '5px',
+                                      marginBottom: '2.5px'
+                                    }}
+                                  />
+                                )
+                              }
+                            </span>
+                          )
+                        }
+                           {value.label}
+                        
+                       
                       </Option>
                     )
                   }

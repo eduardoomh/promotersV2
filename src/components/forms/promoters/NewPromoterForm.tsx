@@ -10,6 +10,9 @@ import { IUserSchema } from '@/models/User'
 import { usePatch } from '@/hooks/usePatch'
 import styles from '../users/NewUser.module.css'
 import { IPromoterSchema } from '@/models/Promoter'
+import MXIcon from '@/../public/countries/MX.svg'
+import { MexicoStates, USAstates } from '@/utils/constants'
+import { set } from 'mongoose'
 
 interface props {
     promoters: IPromoterSchema[];
@@ -21,6 +24,7 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
     const fetchPatch = usePatch()
     const router = useRouter()
     const searchParams = useSearchParams()
+    const [states, setStates] = useState(MexicoStates)
     const [currentPromoter, setCurrentPromoter] = useState<IPromoterSchema | null>(null)
 
     const finishEditMode = () => {
@@ -51,6 +55,10 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
             form.resetFields()
         }
     }, [searchParams])
+
+    useEffect(() => {
+
+    }, [])
 
 
     const onSubmit = async (data: any) => {
@@ -123,7 +131,7 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
                     filter={(input: any, option: any) => (option?.label.toLowerCase() ?? '').includes(input)}
                     disabled={currentPromoter ? true : false}
                     optionsList={users.map((el: IUserSchema) => {
-                        return{
+                        return {
                             label: el.email,
                             value: el._id
                         }
@@ -190,25 +198,53 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
                     required={true}
                     style={{ padding: '0.6rem', fontSize: '1rem' }}
                 />
+                <label>Ciudad</label>
+                <InputContainer
+                    type='text'
+                    valueContainerName='city'
+                    placeholder='ciudad'
+                    required={true}
+                    style={{ padding: '0.6rem', fontSize: '1rem' }}
+                />
                 <Row gutter={[20, 20]}>
                     <Col xs={24} md={24} lg={24} xl={12}>
                         <label>Estado</label>
                         <InputContainer
-                            type='text'
+                            type='select'
                             valueContainerName='state'
                             placeholder='Estado'
+                            style={{ fontSize: '1rem' }}
                             required={true}
-                            style={{ padding: '0.6rem', fontSize: '1rem' }}
+                            optionsList={states}
                         />
                     </Col>
                     <Col xs={24} lg={24} xl={12}>
                         <label>País</label>
                         <InputContainer
-                            type='text'
+                            type='select'
                             valueContainerName='country'
                             placeholder='País'
+                            style={{ fontSize: '1rem' }}
                             required={true}
-                            style={{ padding: '0.6rem', fontSize: '1rem' }}
+                            onChange={(c) => {
+                                if (c === 'MX') {
+                                    setStates(MexicoStates)
+                                } else {
+                                    setStates(USAstates)
+                                }
+                            }}
+                            optionsList={[
+                                {
+                                    value: 'MX',
+                                    label: 'México',
+                                    icon: '/countries/MX.svg'
+                                },
+                                {
+                                    value: 'US',
+                                    label: 'Estados Unidos',
+                                    icon: '/countries/US.svg'
+                                }
+                            ]}
                         />
                     </Col>
                 </Row>

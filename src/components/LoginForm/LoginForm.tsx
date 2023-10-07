@@ -14,12 +14,13 @@ const LoginForm = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [isLoadingForgot, setIsLoadingForgot] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const {updateUserData, startLoading, endLoading} = useContext(GlobalContext)
+    const { updateUserData, startLoading, endLoading } = useContext(GlobalContext)
     const [form] = useForm()
     const router = useRouter()
 
     const onSubmit = async () => {
-        try {startLoading()
+        try {
+            startLoading()
             const email = form.getFieldValue('email')
             const password = form.getFieldValue('password')
             setIsLoading(true)
@@ -37,9 +38,14 @@ const LoginForm = () => {
             notification.success({
                 message: result.data.messages
             })
-            
+
             updateUserData(result.data.userLogged)
-            router.push('/')
+            if (result.data.userLogged.role === 'promoter') {
+                router.push('/perfil')
+            } else {
+                router.push('/')
+            }
+
             setIsLoading(false)
         } catch (error: any) {
             console.log(error)

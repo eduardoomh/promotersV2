@@ -19,8 +19,8 @@ margin-top: 1rem;
 }
 
 .active_menu{
-    color: var(--chamosa-red) !important;
-    background-color: white !important;
+    color: #186cba !important;
+    background-color: #f3f2f2 !important;
     cursor: pointer;
     z-index: 999;
 }

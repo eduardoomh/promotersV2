@@ -4,16 +4,34 @@ import { validateEmail } from '@/utils/isValidEmail'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import bcryptjs from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 
 export async function GET(req: NextRequest) {
     try {
         await connectMongoDB()
         const { searchParams } = new URL(req.url)
         const filtered_role = searchParams.get('role')
-        let users
+        let users: any
         if(filtered_role !== null){
-            users = await User.find({role: filtered_role}).sort({ $natural: -1 })
+            users = await User.aggregate([
+                {
+                  $match: { role: filtered_role } // Filtra por rol especificado
+                },
+                {
+                  $lookup: {
+                    from: 'promoters', // Nombre de la colección 'promoter'
+                    localField: '_id', // Campo local (de la colección 'User')
+                    foreignField: 'user', // Campo en la colección 'promoter' que se relaciona con '_id'
+                    as: 'promoters' // Alias para los resultados de la consulta
+                  }
+                },
+                {
+                  $match: {
+                    'promoters': { $size: 0 } // Filtra los usuarios sin promotores relacionados
+                  }
+                }
+              ]);
+              console.log(users, "los usedes")
+            
         }else{
             users = await User.find().sort({ $natural: -1 })
         }

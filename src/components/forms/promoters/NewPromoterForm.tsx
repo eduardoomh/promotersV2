@@ -46,6 +46,7 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
                     postal_code: currentPromoter.address.postal_code,
                     district: currentPromoter.address.district,
                     state: currentPromoter.address.state,
+                    city: currentPromoter.address.city,
                     country: currentPromoter.address.country,
                 })
             }
@@ -77,6 +78,7 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
                         postal_code: data.postal_code,
                         district: data.district,
                         state: data.state,
+                        city: data.city,
                         country: data.country
                     },
                 }
@@ -102,6 +104,7 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
                         postal_code: data.postal_code,
                         district: data.district,
                         state: data.state,
+                        city: data.city,
                         country: data.country
                     },
                 }
@@ -190,22 +193,29 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
                     required={true}
                     style={{ padding: '0.6rem', fontSize: '1rem' }}
                 />
-                <label>Colonia</label>
-                <InputContainer
-                    type='text'
-                    valueContainerName='district'
-                    placeholder='Colonia/fraccionamiento'
-                    required={true}
-                    style={{ padding: '0.6rem', fontSize: '1rem' }}
-                />
-                <label>Ciudad</label>
-                <InputContainer
-                    type='text'
-                    valueContainerName='city'
-                    placeholder='ciudad'
-                    required={true}
-                    style={{ padding: '0.6rem', fontSize: '1rem' }}
-                />
+
+                <Row gutter={[20, 20]}>
+                    <Col xs={24} lg={24} xl={12}>
+                        <label>Colonia</label>
+                        <InputContainer
+                            type='text'
+                            valueContainerName='district'
+                            placeholder='Colonia/fraccionamiento'
+                            required={true}
+                            style={{ padding: '0.6rem', fontSize: '1rem' }}
+                        />
+                    </Col>
+                    <Col xs={24} lg={24} xl={12}>
+                        <label>Ciudad</label>
+                        <InputContainer
+                            type='text'
+                            valueContainerName='city'
+                            placeholder='ciudad'
+                            required={true}
+                            style={{ padding: '0.6rem', fontSize: '1rem' }}
+                        />
+                    </Col>
+                </Row>
                 <Row gutter={[20, 20]}>
                     <Col xs={24} md={24} lg={24} xl={12}>
                         <label>Estado</label>

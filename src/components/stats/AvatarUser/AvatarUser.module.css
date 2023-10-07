@@ -9,3 +9,16 @@
     justify-content: flex-start;
     align-items: center;
 }
+
+.text_vertical{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.content_vertical{
+    display: flex;
+    flex-direction: column;
+}

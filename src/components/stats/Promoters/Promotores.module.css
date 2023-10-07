@@ -1,6 +1,6 @@
 .general{
     background-color: white;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 1rem;
     animation: fadeIn 3s ease;
 }
@@ -40,4 +40,16 @@
     justify-content: center;
     background-color: red;
     align-items: center;
+}
+
+@media (max-width: 600px){
+    .general{
+        padding: 0;
+    }
+
+    .profile_section{
+        padding: 0;
+    }
+    
+    
 }

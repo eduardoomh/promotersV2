@@ -1,8 +1,9 @@
 .general{
     background-color: white;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 1rem;
     animation: fadeIn 3s ease;
+    border: 1px solid #E6E6E6;
 }
 .general h2{
     font-size: 1.3rem;
@@ -12,7 +13,7 @@
 
 .stats_section{
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: center;
     padding: 1rem 0;
     gap: 2rem;
@@ -23,8 +24,37 @@
 }
 
 .stats_item{
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 8.2rem;
+    width: 12rem;
+    background-color: #F3F2F2;
+    padding: 0.8rem;
+    border-radius: 12px;
+    border: 1px solid #E6E6E6;
+    transition: background-color 0.2s ease-in;
+}
+
+.stats_item:hover{
+    background-color: #F8F8F8;
+}
+
+.stats_item h3{
+    font-size: 1rem;
+    text-align: center;
+}
+
+.stats_item strong{
+    font-size: 1.8rem;
+    text-align: center;
+    color: #176CBA;
+}
+
+.icon{
+    font-size: 28px;
+    margin-bottom: 0.4rem;
 }
 
 @media (max-width: 999px){
@@ -33,7 +63,30 @@
         justify-content: center;
     }
     .stats_section{
+        min-width: 100%;
+        width: 100%;
         flex-direction: column;
+        gap: 3rem;
+    }
+
+    .stats_item{
+        min-width: 100%;
+        width: 100%;
+    }
+}
+
+@media (max-width: 1300px){
+    .stats_section{
+        gap: 0.5rem;
+    }
+
+    .stats_item{
+        width: 9rem;
+        padding: 0.5rem;
+    }
+
+    .stats_item h3{
+        font-size: 0.8rem;
     }
 }
 

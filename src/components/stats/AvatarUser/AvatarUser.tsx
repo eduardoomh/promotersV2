@@ -4,19 +4,22 @@ import styles from './AvatarUser.module.css'
 
 interface props{
     letter: string;
-    size?: 'default' | 'large' | 'small'
+    size?: 'default' | 'large' | 'small',
+    align?: 'vertical' | 'horizontal';
+    color?: string;
 }
-const AvatarUser:FC<PropsWithChildren<props>> = ({children, letter, size = 'default'}) => {
+const AvatarUser:FC<PropsWithChildren<props>> = ({
+    children, letter, size = 'default', align = 'horizontal', color}) => {
     return (
-        <section className={styles.content}>
+        <section className={`${styles.content} ${align === 'horizontal' ? '' : styles.content_vertical}`}>
             <Avatar
                 style={{
-                    backgroundColor: '#EC1912',
+                    backgroundColor: color ? color : '#EC1912',
                     verticalAlign: 'middle',
                     marginRight: '0.4rem'
                 }}
                 size={size}
-           >{letter}</Avatar> <p className={styles.text}>{children}</p>
+           >{letter}</Avatar> <p className={align === 'vertical' ? styles.text_vertical :styles.text}>{children}</p>
         </section>
     )
 }

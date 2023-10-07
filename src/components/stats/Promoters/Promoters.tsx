@@ -4,24 +4,29 @@ import AvatarUser from '../AvatarUser/AvatarUser'
 import { FC } from 'react'
 import { IUserSchema } from '@/models/User'
 import EmptyImg from '@/components/EmptyImg/EmptyImg'
+import AvatarItem from '../AvatarItem/AvatarItem'
 
 interface props {
     data: IUserSchema[]
+    user?: boolean
 }
-const PromotersCard: FC<props> = ({ data }) => {
+const PromotersCard: FC<props> = ({ data, user = false }) => {
     return (
         <article className={styles.general}>
-            <h2>PROMOTORES RECIENTES</h2>
+            <h2>{user ? 'USUARIOS' : 'PROMOTORES'} RECIENTES</h2>
             <hr />
             <section className={styles.profile_section}>
                 <div className={styles.profile_content}>
                     {
                         data.length > 0 ? data.map((el: IUserSchema) => (
-                            <AvatarUser
+                            <AvatarItem
                                 key={el._id}
                                 letter={el.name[0].toUpperCase()}
-                                size='default'>{el.name} - <strong>{el.email}</strong>
-                            </AvatarUser>
+                                user={el}
+                                size='large'
+                                color={user ? '#0D709A' :'#528FA9'}
+                                url={user ? `/usuarios/${el._id}` : `/promotores/${el._id}`}
+                                />
                         )) : <EmptyImg />
                     }
                 </div>

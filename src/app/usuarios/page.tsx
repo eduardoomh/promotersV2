@@ -19,8 +19,10 @@ export default async function Usuarios() {
   return (
     <main className={styles.main}>
       <EndLoading />
-      <TitleCard>USUARIOS</TitleCard>
       <section className={styles.content}>
+        <div className={styles.content_title}>
+          <TitleCard>USUARIOS</TitleCard>
+        </div>
         <div className={styles.form}>
           <FormCard>
             <NewUserForm users={users} />

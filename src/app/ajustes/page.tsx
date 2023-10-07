@@ -22,8 +22,10 @@ export default async function Ajustes() {
   return (
     <main>
       <EndLoading />
-      <TitleCard>AJUSTES</TitleCard>
       <section className={styles.content}>
+         <div className={styles.content_title}>
+          <TitleCard>AJUSTES</TitleCard>
+        </div>
         <div className={styles.form}>
           <FormCard>
             <NewSettingForm settings={settings} />

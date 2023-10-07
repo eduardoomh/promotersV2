@@ -15,7 +15,6 @@ async function loadPromoters() {
   const users = await fetch(`${process.env.API_URL}/api/users?role=promoter`, { cache: 'no-store' })
   const promoters_response = await promoters.json()
   const users_response = await users.json()
-  console.log(promoters_response, "los prmotores")
 
   return {
     promoters: promoters_response.promoters,
@@ -29,8 +28,10 @@ export default async function Promotores() {
   return (
     <main className={styles.main}>
       <EndLoading />
-      <TitleCard>PROMOTORES</TitleCard>
       <section className={styles.content}>
+      <div className={styles.content_title}>
+          <TitleCard>PROMOTORES</TitleCard>
+        </div>
         <div className={styles.form}>
           <FormCard>
             <NewPromoterForm promoters={promoters} users={users} />

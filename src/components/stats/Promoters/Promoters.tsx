@@ -25,7 +25,8 @@ const PromotersCard: FC<props> = ({ data, user = false }) => {
                                 user={el}
                                 size='large'
                                 color={user ? '#0D709A' :'#528FA9'}
-                                url={user ? `/usuarios/${el._id}` : `/promotores/${el._id}`}
+                                //@ts-ignore
+                                url={user ? `/usuarios/${el._id}` : `/promotores/${el?.promotersData[0]._id}`}
                                 />
                         )) : <EmptyImg />
                     }

@@ -41,7 +41,7 @@ export default async function Home() {
         <Col xs={24} sm={24} md={24} xl={12}>
           <PromotersCard data={data.recent[0].recentUsers} user={true} />
           <br />
-          <PromotersCard data={data.recent[0].recentPromoters} />
+          <PromotersCard data={data.recent_promoters} />
         </Col>
       </Row>
     </>

@@ -1,10 +1,8 @@
-import TitleCard from '@/components/TitleCard/TitleCard'
 import EndLoading from '@/components/EndLoading/EndLoading'
 import General from '@/components/stats/General/General'
 import ProfileCard from '@/components/stats/ProfileCard/ProfileCard'
 import { Col, Row } from 'antd'
 import PromotersCard from '@/components/stats/Promoters/Promoters'
-import UsersCard from '@/components/stats/users/UsersCard'
 import CouponsCard from '@/components/stats/coupons/CouponsCard'
 import { cookies } from 'next/headers'
 import styles from  './home.module.css'
@@ -19,6 +17,8 @@ async function loadStats(cookie: any) {
   })
   const users_response = await allStats.json()
 
+  console.log("user esponse", JSON.stringify(users_response))
+
   return users_response
 }
 
@@ -26,7 +26,6 @@ export default async function Home() {
   const cookieStore = cookies()
   const data = await loadStats(cookieStore.get('auth_cookie'))
 
-  console.log(data.recent[0].recentUsers, data.recent[0].recentPromoters, "data")
   return (
     <>
       <EndLoading />

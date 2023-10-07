@@ -122,11 +122,38 @@ export async function GET(req: NextRequest){
               }
             }
           ])
+
+          const recentPromoters = await User.aggregate([
+            {
+              $match: { role: "promoter" }
+            },
+            {
+              $lookup: {
+                from: "promoters", // Nombre de la colección de promoters
+                localField: "_id", // Campo local para hacer la coincidencia con "user" en promoters
+                foreignField: "user", // Campo en la colección de promoters que coincide con "_id" en User
+                as: "promotersData" // Nombre del campo donde se almacenarán los resultados del lookup
+              }
+            },
+            {
+              $match: {
+                promotersData: { $ne: [] } // Filtra los usuarios cuyos promotersData no estén vacíos
+              }
+            },
+            {
+              $sort: { createdAt: -1 } // Ordena los usuarios por createdAt en orden descendente
+            },
+            {
+              $limit: 3 // Limita los resultados a los últimos 3 usuarios
+            }
+          ]);
+          
           
         const response =  NextResponse.json({
             user: currentUser,
             stats: allStats,
             recent: recentUsers,
+            recent_promoters: recentPromoters,
             messages: messages.success.userCreated
         },{
             status: 200

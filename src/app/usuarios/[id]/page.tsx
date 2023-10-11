@@ -12,6 +12,8 @@ import AvatarItem from '@/components/stats/AvatarItem/AvatarItem'
 import UsersTable from '@/components/tables/users/UsersTable'
 import UsersMadeBy from '@/components/tables/users/madeBy/UsersMadeBy'
 import PromotersMadeBy from '@/components/tables/promoters/madeBy/PromotersMadeBy'
+import UsersMobileMadeBy from '@/components/tables/users/madeBy/UsersMobileMadeBy'
+import PromotersMobileMadeBy from '@/components/tables/promoters/madeBy/PromotersMobileMadeBy'
 
 async function loadUser({ params }: any) {
     const users = await fetch(`${process.env.API_URL}/api/users/${params.id}`, { cache: 'no-store' })
@@ -106,7 +108,13 @@ export default async function Usuario(props: any) {
                                             madeBy && madeBy.users && madeBy.users.length > 0 ? (
                                                 <>
                                                 <br/>
-                                                <UsersMadeBy users={madeBy.users} />
+                                                <div className={styles.mobile_users_table}>
+                                                     <UsersMobileMadeBy users={madeBy.users} />
+                                                </div>
+                                                <div className={styles.web_users_table}>
+                                                     <UsersMadeBy users={madeBy.users} />
+                                                </div>
+                                               
                                                 </>
                                             ) : (
                                                 <section>
@@ -126,7 +134,13 @@ export default async function Usuario(props: any) {
                                             madeBy && madeBy.promoters && madeBy.promoters.length > 0 ? (
                                                 <>
                                                 <br/>
-                                                <PromotersMadeBy promoters={madeBy.promoters} />
+                                                <div className={styles.mobile_users_table}>
+                                                    <PromotersMobileMadeBy promoters={madeBy.promoters} />
+                                                </div>
+                                                <div className={styles.web_users_table}>
+                                                    <PromotersMadeBy promoters={madeBy.promoters} />
+                                                </div>
+                                               
                                                 </>
                                             ) : (
                                                 <section>

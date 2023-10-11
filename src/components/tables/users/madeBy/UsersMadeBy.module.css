@@ -1,0 +1,16 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.section{
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #E6E6E6;
+}
+.section:hover{
+    cursor: pointer;
+    background-color: #F8F8F8;
+    
+}

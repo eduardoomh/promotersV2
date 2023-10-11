@@ -2,7 +2,7 @@
 import React, { FC, useContext, useState } from 'react';
 import { Table, Tooltip, Avatar } from 'antd';
 import moment from 'moment';
-import { ArrowRightOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, RightCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { IPromoterSchema } from '@/models/Promoter';
 import { GlobalContext } from '@/context/globalContext';
@@ -33,19 +33,20 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
     const columns = [
         {
             title: 'Nombre',
-            render: (data: any) => <a>
-                <Avatar
-                    style={{
-                        backgroundColor: '#EC1912',
-                        verticalAlign: 'middle',
-                        marginRight: '0.4rem'
-                    }}
-                    size='default'
-                    gap={1}>
-                    {data.user.name[0].toUpperCase()}
-                </Avatar>
-                {data.user.name}
-            </a>,
+            render: (data: any) =>
+                <>
+                    <Avatar
+                        style={{
+                            backgroundColor: '#176CBA',
+                            verticalAlign: 'middle',
+                            marginRight: '0.4rem'
+                        }}
+                        size='default'
+                        gap={1}>
+                        {data.user.name[0].toUpperCase()}
+                    </Avatar>
+                    {data.user.name}
+                </>
         },
         {
             title: 'Email',
@@ -66,7 +67,7 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
             render: (data: IPromoterSchema) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <ArrowRightOutlined onClick={() => handleDetailClick(data._id)} />
+                        <RightCircleOutlined style={{ fontSize: '2rem', color: '#0D709A' }} onClick={() => handleDetailClick(data._id)} />
                     </Tooltip>
                 </div>
             ),

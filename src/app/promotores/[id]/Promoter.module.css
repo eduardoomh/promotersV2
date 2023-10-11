@@ -59,6 +59,9 @@
 }
 
 .card_item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   margin: 2rem 0;
   padding: 1rem 0.5rem;
   border-radius: 6px;
@@ -69,4 +72,27 @@
 .card_item .text{
   display: flex;
   gap: 0.5rem;
+}
+
+.web_users_table{
+  display: block;
+}
+
+.mobile_users_table{
+  display: none;
+}
+
+@media (max-width: 999px) {
+  .web_users_table{
+    display: none;
+  }
+
+  .mobile_users_table{
+    display: block;
+  }
+
+  .card_content{
+    padding: 0.4rem;
+  }
+  
 }

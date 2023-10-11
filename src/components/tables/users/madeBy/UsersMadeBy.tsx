@@ -1,10 +1,10 @@
 'use client'
 import React, { FC, useContext, useState } from 'react';
-import { Table, Tooltip } from 'antd';
+import { Avatar, Table, Tooltip } from 'antd';
 import { IUserSchema } from '@/models/User';
 import RoleTag from '../../../utils/RoleTag';
 import moment from 'moment';
-import { ArrowRightOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, DeleteOutlined, EditOutlined, RightCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { GlobalContext } from '@/context/globalContext';
 
@@ -35,7 +35,20 @@ const UsersTable: FC<Props> = ({ users }) => {
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (text: string) => <a>{text}</a>,
+            render: (data: any) =>
+            <>
+                <Avatar
+                    style={{
+                        backgroundColor: '#0D709A',
+                        verticalAlign: 'middle',
+                        marginRight: '0.4rem'
+                    }}
+                    size='default'
+                    gap={1}>
+                    {data[0].toUpperCase()}
+                </Avatar>
+                {data}
+            </>
         },
         {
             title: 'Email',
@@ -59,7 +72,7 @@ const UsersTable: FC<Props> = ({ users }) => {
             render: (data: IUserSchema) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <ArrowRightOutlined onClick={() => handleDetailClick(data._id)} />
+                        <RightCircleOutlined style={{fontSize: '2rem', color: '#0D709A'}} onClick={() => handleDetailClick(data._id)} />
                     </Tooltip>
 
                 </div>

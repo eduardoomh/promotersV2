@@ -68,6 +68,9 @@
   .card {
     background-color: white;
     padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: scroll;
   }
   
   .card h2 {
@@ -88,6 +91,9 @@
   }
   
   .card_item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
     margin: 2rem 0;
     padding: 1rem 0.5rem;
     border-radius: 6px;
@@ -100,4 +106,27 @@
     max-width: 100%;
     gap: 0.5rem;
     overflow: auto;
+  }
+
+  .web_users_table{
+    display: block;
+  }
+
+  .mobile_users_table{
+    display: none;
+  }
+
+  @media (max-width: 999px) {
+    .web_users_table{
+      display: none;
+    }
+  
+    .mobile_users_table{
+      display: block;
+    }
+
+    .card_content{
+      padding: 0.4rem;
+    }
+    
   }

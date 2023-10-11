@@ -9,16 +9,19 @@ import { Col, Row } from 'antd'
 import EmptyImg from '@/components/EmptyImg/EmptyImg'
 import CustomAlert from '@/components/CustomAlert/CustomAlert'
 import AvatarItem from '@/components/stats/AvatarItem/AvatarItem'
+import UsersTable from '@/components/tables/users/UsersTable'
+import UsersMadeBy from '@/components/tables/users/madeBy/UsersMadeBy'
+import PromotersMadeBy from '@/components/tables/promoters/madeBy/PromotersMadeBy'
 
 async function loadUser({ params }: any) {
     const users = await fetch(`${process.env.API_URL}/api/users/${params.id}`, { cache: 'no-store' })
     const response = await users.json()
     console.log(response)
-    return { user: response.user, promoter: response.promoter }
+    return { user: response.user, promoter: response.promoter, madeBy: response.user_stats }
 }
 
 export default async function Usuario(props: any) {
-    const { user, promoter } = await loadUser(props)
+    const { user, promoter, madeBy } = await loadUser(props)
     return (
         <main className={styles.main}>
             <EndLoading />
@@ -94,29 +97,47 @@ export default async function Usuario(props: any) {
                 {
                     user.role === 'admin' ? (
                         <>
-                            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <CustomCard>
                                     <article className={styles.card}>
                                         <h2>USUARIOS</h2>
                                         <hr />
-                                        <section>
-                                            <EmptyImg />
-                                        </section>
+                                        {
+                                            madeBy && madeBy.users && madeBy.users.length > 0 ? (
+                                                <>
+                                                <br/>
+                                                <UsersMadeBy users={madeBy.users} />
+                                                </>
+                                            ) : (
+                                                <section>
+                                                    <EmptyImg />
+                                                </section>
+                                            )
+                                        }
                                     </article>
                                 </CustomCard>
                             </Col>
-                            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <CustomCard>
                                     <article className={styles.card}>
                                         <h2>PROMOTORES</h2>
                                         <hr />
-                                        <section>
-                                            <EmptyImg />
-                                        </section>
+                                        {
+                                            madeBy && madeBy.promoters && madeBy.promoters.length > 0 ? (
+                                                <>
+                                                <br/>
+                                                <PromotersMadeBy promoters={madeBy.promoters} />
+                                                </>
+                                            ) : (
+                                                <section>
+                                                    <EmptyImg />
+                                                </section>
+                                            )
+                                        }
                                     </article>
                                 </CustomCard>
                             </Col>
-                            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <CustomCard>
                                     <article className={styles.card}>
                                         <h2>CUPONES</h2>
@@ -127,7 +148,7 @@ export default async function Usuario(props: any) {
                                     </article>
                                 </CustomCard>
                             </Col>
-                            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <CustomCard>
                                     <article className={styles.card}>
                                         <h2>TRANSACCIONES</h2>
@@ -175,7 +196,7 @@ export default async function Usuario(props: any) {
 
             </Row>
             <br />
-        </main>
+        </main >
 
     )
 }

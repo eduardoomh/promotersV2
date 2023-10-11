@@ -7,9 +7,10 @@ interface props{
     size?: 'default' | 'large' | 'small',
     align?: 'vertical' | 'horizontal';
     color?: string;
+    font?: 'default' | 'big';
 }
 const AvatarUser:FC<PropsWithChildren<props>> = ({
-    children, letter, size = 'default', align = 'horizontal', color}) => {
+    children, letter, size = 'default', align = 'horizontal', color, font = 'default'}) => {
     return (
         <section className={`${styles.content} ${align === 'horizontal' ? '' : styles.content_vertical}`}>
             <Avatar
@@ -19,7 +20,15 @@ const AvatarUser:FC<PropsWithChildren<props>> = ({
                     marginRight: '0.4rem'
                 }}
                 size={size}
-           >{letter}</Avatar> <p className={align === 'vertical' ? styles.text_vertical :styles.text}>{children}</p>
+           >{letter}
+           </Avatar> 
+           <p 
+            className={align === 'vertical' ? styles.text_vertical :styles.text}
+            style={
+                font === 'big' ? {fontSize: '1.3rem', fontWeight: '600'} : {}}
+            >
+            {children}
+            </p>
         </section>
     )
 }

@@ -1,12 +1,14 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from './Promoter.module.css'
-import TitleCard from "@/components/TitleCard/TitleCard";
-import TitleReturn from "@/components/utils/TitleBack";
 import { Col, Row } from "antd";
 import RoleTag from "@/components/utils/RoleTag";
 import DateItem from "@/components/utils/DateItem";
 import AvatarUser from "@/components/stats/AvatarUser/AvatarUser";
 import EmptyImg from "@/components/EmptyImg/EmptyImg";
+import CustomCard from "@/components/CustomCard/CustomCard";
+import Subtitle from "@/components/Subtitle/Subtitle";
+import { MexicoStates, USAstates } from "@/utils/constants";
+import { getStateCountry } from "@/utils/countries";
 
 async function loadPromoter({ params }: any) {
     const promoters = await fetch(`${process.env.API_URL}/api/promoters/${params.id}`, { cache: 'no-store' })
@@ -24,83 +26,143 @@ export default async function Promotorer(props: any) {
     return (
         <main className={styles.main}>
             <EndLoading />
-            <TitleReturn path='/promotores'>
+            <CustomCard>
                 <AvatarUser
                     letter={promoter.user?.name[0].toUpperCase()}
-                    size='large'>{promoter.user.name}
+                    size='large'
+                    font='big'
+                    color="#176CBA"
+                >{promoter.user.name}
+
                 </AvatarUser>
-            </TitleReturn>
+            </CustomCard>
             <br />
-            <br />
-            <Row gutter={[25, 25]}>
-                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                    <article className={styles.info}>
-                        <h2>DATOS PERSONALES</h2>
-                        <p><strong>Correo</strong></p>
-                        <p>{promoter.user.email}</p>
-                        <p><strong>Tipo de usuario</strong></p>
-                        <p><RoleTag role={promoter.user.role} /></p>
-                        <p><strong>Teléfono de casa</strong></p>
-                        <p>{promoter.personal_info.phone}</p>
-                        <p><strong>Teléfono celular</strong></p>
-                        <p>{promoter.personal_info.mobile_phone}</p>
-                        <p><strong>RFC</strong></p>
-                        <p>{promoter.personal_info.rfc}</p>
-                    </article>
-                </Col>
-                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                    <article className={styles.info}>
-                        <h2>DIRECCIÓN</h2>
-                        <p><strong>Calle</strong></p>
-                        <p>{promoter.address.street}</p>
-                        <p><strong>Colonia</strong></p>
-                        <p>{promoter.address.district}</p>
-                        <p><strong>Estado</strong></p>
-                        <p>{promoter.address.state}</p>
-                        <p><strong>Código postal</strong></p>
-                        <p>{promoter.address.postal_code}</p>
-                        <p><strong>País</strong></p>
-                        <p>{promoter.address.country}</p>
-                    </article>
-                </Col>
-            </Row>
-            <br />
+            <CustomCard>
+                <div className={styles.card_content}>
+                    <Subtitle>DATOS PERSONALES</Subtitle>
+                    <hr />
+                    <Row gutter={[25, 25]}>
+                        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                            <article className={styles.card_container}>
+                                <div className={styles.card_item}>
+                                    <p><strong>Correo</strong></p>
+                                    <p>{promoter.user.email}</p>
+                                </div>
+                                <div className={styles.card_item}>
+                                    <p><strong>Tipo de usuario</strong></p>
+                                    <p><RoleTag role={promoter.user.role} /></p>
+                                </div>
+
+                                <div className={styles.card_item}>
+                                    <p><strong>Teléfono de casa</strong></p>
+                                    <p>{promoter.personal_info.phone}</p>
+                                </div>
+                            </article>
+                        </Col>
+                        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                            <article className={styles.card_container}>
+                                <div className={styles.card_item}>
+                                    <p><strong>Teléfono celular</strong></p>
+                                    <p>{promoter.personal_info.mobile_phone}</p>
+                                </div>
+
+                                <div className={styles.card_item}>
+                                    <p><strong>RFC</strong></p>
+                                    <p>{promoter.personal_info.rfc}</p>
+                                </div>
+                                <div className={styles.card_item}>
+                                    <p><strong>Última modificación</strong></p>
+                                    <p><DateItem date={promoter.user.updated_at} /></p>
+                                </div>
+                            </article>
+                        </Col>
+                        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                            <article className={styles.card_container}>
+                                <div className={styles.card_item}>
+                                    <p><strong>Saldo Abonado</strong></p>
+                                    <p>0</p>
+                                </div>
+                                <div className={styles.card_item}>
+                                    <p><strong>Fecha de creación</strong></p>
+                                    <p><DateItem date={promoter.user.created_at} /></p>
+                                </div>
+                            </article>
+                        </Col>
+                    </Row>
+                    <Subtitle>DIRECCIÓN</Subtitle>
+                    <hr />
+                    <Row gutter={[25, 25]}>
+                        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                            <article className={styles.card_container}>
+                                <div className={styles.card_item}>
+                                    <p><strong>Calle</strong></p>
+                                    <p>{promoter.address.street}</p>
+                                </div>
+                                <div className={styles.card_item}>
+                                    <p><strong>Colonia</strong></p>
+                                    <p>{promoter.address.district}</p>
+                                </div>
+                            </article>
+                        </Col>
+                        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                            <article className={styles.card_container}>
+
+                                <div className={styles.card_item}>
+                                    <p><strong>Código postal</strong></p>
+                                    <p>{promoter.address.postal_code}</p>
+
+                                </div>
+                                <div className={styles.card_item}>
+                                    <p><strong>País</strong></p>
+                                    <p className={styles.text}>
+                                        <img src="/countries/MX.svg" width={16} height={16} />
+                                        {promoter.address.country === 'US' ? 'Estados Unidos' : 'México'}
+                                    </p>
+                                </div>
+                            </article>
+                        </Col>
+                        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                            <article className={styles.card_container}>
+                                <div className={styles.card_item}>
+                                    <p><strong>Ciudad</strong></p>
+                                    <p>{promoter.address.city}</p>
+                                </div>
+                                <div className={styles.card_item}>
+                                    <p><strong>Estado</strong></p>
+                                    <p>{getStateCountry(promoter.address.state, promoter.address.country)}</p>
+                                </div>
+
+                            </article>
+                        </Col>
+                    </Row>
+                </div>
+            </CustomCard>
             <br />
             <Row gutter={[20, 20]}>
-                <Col span={24}>
-                    <article className={styles.info}>
-                        <h2>DATOS ADICIONALES</h2>
-                        <p><strong>Saldo Abonado</strong></p>
-                        <p>0</p>
-                        <p><strong>Última modificación</strong></p>
-                        <p><DateItem date={promoter.user.updated_at} /></p>
-                        <p><strong>Fecha de creación</strong></p>
-                        <p><DateItem date={promoter.user.created_at} /></p>
-                    </article>
+                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                    <CustomCard>
+                        <article className={styles.card}>
+                            <h2>PAGOS</h2>
+                            <hr />
+                            <section>
+                                <EmptyImg />
+                            </section>
+                        </article>
+                    </CustomCard>
+                </Col>
+                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                    <CustomCard>
+                        <article className={styles.card}>
+                            <h2>ESTADO DE CUENTA</h2>
+                            <hr />
+                            <section>
+                                <EmptyImg />
+                            </section>
+                        </article>
+                    </CustomCard>
                 </Col>
             </Row>
             <br />
-            <Row gutter={[20, 20]}>
-                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                    <article className={styles.card}>
-                        <h2>PAGOS</h2>
-                        <hr />
-                        <section>
-                            <EmptyImg />
-                        </section>
-                    </article>
-                </Col>
-                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                    <article className={styles.card}>
-                        <h2>ESTADO DE CUENTA</h2>
-                        <hr />
-                        <section>
-                            <EmptyImg />
-                        </section>
-                    </article>
-                </Col>
-            </Row>
-            <br/>
         </main>
 
     )

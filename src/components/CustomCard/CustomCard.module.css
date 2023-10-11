@@ -1,0 +1,7 @@
+.card{
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    animation: fadeIn 3s ease;
+    border: 1px solid #E6E6E6;
+}

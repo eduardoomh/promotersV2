@@ -10,7 +10,8 @@ export async function GET(req: NextRequest) {
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/users/')[1]
 
-        const findUser = await  User.findOne({_id: id})
+        const findUser = await User.findOne({_id: id})
+        let existPromoter = undefined;
 
         if(!findUser){
             return NextResponse.json({
@@ -19,12 +20,18 @@ export async function GET(req: NextRequest) {
                 status: 500
             })
         }
+
+        if(findUser.role === 'promoter'){
+            existPromoter = await Promoter.findOne({user: findUser._id})
+        }
+        
         //@ts-ignore
         const {password, ...rest} = findUser._doc
 
         const response = NextResponse.json({
             message: 'Usuario encontrado',
-            user: rest
+            user: rest,
+            promoter: existPromoter
         }, {
             status: 200
         })

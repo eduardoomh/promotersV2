@@ -6,6 +6,7 @@ import UsersTableMob from "@/components/tables/users/UsersTableMob";
 import NewUserForm from "@/components/forms/users/NewUserForm";
 import FormCard from "@/components/FomCard/FormCard";
 import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
+import ActionsModal from "@/components/PageModals/actions/ActionsModal";
 
 async function loadUsers() {
   const users = await fetch(`${process.env.API_URL}/api/users`,{ cache: 'no-store' })
@@ -39,6 +40,7 @@ export default async function Usuarios() {
         </div>
       </section>
       <DeleteConfirm />
+      <ActionsModal />
     </main>
 
   )

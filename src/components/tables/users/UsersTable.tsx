@@ -4,7 +4,7 @@ import { Table, Tooltip, Input } from 'antd';
 import { IUserSchema } from '@/models/User';
 import RoleTag from '../../utils/RoleTag';
 import moment from 'moment';
-import { ArrowRightOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, DeleteOutlined, EditOutlined, InfoCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
 import { GlobalContext } from '@/context/globalContext';
@@ -30,6 +30,10 @@ const UsersTable: FC<Props> = ({ users }) => {
     const handleDetailClick = (_id: string) => {
         startLoading()
         router.push(`/usuarios/${_id}`);
+    };
+
+    const handleActionClick = (_id: string, email: string) => {
+        router.push(`/usuarios?action=${_id}&correo=${email}`);
     };
 
     const columns = [
@@ -60,21 +64,10 @@ const UsersTable: FC<Props> = ({ users }) => {
             title: 'Acciones',
             render: (data: IUserSchema) => (
                 <div className='flex gap-3'>
-                    <Tooltip placement="top" title={'Actualizar usuario'}>
-                        <EditOutlined
-                            onClick={() => handleUpdateClick(data._id)}
-                            style={{ cursor: 'pointer' }}
-                        />
-                    </Tooltip>
-                    <Tooltip placement="top" title={'Eliminar usuario'}>
-                        <DeleteOutlined
-                            //@ts-ignore
-                            onClick={() => handleDeleteClick(data._id, data.email)}
-                            style={{ color: '#ec1912', cursor: 'pointer' }}
-                        />
-                    </Tooltip>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <ArrowRightOutlined onClick={() => handleDetailClick(data._id)} />
+                    <InfoCircleOutlined 
+                        style={{fontSize: '1.6rem', color: '#0D709A'}} 
+                        onClick={() => handleActionClick(data._id, data.email)} />
                     </Tooltip>
 
                 </div>

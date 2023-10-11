@@ -1,0 +1,28 @@
+.icons_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.icons_item{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 10px;
+    width: 100%;
+    gap: 1rem;
+    border: 2px solid #E4E4E4;
+}
+
+.icons_item p{
+    font-size: 1.2rem;
+}
+
+.icons_item:hover{
+    cursor: pointer;
+    background-color: #f6f4f4;
+}

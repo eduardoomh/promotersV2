@@ -7,7 +7,6 @@ import AvatarUser from "@/components/stats/AvatarUser/AvatarUser";
 import EmptyImg from "@/components/EmptyImg/EmptyImg";
 import CustomCard from "@/components/CustomCard/CustomCard";
 import Subtitle from "@/components/Subtitle/Subtitle";
-import { MexicoStates, USAstates } from "@/utils/constants";
 import { getStateCountry } from "@/utils/countries";
 
 async function loadPromoter({ params }: any) {
@@ -33,7 +32,6 @@ export default async function Promotorer(props: any) {
                     font='big'
                     color="#176CBA"
                 >{promoter.user.name}
-
                 </AvatarUser>
             </CustomCard>
             <br />

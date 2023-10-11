@@ -8,6 +8,7 @@ import { ArrowRightOutlined, DeleteOutlined, EditOutlined } from '@ant-design/ic
 import { useRouter } from 'next/navigation';
 import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
 import { GlobalContext } from '@/context/globalContext';
+import CustomCard from '@/components/CustomCard/CustomCard';
 
 interface Props {
     users: IUserSchema[];
@@ -99,7 +100,10 @@ const UsersTable: FC<Props> = ({ users }) => {
             </SubitleSearch>
             <br />
             {/* @ts-ignore */}
-            <Table columns={columns} dataSource={filteredUsers} />
+            <CustomCard>
+                <Table columns={columns} dataSource={filteredUsers} style={{border: '1px solid #E6E6E6'}} />
+            </CustomCard>
+            
         </>
     );
 };

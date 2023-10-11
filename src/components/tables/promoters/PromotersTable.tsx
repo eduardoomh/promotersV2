@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
 import { IPromoterSchema } from '@/models/Promoter';
 import { GlobalContext } from '@/context/globalContext';
+import CustomCard from '@/components/CustomCard/CustomCard';
 
 interface Props {
     promoters: IPromoterSchema[];
@@ -42,12 +43,12 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
                         verticalAlign: 'middle',
                         marginRight: '0.4rem'
                     }}
-                    size='default' 
+                    size='default'
                     gap={1}>
                     {data.user.name[0].toUpperCase()}
                 </Avatar>
                 {data.user.name}
-                </a>,
+            </a>,
         },
         {
             title: 'Email',
@@ -88,7 +89,7 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
         },
     ];
 
-    
+
 
     const filteredPromoters = promoters.filter((promoter) =>
         Object.values(promoter.user)
@@ -108,7 +109,9 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
             </SubitleSearch>
             <br />
             {/* @ts-ignore */}
-            <Table columns={columns} dataSource={filteredPromoters} />
+            <CustomCard>
+                <Table columns={columns} dataSource={filteredPromoters} style={{ border: '1px solid #E6E6E6' }} />
+            </CustomCard>
         </>
     );
 };

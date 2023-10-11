@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
 
         const findUser = await User.findOne({_id: id})
         let existPromoter = undefined;
+        let userStats = undefined;
 
         if(!findUser){
             return NextResponse.json({
@@ -23,6 +24,15 @@ export async function GET(req: NextRequest) {
 
         if(findUser.role === 'promoter'){
             existPromoter = await Promoter.findOne({user: findUser._id})
+        }else{
+            const madeByUsers = await User.find({made_by: findUser._id})
+            const madeByPromoters = await Promoter.find({made_by: findUser._id}).populate('user')
+
+            userStats = {
+                users: madeByUsers,
+                promoters: madeByPromoters
+            }
+
         }
         
         //@ts-ignore
@@ -31,7 +41,8 @@ export async function GET(req: NextRequest) {
         const response = NextResponse.json({
             message: 'Usuario encontrado',
             user: rest,
-            promoter: existPromoter
+            promoter: existPromoter,
+            user_stats: userStats
         }, {
             status: 200
         })

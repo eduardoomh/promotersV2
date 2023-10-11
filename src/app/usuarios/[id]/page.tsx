@@ -8,15 +8,17 @@ import Subtitle from '@/components/Subtitle/Subtitle'
 import { Col, Row } from 'antd'
 import EmptyImg from '@/components/EmptyImg/EmptyImg'
 import CustomAlert from '@/components/CustomAlert/CustomAlert'
+import AvatarItem from '@/components/stats/AvatarItem/AvatarItem'
 
 async function loadUser({ params }: any) {
     const users = await fetch(`${process.env.API_URL}/api/users/${params.id}`, { cache: 'no-store' })
     const response = await users.json()
-    return response.user
+    console.log(response)
+    return { user: response.user, promoter: response.promoter }
 }
 
 export default async function Usuario(props: any) {
-    const user = await loadUser(props)
+    const { user, promoter } = await loadUser(props)
     return (
         <main className={styles.main}>
             <EndLoading />
@@ -75,7 +77,7 @@ export default async function Usuario(props: any) {
                     </Row>
                     <hr />
                     {
-                        user.role === 'promoter' && (
+                        user.role === 'promoter' && !promoter && (
                             <Row gutter={[20, 20]}>
                                 <Col span={24}>
                                     <CustomAlert title='PERFIL DE PROMOTOR'>
@@ -89,28 +91,88 @@ export default async function Usuario(props: any) {
             </CustomCard>
             <br />
             <Row gutter={[20, 20]}>
-                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                    <CustomCard>
-                        <article className={styles.card}>
-                            <h2>PAGOS</h2>
-                            <hr />
-                            <section>
-                                <EmptyImg />
-                            </section>
-                        </article>
-                    </CustomCard>
-                </Col>
-                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                    <CustomCard>
-                        <article className={styles.card}>
-                            <h2>ESTADO DE CUENTA</h2>
-                            <hr />
-                            <section>
-                                <EmptyImg />
-                            </section>
-                        </article>
-                    </CustomCard>
-                </Col>
+                {
+                    user.role === 'admin' ? (
+                        <>
+                            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                                <CustomCard>
+                                    <article className={styles.card}>
+                                        <h2>USUARIOS</h2>
+                                        <hr />
+                                        <section>
+                                            <EmptyImg />
+                                        </section>
+                                    </article>
+                                </CustomCard>
+                            </Col>
+                            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                                <CustomCard>
+                                    <article className={styles.card}>
+                                        <h2>PROMOTORES</h2>
+                                        <hr />
+                                        <section>
+                                            <EmptyImg />
+                                        </section>
+                                    </article>
+                                </CustomCard>
+                            </Col>
+                            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                                <CustomCard>
+                                    <article className={styles.card}>
+                                        <h2>CUPONES</h2>
+                                        <hr />
+                                        <section>
+                                            <EmptyImg />
+                                        </section>
+                                    </article>
+                                </CustomCard>
+                            </Col>
+                            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                                <CustomCard>
+                                    <article className={styles.card}>
+                                        <h2>TRANSACCIONES</h2>
+                                        <hr />
+                                        <section>
+                                            <EmptyImg />
+                                        </section>
+                                    </article>
+                                </CustomCard>
+                            </Col>
+                        </>
+                    ) : (
+                        <>
+                            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                                <CustomCard>
+                                    <article className={styles.card}>
+                                        <h2>PERFIL PROMOTOR</h2>
+                                        <hr />
+                                        {
+                                            promoter ? (
+                                                <>
+                                                    <br />
+                                                    <AvatarItem
+                                                        key={user._id}
+                                                        letter={user.name[0].toUpperCase()}
+                                                        user={user}
+                                                        size='large'
+                                                        color={'#0D709A'}
+                                                        //@ts-ignore
+                                                        url={`/promotores/${promoter._id}`}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <section>
+                                                    <EmptyImg />
+                                                </section>
+                                            )
+                                        }
+                                    </article>
+                                </CustomCard>
+                            </Col>
+                        </>
+                    )
+                }
+
             </Row>
             <br />
         </main>

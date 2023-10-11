@@ -2,6 +2,8 @@
     padding: 1rem 2rem;
     border-radius: 12px;
     background-color: white;
+    animation: fadeIn 3s ease;
+    border: 1px solid #E6E6E6;
 }
 
 .card h1{

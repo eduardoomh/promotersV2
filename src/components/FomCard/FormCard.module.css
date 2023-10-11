@@ -3,6 +3,7 @@
     padding: 0.8rem 2rem;
     border-radius: 12px;
     animation: fadeIn 1s ease;
+    border: 1px solid #E6E6E6;
 }
 
 .form_card h3{

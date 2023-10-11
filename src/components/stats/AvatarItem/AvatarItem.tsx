@@ -1,3 +1,4 @@
+'use client'
 import { Avatar } from "antd"
 import { FC, PropsWithChildren, useContext } from "react"
 import styles from './AvatarItem.module.css'

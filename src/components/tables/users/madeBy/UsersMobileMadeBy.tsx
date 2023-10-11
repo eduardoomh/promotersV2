@@ -13,17 +13,20 @@ interface Props {
 const UsersMobileMadeBy: FC<Props> = ({ users }) => {
     const router = useRouter()
     const { startLoading } = useContext(GlobalContext)
-    
+
     const handleDetailClick = (_id: string) => {
         startLoading()
         router.push(`/usuarios/${_id}`);
     };
-    
+
     return (
         <ul className={styles.container}>
             {
                 users.map(el => (
-                    <section className={styles.section} onClick={() => handleDetailClick(el._id)}>
+                    <section
+                        key={el._id}
+                        className={styles.section}
+                        onClick={() => handleDetailClick(el._id)}>
                         <Avatar
                             style={{
                                 backgroundColor: '#0D709A',

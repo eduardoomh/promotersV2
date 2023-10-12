@@ -1,14 +1,13 @@
 'use client'
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Table, Tooltip, Input, Avatar } from 'antd';
-import { IUserSchema } from '@/models/User';
 import moment from 'moment';
-import { ArrowRightOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
 import { IPromoterSchema } from '@/models/Promoter';
-import { GlobalContext } from '@/context/globalContext';
 import CustomCard from '@/components/CustomCard/CustomCard';
+import Link from 'next/link';
 
 interface Props {
     promoters: IPromoterSchema[];
@@ -16,39 +15,29 @@ interface Props {
 
 const PromotersTable: FC<Props> = ({ promoters }) => {
     const router = useRouter()
-    const { startLoading } = useContext(GlobalContext)
     const [searchText, setSearchText] = useState<string>('');
 
-    const handleDeleteClick = (_id: string, email: string) => {
-        router.push(`/promotores?eliminar=${_id}&correo=${email}`);
+    const handleActionClick = (_id: string, email: string) => {
+        router.push(`/promotores?action=${_id}&correo=${email}`);
     };
-
-    const handleUpdateClick = (_id: string) => {
-        router.push(`/promotores?actualizar=${_id}`);
-    };
-
-    const handleDetailClick = (_id: string) => {
-        startLoading()
-        router.push(`/promotores/${_id}`);
-    };
-
 
     const columns = [
         {
             title: 'Nombre',
-            render: (data: any) => <a>
-                <Avatar
-                    style={{
-                        backgroundColor: '#EC1912',
-                        verticalAlign: 'middle',
-                        marginRight: '0.4rem'
-                    }}
-                    size='default'
-                    gap={1}>
-                    {data.user.name[0].toUpperCase()}
-                </Avatar>
-                {data.user.name}
-            </a>,
+            render: (data: any) =>
+                <>
+                    <Avatar
+                        style={{
+                            backgroundColor: '#528FA9',
+                            verticalAlign: 'middle',
+                            marginRight: '0.4rem'
+                        }}
+                        size='default'
+                        gap={1}>
+                        {data.user.name[0].toUpperCase()}
+                    </Avatar>
+                    {data.user.name}
+                </>
         },
         {
             title: 'Email',
@@ -66,29 +55,18 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
         },
         {
             title: 'Acciones',
-            render: (data: IPromoterSchema) => (
+            render: (data: any) => (
                 <div className='flex gap-3'>
-                    <Tooltip placement="top" title={'Actualizar promotor'}>
-                        <EditOutlined
-                            onClick={() => handleUpdateClick(data._id)}
-                            style={{ cursor: 'pointer' }}
-                        />
-                    </Tooltip>
-                    <Tooltip placement="top" title={'Eliminar promotor'}>
-                        <DeleteOutlined
-                            //@ts-ignore
-                            onClick={() => handleDeleteClick(data._id, data.user.email)}
-                            style={{ color: '#ec1912', cursor: 'pointer' }}
-                        />
-                    </Tooltip>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <ArrowRightOutlined onClick={() => handleDetailClick(data._id)} />
+                    <InfoCircleOutlined 
+                        style={{fontSize: '1.6rem', color: '#0D709A'}} 
+                        onClick={() => handleActionClick(data._id, data.user?.email)} />
                     </Tooltip>
+
                 </div>
             ),
         },
     ];
-
 
 
     const filteredPromoters = promoters.filter((promoter) =>
@@ -99,7 +77,7 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
     );
 
     return (
-        <>
+            <>
             <SubitleSearch title='PROMOTORES REGISTRADOS'>
                 <Input.Search
                     placeholder="Buscar"
@@ -110,11 +88,27 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
             <br />
             {/* @ts-ignore */}
             <CustomCard>
-                <Table columns={columns} dataSource={filteredPromoters} style={{ border: '1px solid #E6E6E6' }} />
+                <Table columns={columns} dataSource={filteredPromoters} style={{border: '1px solid #E6E6E6'}} />
+                <br/>
+                <Link href='/promotores?crear=true'>
+                    <p style={{
+                        padding: '0.4rem',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        alignItems: 'center',
+                        fontSize: '1.1rem',
+                        backgroundColor: '#fafafa',
+                        border: '1px solid #d0d0d0'
+                    }}>
+                        <PlusCircleOutlined /> Crear nuevo promotor
+                    </p>
+                   
+                </Link>
             </CustomCard>
+            
         </>
     );
 };
 
 export default PromotersTable;
-

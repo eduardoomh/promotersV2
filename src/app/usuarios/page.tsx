@@ -40,8 +40,12 @@ export default async function Usuarios() {
         </div>
       </section>
       <DeleteConfirm />
-      <ActionsModal />
-      < GenericForm users={users} />
+      <ActionsModal type='users' url='/usuarios'/>
+      < GenericForm
+          users={users}
+          url='/usuarios'
+          type='users'
+          promoters={[]} />
     </main>
 
   )

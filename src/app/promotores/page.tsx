@@ -7,6 +7,8 @@ import PromotersTable from "@/components/tables/promoters/PromotersTable";
 import DeleteConfirm from "@/components/PageModals/promoters/DeleteConfirm";
 import NewPromoterForm from "@/components/forms/promoters/NewPromoterForm";
 import PromotersTableMob from "@/components/tables/promoters/PromotersTableMob";
+import GenericForm from "@/components/PageModals/genericForm/GenericForm";
+import ActionsModal from "@/components/PageModals/actions/ActionsModal";
 
 async function loadPromoters() {
   const promoters = await fetch(`${process.env.API_URL}/api/promoters`, { 
@@ -29,14 +31,13 @@ export default async function Promotores() {
     <main className={styles.main}>
       <EndLoading />
       <section className={styles.content}>
-      <div className={styles.content_title}>
-          <TitleCard>PROMOTORES</TitleCard>
-        </div>
+      {/*
         <div className={styles.form}>
-          <FormCard>
-            <NewPromoterForm promoters={promoters} users={users} />
-          </FormCard>
-        </div>
+                  <FormCard>
+                    <NewPromoterForm promoters={promoters} users={users} />
+                  </FormCard>
+                </div>
+       */ }
         <div className={styles.table_content}>
           <div className={styles.table_desktop}>
             <PromotersTable promoters={promoters} />
@@ -48,6 +49,12 @@ export default async function Promotores() {
         </div>
       </section>
       <DeleteConfirm />
+      <ActionsModal type='promoters' url='/promotores' />
+      < GenericForm
+          users={users}
+          url='/promotores'
+          type='promoters'
+          promoters={promoters} />
     </main>
 
   )

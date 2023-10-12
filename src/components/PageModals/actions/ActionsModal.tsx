@@ -1,36 +1,38 @@
 'use client'
-import CustomButton from "@/components/Button"
 import CustomModal from "@/components/Modal/CustomModal"
 import { useSearchParams, useRouter } from "next/navigation"
-import { useContext, useEffect, useState } from "react"
+import { FC, useContext, useEffect, useState } from "react"
 import styles from './actionsModal.module.css'
-import { useDelete } from "@/hooks/useDelete"
 import { Tooltip } from "antd"
-import { ArrowRightOutlined, DeleteOutlined, EditOutlined, RightCircleOutlined } from "@ant-design/icons"
+import { DeleteOutlined, EditOutlined, RightCircleOutlined } from "@ant-design/icons"
 import { GlobalContext } from "@/context/globalContext"
 
-const ActionsModal = () => {
+interface props {
+    type: 'users' | 'promoters',
+    url: string;
+}
+
+const ActionsModal: FC<props> = ({ type, url }) => {
     const router = useRouter()
-    const fetchDelete = useDelete()
     const searchParams = useSearchParams()
     const [isOpenModal, setIsOpenModal] = useState(false)
     const { startLoading } = useContext(GlobalContext)
 
     const closeModal = () => {
-        router.push('/usuarios')
+        router.push(url)
     }
 
     const handleDeleteClick = (_id: string, email: string) => {
-        router.push(`/usuarios?eliminar=${_id}&correo=${email}`);
+        router.push(`${url}?eliminar=${_id}&correo=${email}`);
     };
 
     const handleUpdateClick = (_id: string) => {
-        router.push(`/usuarios?actualizar=${_id}`);
+        router.push(`${url}?actualizar=${_id}`);
     };
 
     const handleDetailClick = (_id: string) => {
         startLoading()
-        router.push(`/usuarios/${_id}`);
+        router.push(`${url}/${_id}`);
     };
 
     useEffect(() => {
@@ -50,22 +52,22 @@ const ActionsModal = () => {
                 title={''}
             >
                 <div className={styles.icons_container}>
-                    <section 
-                        className={styles.icons_item} 
+                    <section
+                        className={styles.icons_item}
                         onClick={() => handleUpdateClick(searchParams.get('action') || '')}>
-                        <Tooltip placement="top" title={'Actualizar usuario'}>
+                        <Tooltip placement="top" title={`Actualizar ${type === 'users' ? 'usuario' : 'promotor'}`}>
                             <EditOutlined
                                 style={{ cursor: 'pointer', fontSize: '40PX' }}
                             />
                         </Tooltip>
-                        <p>Editar usuario</p>
+                        <p>Editar {type === 'users' ? 'usuario' : 'promotor'}</p>
                     </section>
 
-                    <section 
+                    <section
                         className={styles.icons_item}
-                        onClick={() => 
+                        onClick={() =>
                             handleDeleteClick(searchParams.get('action') || '',
-                            searchParams.get('correo') || '')}>
+                                searchParams.get('correo') || '')}>
                         <Tooltip placement="top" title={'Actualizar usuario'}>
                             <DeleteOutlined
                                 //@ts-ignore
@@ -73,18 +75,20 @@ const ActionsModal = () => {
                                 style={{ color: '#ec1912', cursor: 'pointer', fontSize: '40PX' }}
                             />
                         </Tooltip>
-                        <p>Eliminar usuario</p>
+                        <p>Eliminar {type === 'users' ? 'usuario' : 'promotor'}</p>
                     </section>
 
-                    <section 
+                    <section
                         className={styles.icons_item}
                         onClick={() => handleDetailClick(searchParams.get('action') || '')}>
-                        <Tooltip placement="top" title={'Actualizar usuario'}>
+                        <Tooltip 
+                            placement="top" 
+                            title={`Actualizar ${type === 'users' ? 'usuario' : 'promotor'}`}>
                             <RightCircleOutlined
                                 style={{ fontSize: '40px', color: '#0D709A', cursor: 'pointer' }}
                             />
                         </Tooltip>
-                        <p>Detalle del usuario</p>
+                        <p>Detalle del {type === 'users' ? 'usuario' : 'promotor'}</p>
                     </section>
                 </div>
                 <br />

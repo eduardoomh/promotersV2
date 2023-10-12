@@ -2,23 +2,28 @@
 import CustomButton from "@/components/Button"
 import FormCard from "@/components/FomCard/FormCard"
 import CustomModal from "@/components/Modal/CustomModal"
+import NewPromoterForm from "@/components/forms/promoters/NewPromoterForm"
 import NewUserForm from "@/components/forms/users/NewUserForm"
+import { IPromoterSchema } from "@/models/Promoter"
 import { IUserSchema } from "@/models/User"
 import { Col, Row } from "antd"
 import { useSearchParams, useRouter } from "next/navigation"
 import { FC, useEffect, useState } from "react"
 
 interface props {
-    users: IUserSchema[]
+    url: string;
+    users: IUserSchema[];
+    promoters: IPromoterSchema[]
+    type: 'users' | 'promoters';
 }
 
-const GenericForm: FC<props> = ({ users }) => {
+const GenericForm: FC<props> = ({ users, promoters, url, type}) => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [isOpenModal, setIsOpenModal] = useState(false)
 
     const closeModal = () => {
-        router.push('/usuarios')
+        router.push(url)
     }
 
     useEffect(() => {
@@ -41,7 +46,14 @@ const GenericForm: FC<props> = ({ users }) => {
                 <Row>
                     <Col span={24}>
                     <FormCard>
-                    <NewUserForm users={users} />
+                        {
+                            type === 'users' ? (
+                                <NewUserForm users={users} />
+                            ) : (
+                                <NewPromoterForm promoters={promoters} users={users} />
+                            )
+                        }
+                    
                 </FormCard>
                     </Col>
                 </Row>

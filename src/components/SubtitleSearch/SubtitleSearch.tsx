@@ -7,7 +7,7 @@ interface props {
 const SubitleSearch: FC<PropsWithChildren<props>> = ({ children, title }) => {
     return (
         <article className={styles.card}>
-            <h2>{title}</h2>
+            <h1>{title}</h1>
             {children}
         </article>
     )

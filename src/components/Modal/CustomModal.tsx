@@ -6,9 +6,11 @@ interface props{
     isModalOpen: boolean;
     setIsModalOpen: (state: boolean) => void;
     title: string;
+    width?: number
 }
 
-const CustomModal:FC<PropsWithChildren<props>> = ({isModalOpen, setIsModalOpen, title, children}) =>{
+const CustomModal:FC<PropsWithChildren<props>> = ({
+    isModalOpen, setIsModalOpen, title, children, width}) =>{
     return(
         <Suspense>
         <Modal
@@ -18,6 +20,7 @@ const CustomModal:FC<PropsWithChildren<props>> = ({isModalOpen, setIsModalOpen, 
                 footer={null}
                 onOk={() => setIsModalOpen(false)}
                 onCancel={() => setIsModalOpen(false)}
+                width={width ? width : 500}
             >
                 <br/>
                {children}

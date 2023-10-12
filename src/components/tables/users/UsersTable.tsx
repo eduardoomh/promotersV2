@@ -1,14 +1,15 @@
 'use client'
 import React, { FC, useContext, useState } from 'react';
-import { Table, Tooltip, Input } from 'antd';
+import { Table, Tooltip, Input, Avatar } from 'antd';
 import { IUserSchema } from '@/models/User';
 import RoleTag from '../../utils/RoleTag';
 import moment from 'moment';
-import { ArrowRightOutlined, DeleteOutlined, EditOutlined, InfoCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
 import { GlobalContext } from '@/context/globalContext';
 import CustomCard from '@/components/CustomCard/CustomCard';
+import Link from 'next/link';
 
 interface Props {
     users: IUserSchema[];
@@ -36,12 +37,29 @@ const UsersTable: FC<Props> = ({ users }) => {
         router.push(`/usuarios?action=${_id}&correo=${email}`);
     };
 
+    const handleCreateClick = (_id: string, email: string) => {
+        router.push(`/usuarios?crear`);
+    };
+
     const columns = [
         {
             title: 'Nombre',
             dataIndex: 'name',
             key: 'name',
-            render: (text: string) => <a>{text}</a>,
+            render: (data: any) =>
+            <>
+                <Avatar
+                    style={{
+                        backgroundColor: '#0D709A',
+                        verticalAlign: 'middle',
+                        marginRight: '0.4rem'
+                    }}
+                    size='default'
+                    gap={1}>
+                    {data[0].toUpperCase()}
+                </Avatar>
+                <span style={{marginLeft: '0.5rem'}}>{data}</span>
+            </>
         },
         {
             title: 'Email',
@@ -95,6 +113,22 @@ const UsersTable: FC<Props> = ({ users }) => {
             {/* @ts-ignore */}
             <CustomCard>
                 <Table columns={columns} dataSource={filteredUsers} style={{border: '1px solid #E6E6E6'}} />
+                <br/>
+                <Link href='/usuarios?crear=true'>
+                    <p style={{
+                        padding: '0.4rem',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        alignItems: 'center',
+                        fontSize: '1.1rem',
+                        backgroundColor: '#fafafa',
+                        border: '1px solid #d0d0d0'
+                    }}>
+                        <PlusCircleOutlined /> Crear nuevo usuario
+                    </p>
+                   
+                </Link>
             </CustomCard>
             
         </>

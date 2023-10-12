@@ -60,6 +60,7 @@ const NewUserForm: FC<props> = ({ users }) => {
             reloadPage: true,
             cleanForm: form.resetFields
         })
+        finishEditMode()
     }
 
     const onUpdate = async (data: any) => {
@@ -138,17 +139,12 @@ const NewUserForm: FC<props> = ({ users }) => {
                     style={{ padding: '0.6rem', fontSize: '1rem' }}
                 />
                 <CustomButton>{currentUser ? 'Actualizar Usuario' : 'Crear Usuario'}</CustomButton>
-                {
-                    currentUser && (
-                        <section className="mt-4">
-                            <p className='flex justify-center text-base' onClick={finishEditMode}>
-                                <a>Cancelar</a>
-                            </p>
-                        </section>
 
-                    )
-                }
-
+                <section className="mt-4">
+                    <p className='flex justify-center text-base' onClick={finishEditMode}>
+                        <a>Cancelar</a>
+                    </p>
+                </section>
             </Form>
         </>
     )

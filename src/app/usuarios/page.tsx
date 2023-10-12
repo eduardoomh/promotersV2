@@ -7,9 +7,10 @@ import NewUserForm from "@/components/forms/users/NewUserForm";
 import FormCard from "@/components/FomCard/FormCard";
 import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
 import ActionsModal from "@/components/PageModals/actions/ActionsModal";
+import GenericForm from "@/components/PageModals/genericForm/GenericForm";
 
 async function loadUsers() {
-  const users = await fetch(`${process.env.API_URL}/api/users`,{ cache: 'no-store' })
+  const users = await fetch(`${process.env.API_URL}/api/users`, { cache: 'no-store' })
   const response = await users.json()
   return response.users
 }
@@ -21,14 +22,13 @@ export default async function Usuarios() {
     <main className={styles.main}>
       <EndLoading />
       <section className={styles.content}>
-        <div className={styles.content_title}>
-          <TitleCard>USUARIOS</TitleCard>
-        </div>
-        <div className={styles.form}>
-          <FormCard>
-            <NewUserForm users={users} />
-          </FormCard>
-        </div>
+        {/*
+          <div className={styles.form}>
+            <FormCard>
+              <NewUserForm users={users} />
+            </FormCard>
+          </div>
+       */ }
         <div className={styles.table_content}>
           <div className={styles.table_desktop}>
             <UsersTable users={users} />
@@ -41,6 +41,7 @@ export default async function Usuarios() {
       </section>
       <DeleteConfirm />
       <ActionsModal />
+      < GenericForm users={users} />
     </main>
 
   )

@@ -5,7 +5,7 @@ import { FC, PropsWithChildren, useContext } from "react";
 
 interface props {
     href: any;
-    className: any;
+    className?: any;
     disabled?: boolean;
 }
 const Link: FC<PropsWithChildren<props>> = ({ href, children, className, disabled = false }) => {

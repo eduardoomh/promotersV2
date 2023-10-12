@@ -50,7 +50,6 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
                     country: currentPromoter.address.country,
                 })
             }
-            console.log(currentPromoter)
         } else {
             setCurrentPromoter(null)
             form.resetFields()

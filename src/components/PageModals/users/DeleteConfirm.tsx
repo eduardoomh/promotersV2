@@ -17,7 +17,6 @@ const DeleteConfirm = () => {
     }
 
     useEffect(() => {
-        console.log(searchParams.get('eliminar'))
         if (searchParams.get('eliminar') && searchParams.get('correo')) {
             setIsOpenModal(true)
         } else {

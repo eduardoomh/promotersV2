@@ -9,7 +9,6 @@ import { Col, Row } from 'antd'
 import EmptyImg from '@/components/EmptyImg/EmptyImg'
 import CustomAlert from '@/components/CustomAlert/CustomAlert'
 import AvatarItem from '@/components/stats/AvatarItem/AvatarItem'
-import UsersTable from '@/components/tables/users/UsersTable'
 import UsersMadeBy from '@/components/tables/users/madeBy/UsersMadeBy'
 import PromotersMadeBy from '@/components/tables/promoters/madeBy/PromotersMadeBy'
 import UsersMobileMadeBy from '@/components/tables/users/madeBy/UsersMobileMadeBy'
@@ -18,7 +17,6 @@ import PromotersMobileMadeBy from '@/components/tables/promoters/madeBy/Promoter
 async function loadUser({ params }: any) {
     const users = await fetch(`${process.env.API_URL}/api/users/${params.id}`, { cache: 'no-store' })
     const response = await users.json()
-    console.log(response)
     return { user: response.user, promoter: response.promoter, madeBy: response.user_stats }
 }
 

@@ -12,7 +12,6 @@ import { getStateCountry } from "@/utils/countries";
 async function loadPromoter({ params }: any) {
     const promoters = await fetch(`${process.env.API_URL}/api/promoters/${params.id}`, { cache: 'no-store' })
     const promoters_response = await promoters.json()
-    console.log(promoters_response, "los prmotores")
 
     return {
         promoter: promoters_response.user,

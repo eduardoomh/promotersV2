@@ -3,7 +3,6 @@ import { NextResponse, NextRequest } from "next/server";
 export async function middleware(request: NextRequest) {
   try {
     const token = request.cookies.get('auth_cookie')
-    console.log(token, "la cookie")
     if (!token) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
@@ -14,7 +13,6 @@ export async function middleware(request: NextRequest) {
     })
 
     const data = await res.json()
-    console.log(data, "la data")
 
     // @ts-ignore
     if (!data.isAuthorized) {

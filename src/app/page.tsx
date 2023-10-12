@@ -16,9 +16,6 @@ async function loadStats(cookie: any) {
     }
   })
   const users_response = await allStats.json()
-
-  console.log("user esponse", JSON.stringify(users_response))
-
   return users_response
 }
 

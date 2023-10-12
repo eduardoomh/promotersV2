@@ -27,7 +27,6 @@ const GenericForm: FC<props> = ({ users, promoters, url, type}) => {
     }
 
     useEffect(() => {
-        console.log(searchParams.get('actualizar'))
         if (searchParams.get('actualizar') || searchParams.get('crear')) {
             setIsOpenModal(true)
         } else {

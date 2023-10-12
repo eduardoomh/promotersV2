@@ -38,7 +38,6 @@ const NewUserForm: FC<props> = ({ users }) => {
 
                 })
             }
-            console.log(currentUser)
         } else {
             setCurrentUser(null)
             form.resetFields()

@@ -30,7 +30,6 @@ export async function GET(req: NextRequest) {
                   }
                 }
               ]);
-              console.log(users, "los usedes")
             
         }else{
             users = await User.find().sort({ $natural: -1 })
@@ -60,7 +59,6 @@ export async function POST(req: NextRequest) {
         await connectMongoDB()
         const body = await req.json()
         const { name, email, password, confirm_password, role } = body
-        console.log(body)
 
         //validar campos enviados
         if (!email || !password || !confirm_password) {

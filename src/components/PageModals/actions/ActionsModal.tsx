@@ -36,7 +36,6 @@ const ActionsModal: FC<props> = ({ type, url }) => {
     };
 
     useEffect(() => {
-        console.log(searchParams.get('action'))
         if (searchParams.get('action') && searchParams.get('correo')) {
             setIsOpenModal(true)
         } else {

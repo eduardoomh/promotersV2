@@ -28,7 +28,6 @@ const Menu: FC<props> = ({ expand = true }) => {
     }
 
     useEffect(() => {
-        console.log(expand, "se modifica")
     }, [expand])
 
     return (

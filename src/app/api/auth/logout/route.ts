@@ -9,7 +9,6 @@ export async function POST(req: NextRequest) {
         await connectMongoDB()
         //@ts-ignore
         const cookie = req.cookies.get('auth_cookie')
-        console.log(cookie, "auth_cookie")
 
         if(!cookie){
             return NextResponse.json({

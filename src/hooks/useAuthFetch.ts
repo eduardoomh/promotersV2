@@ -19,7 +19,6 @@ export function useAuthFetch () {
         formData,
         options
       )
-      console.log(response)
         return response
 
     } catch (error: any) {

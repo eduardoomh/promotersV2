@@ -1,11 +1,7 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
-import { cookies } from 'next/headers'
 import styles from '../usuarios/Users.module.css'
-import FormCard from "@/components/FomCard/FormCard";
-import TitleCard from "@/components/TitleCard/TitleCard";
 import PromotersTable from "@/components/tables/promoters/PromotersTable";
 import DeleteConfirm from "@/components/PageModals/promoters/DeleteConfirm";
-import NewPromoterForm from "@/components/forms/promoters/NewPromoterForm";
 import PromotersTableMob from "@/components/tables/promoters/PromotersTableMob";
 import GenericForm from "@/components/PageModals/genericForm/GenericForm";
 import ActionsModal from "@/components/PageModals/actions/ActionsModal";

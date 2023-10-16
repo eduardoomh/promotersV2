@@ -82,6 +82,45 @@
   display: none;
 }
 
+.custom_title{
+  font-size: 1.4rem;
+}
+
+.product_card{
+  display: flex;
+  background-color: #f8f8f8;
+  border: 1px solid #ededed;
+  border-radius: 8px;
+}
+
+.product_card .content{
+  padding: 1.5rem;
+}
+
+.product_card .content .content_title{
+  font-size: 1.2rem;
+}
+
+.product_card .content .description img{
+  width: 50px;
+  height: 50px;
+  border: 1px solid #ededed;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.product_card img{
+  border-radius: 8px 0 0 8px;
+  border: 1px solid #ededed;
+  border-width: 0 1px 0 0;
+}
+
+.product_card .image_content{
+  width: 200px;
+  min-width: 200px;
+}
+
+
 @media (max-width: 999px) {
   .web_users_table{
     display: none;

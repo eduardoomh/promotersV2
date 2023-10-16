@@ -8,7 +8,7 @@ import { DeleteOutlined, EditOutlined, RightCircleOutlined } from "@ant-design/i
 import { GlobalContext } from "@/context/globalContext"
 
 interface props {
-    type: 'users' | 'promoters',
+    type: 'users' | 'promoters' | 'coupons',
     url: string;
 }
 
@@ -43,6 +43,19 @@ const ActionsModal: FC<props> = ({ type, url }) => {
         }
     }, [searchParams])
 
+    const assignName = () => {
+        switch (type) {
+            case 'users':
+                return 'usuario'
+            case 'promoters':
+                return 'promotor'
+            case 'coupons':
+                return 'cupón'
+            default:
+                return 'usuario'
+        }
+    }
+
     return (
         <>
             <CustomModal
@@ -51,43 +64,49 @@ const ActionsModal: FC<props> = ({ type, url }) => {
                 title={''}
             >
                 <div className={styles.icons_container}>
-                    <section
-                        className={styles.icons_item}
-                        onClick={() => handleUpdateClick(searchParams.get('action') || '')}>
-                        <Tooltip placement="top" title={`Actualizar ${type === 'users' ? 'usuario' : 'promotor'}`}>
-                            <EditOutlined
-                                style={{ cursor: 'pointer', fontSize: '40PX' }}
-                            />
-                        </Tooltip>
-                        <p>Editar {type === 'users' ? 'usuario' : 'promotor'}</p>
-                    </section>
+                    {
+                        type !== 'coupons' && (
+                            <section
+                                className={styles.icons_item}
+                                onClick={() => handleUpdateClick(searchParams.get('action') || '')}>
+                                <Tooltip placement="top" title={`Actualizar ${assignName()}`}>
+                                    <EditOutlined
+                                        style={{ cursor: 'pointer', fontSize: '40PX' }}
+                                    />
+                                </Tooltip>
+                                <p>Editar {assignName()}</p>
+                            </section>
+                        )
+                    }
+                    {
+                        type !== 'coupons' && (
+                            <section
+                                className={styles.icons_item}
+                                onClick={() =>
+                                    handleDeleteClick(searchParams.get('action') || '',
+                                        searchParams.get('correo') || '')}>
+                                <Tooltip placement="top" title={'Actualizar usuario'}>
+                                    <DeleteOutlined
+                                        //@ts-ignore
 
-                    <section
-                        className={styles.icons_item}
-                        onClick={() =>
-                            handleDeleteClick(searchParams.get('action') || '',
-                                searchParams.get('correo') || '')}>
-                        <Tooltip placement="top" title={'Actualizar usuario'}>
-                            <DeleteOutlined
-                                //@ts-ignore
-
-                                style={{ color: '#ec1912', cursor: 'pointer', fontSize: '40PX' }}
-                            />
-                        </Tooltip>
-                        <p>Eliminar {type === 'users' ? 'usuario' : 'promotor'}</p>
-                    </section>
-
+                                        style={{ color: '#ec1912', cursor: 'pointer', fontSize: '40PX' }}
+                                    />
+                                </Tooltip>
+                                <p>Eliminar {assignName()}</p>
+                            </section>
+                        )
+                    }
                     <section
                         className={styles.icons_item}
                         onClick={() => handleDetailClick(searchParams.get('action') || '')}>
-                        <Tooltip 
-                            placement="top" 
+                        <Tooltip
+                            placement="top"
                             title={`Actualizar ${type === 'users' ? 'usuario' : 'promotor'}`}>
                             <RightCircleOutlined
                                 style={{ fontSize: '40px', color: '#0D709A', cursor: 'pointer' }}
                             />
                         </Tooltip>
-                        <p>Detalle del {type === 'users' ? 'usuario' : 'promotor'}</p>
+                        <p>Detalle del {assignName()}</p>
                     </section>
                 </div>
                 <br />

@@ -1,6 +1,6 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
 import TitleCard from "@/components/TitleCard/TitleCard";
-import styles from '../usuarios/Users.module.css'
+import styles from './Ajustes.module.css'
 import FormCard from "@/components/FomCard/FormCard";
 import NewSettingForm from "@/components/forms/settings/NewSettingForm";
 import CustomAlert from "@/components/CustomAlert/CustomAlert";

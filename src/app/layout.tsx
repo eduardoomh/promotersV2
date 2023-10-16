@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={barlow.className}>
         <GlobalContextProvider>
           <MainLayout>
-            <Suspense fallback={'cargando......'}>
+            <Suspense fallback={<Loader />}>
               <div className={barlow.className}>
                 {children}
               </div>

@@ -1,12 +1,45 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
-import TitleCard from "@/components/TitleCard/TitleCard";
+import styles from '../usuarios/Users.module.css'
+import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
+import ActionsModal from "@/components/PageModals/actions/ActionsModal";
+import CouponsTable from "@/components/tables/coupons/CouponsTable";
 
-export default function Cupones() {
+async function loadCoupons() {
+  const coupons = await fetch(`${process.env.API_URL}/api/coupons`, { 
+    cache: 'no-store'
+  })
+  const response = await coupons.json()
+
+  return {
+    coupons: response.coupons,
+  }
+}
+
+export default async function Cupones() {
+  const { coupons }: any = await loadCoupons()
     return (
-      <main>
-        <EndLoading />
-        <TitleCard>CUPONES</TitleCard>
-      </main>
+      <main className={styles.main}>
+      <EndLoading />
+      <section className={styles.content}>
+      {/*
+        <div className={styles.form}>
+                  <FormCard>
+                    <NewPromoterForm promoters={promoters} users={users} />
+                  </FormCard>
+                </div>
+       */ }
+        <div className={styles.table_content}>
+          <div className={styles.table_desktop}>
+            <CouponsTable coupons={coupons} />
+          </div>
+          <div className={styles.table_mobile}>
+           
+          </div>
+        </div>
+      </section>
+      <DeleteConfirm />
+      <ActionsModal type='coupons' url='/cupones' />
+    </main>
   
     )
   }

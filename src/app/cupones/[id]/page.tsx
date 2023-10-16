@@ -85,7 +85,7 @@ export default async function Cupon(props: any) {
                             {
                                 coupon.product_ids.map((el: any) => (
                                     <>
-                                        <article className={styles.product_card}>
+                                        <article className={styles.product_card} key={el.id}>
                                             <section className={styles.image_content}>
                                                 <img
                                                     src={el.images[0].src}
@@ -102,7 +102,7 @@ export default async function Cupon(props: any) {
                                                     </a>
 
                                                 </p>
-                                                <p>{el.categories.map((cat: any) => (<span> <Tag color="#f50">{cat.name}</Tag></span>))}</p>
+                                                <p>{el.categories.map((cat: any) => (<span key={cat.id}> <Tag color="#f50">{cat.name}</Tag></span>))}</p>
                                                 <br />
                                                 <p className={styles.description} dangerouslySetInnerHTML={{ __html: el.short_description }} />
                                             </section>

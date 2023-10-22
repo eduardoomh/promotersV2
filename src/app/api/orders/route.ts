@@ -28,11 +28,11 @@ export async function GET(req: NextRequest) {
 
         })
 
-        const { data: coupons } = await WooApi.get("coupons")
+        const { data: orders } = await WooApi.get("orders")
 
         const response = NextResponse.json({
-            message: 'Cupones encontrados',
-            coupons
+            message: 'Pedidos encontrados',
+            orders
         }, {
             status: 200
         })
@@ -53,7 +53,7 @@ export async function DELETE(req: NextRequest) {
     try {
         await connectMongoDB()
         const response = NextResponse.json({
-            message: 'Promotor eliminado exitosamente',
+            message: 'Pedidos eliminado exitosamente',
             deleted_promoter: []
         }, {
             status: 200

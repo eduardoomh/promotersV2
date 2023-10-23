@@ -77,7 +77,7 @@ export default async function Promotorer(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Saldo Abonado</strong></p>
-                                    <p>0</p>
+                                    <p>${promoter.balance} MXN</p>
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Fecha de creación</strong></p>

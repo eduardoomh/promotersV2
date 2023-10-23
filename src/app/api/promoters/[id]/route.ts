@@ -1,4 +1,5 @@
 import { connectMongoDB } from "@/libs/mongodb";
+import Movement from "@/models/Movement";
 import Promoter, { IPromoterSchema } from "@/models/Promoter";
 import { messages } from "@/utils/messages";
 import { NextRequest, NextResponse } from "next/server";
@@ -19,9 +20,12 @@ export async function GET(req: NextRequest) {
             })
         }
 
+        const findMovements = await Movement.find({ promoter: id }).populate('user')
+
         const response = NextResponse.json({
             message: 'Promotor encontrado',
-            user: findPromoter
+            user: findPromoter,
+            movements: findMovements
         }, {
             status: 200
         })

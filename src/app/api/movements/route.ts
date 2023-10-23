@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
 export async function GET() {
     try {
         await connectMongoDB()
-        const movements = await Movement.find().populate('user').populate('promoter').populate('commission').sort({$natural: -1})
+        const movements = await Movement.find().populate('user').populate('promoter').sort({$natural: -1})
 
         const response = NextResponse.json({
             movements,

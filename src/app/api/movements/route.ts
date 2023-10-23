@@ -1,18 +1,18 @@
 import { connectMongoDB } from '@/libs/mongodb'
-import Promoter, { IPromoterSchema } from '@/models/Promoter'
+import Promoter from '@/models/Promoter'
 import User from '@/models/User'
 import { messages } from '@/utils/messages'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
-import Movement from '@/models/Movement'
+import Movement, { IMovementSchema } from '@/models/Movement'
 
 export async function POST(req: NextRequest) {
     try {
         await connectMongoDB()
         const body = await req.json()
-        const { new_promoter } = body
-        const { user, personal_info, address } = new_promoter
+        const { new_movement } = body
+        const { user, promoter, commission, amount, type } = new_movement
 
         const cookieStore = cookies()
         const auth_cookie: any = cookieStore.get('auth_cookie')
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
         //validar campos enviados
         if (
-            !user || !personal_info || !address
+            !user || !promoter || !commission || !amount || !type
         ) {
             return NextResponse.json({
                 message: messages.error.needProps
@@ -51,41 +51,51 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        if (promoterFind) {
+        if (!promoterFind) {
             return NextResponse.json({
                 message: messages.error.default
             }, {
                 status: 400
             })
         }
+        let updateBalance
+        if(type === 'discount'){
+            await Promoter.updateOne({user},{
+                $set: {
+                   balance: Number(promoterFind.balance) - Number(amount.toFixed(2)) 
+                }
+            })
+            updateBalance = Number(promoterFind.balance) - Number(amount.toFixed(2))
+        }else{
+            await Promoter.updateOne({user},{
+                $set: {
+                   balance: Number(promoterFind.balance) + Number(amount.toFixed(2)) 
+                }
+            })
+            updateBalance = Number(promoterFind.balance) + Number(amount.toFixed(2))
+        }
+       
 
-        const newPromoter: IPromoterSchema = new Promoter({
+        const newMovement: IMovementSchema = new Movement({
             user,
-            personal_info: {
-                phone: personal_info.phone,
-                mobile_phone: personal_info.mobile_phone,
-                rfc: personal_info.rfc,
+            promoter,
+            amount: Number(amount),
+            type,
+            commission,
+            security: {
+                before_mod: Number(promoterFind.balance),
+                after_mod: updateBalance
             },
-            address: {
-                street: address.street,
-                postal_code: address.postal_code,
-                district: address.district,
-                state: address.state,
-                city: address.city,
-                country: address.country,
-            },
-            balance: 0,
-            type: 'active',
             made_by: data._id
         })
 
         //@ts-ignore
-        const promoterCreated = newPromoter._doc
+        const movementCreated = newMovement._doc
 
-        await newPromoter.save()
+        await newMovement.save()
 
         const response = NextResponse.json({
-            promoter: promoterCreated,
+            movement: movementCreated,
             message: messages.success.promoterCreated
         }, {
             status: 200
@@ -106,7 +116,7 @@ export async function POST(req: NextRequest) {
 export async function GET() {
     try {
         await connectMongoDB()
-        const movements = await Movement.find().populate('user').populate('promoter').sort({$natural: -1})
+        const movements = await Movement.find().populate('user').populate('promoter').populate('commission').sort({$natural: -1})
 
         const response = NextResponse.json({
             movements,

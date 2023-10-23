@@ -1,5 +1,5 @@
 import { connectMongoDB } from '@/libs/mongodb'
-import Promoter, { IPromoterSchema } from '@/models/Promoter'
+import Promoter from '@/models/Promoter'
 import User from '@/models/User'
 import { messages } from '@/utils/messages'
 import { cookies } from 'next/headers'

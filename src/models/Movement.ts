@@ -8,6 +8,7 @@ export interface IMovementSchema extends Document {
     user: string | IUserSchema;
     promoter: string | IPromoterSchema;
     amount: number;
+    type: 'discount' | 'payment',
     security: {
         before_mod: number;
         after_mod: number;
@@ -32,6 +33,14 @@ const movementSchema = new Schema({
     },
     amount: {
         type: Number
+    },
+    type: {
+        type: String,
+        enum: {
+            values: ['discount', 'payment'],
+            message: '{VALUE} no es un tipo de pago permitido'
+        },
+        required: true
     },
     security:{
         before_mod:{

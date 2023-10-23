@@ -1,7 +1,6 @@
 import { connectMongoDB } from "@/libs/mongodb";
-import CommissionModel, { ICommissionSchema } from "@/models/Comissions";
+import { ICommissionSchema } from "@/models/Comissions";
 import Commission from "@/models/Comissions";
-import Promoter, { IPromoterSchema } from "@/models/Promoter";
 import { messages } from "@/utils/messages";
 import { NextRequest, NextResponse } from "next/server";
 

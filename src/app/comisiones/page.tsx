@@ -2,31 +2,30 @@ import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from '../usuarios/Users.module.css'
 import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
 import ActionsModal from "@/components/PageModals/actions/ActionsModal";
-import MovementsTable from "@/components/tables/movements/MovementsTable";
+import CommissionsTable from "@/components/tables/commissions/CommissionsTable";
 
-async function loadMovements() {
-  const movements = await fetch(`${process.env.API_URL}/api/movements`, { 
+async function loadCommissions() {
+  const commissions = await fetch(`${process.env.API_URL}/api/commissions`, { 
     cache: 'no-store'
   })
-  const response = await movements.json()
+  const response = await commissions.json()
 
   return {
-    movements: response.movements,
+    commissions: response.commissions,
   }
 }
 
-export default async function Movements() {
-  const { movements }: any = await loadMovements()
+export default async function Commissions() {
+  const { commissions }: any = await loadCommissions()
     return (
       <main className={styles.main}>
       <EndLoading />
       <section className={styles.content}>
         <div className={styles.table_content}>
           <div className={styles.table_desktop}>
-            <MovementsTable movements={movements} />
+            <CommissionsTable commissions={commissions} />
           </div>
           <div className={styles.table_mobile}>
-           
           </div>
         </div>
       </section>

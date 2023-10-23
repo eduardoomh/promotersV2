@@ -1,4 +1,5 @@
 import { connectMongoDB } from "@/libs/mongodb";
+import Commission from "@/models/Comissions";
 import Movement from "@/models/Movement";
 import Promoter, { IPromoterSchema } from "@/models/Promoter";
 import { messages } from "@/utils/messages";
@@ -20,12 +21,14 @@ export async function GET(req: NextRequest) {
             })
         }
 
-        const findMovements = await Movement.find({ promoter: id }).populate('user')
+        const findMovements = await Movement.find({ promoter: id }).populate('user').sort({$natural: -1})
+        const findcommissions = await Commission.find({ promoter: id }).populate('user').sort({$natural: -1})
 
         const response = NextResponse.json({
             message: 'Promotor encontrado',
             user: findPromoter,
-            movements: findMovements
+            movements: findMovements,
+            commissions: findcommissions
         }, {
             status: 200
         })

@@ -4,17 +4,17 @@ import { Table, Tooltip, Avatar } from 'antd';
 import moment from 'moment';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { IMovementSchema } from '@/models/Movement';
+import { ICommissionSchema } from '@/models/Comissions';
 
 interface Props {
-    movements: IMovementSchema[];
+    commissions: ICommissionSchema[];
 }
 
-const MovementsTable: FC<Props> = ({ movements }) => {
+const CommissionsTable: FC<Props> = ({ commissions }) => {
     const router = useRouter()
 
     const handleActionClick = (_id: string) => {
-        router.push(`/movimientos?action=${_id}`);
+        router.push(`/comisiones?action=${_id}`);
     };
 
     const columns = [
@@ -36,16 +36,23 @@ const MovementsTable: FC<Props> = ({ movements }) => {
                 </>
         },
         {
-            title: 'Cantidad',
-            render: (data: any) => <a>${data.amount} mxn</a>,
+            title: 'Correo',
+            render: (data: any) => <a>{data.user?.email}</a>,
         },
         {
-            title: 'Saldo anterior',
-            render: (data: any) => <a>${data.security.before_mod} mxn</a>,
+            title: 'Ganancias',
+            render: (data: any) =>
+                <a>
+                    {
+                        data.earnings.type === 'percentage' ?
+                            `%${data.earnings.amount}` :
+                            `$${data.earnings.amount} mxn`
+                    }
+                </a>,
         },
         {
-            title: 'Saldo posterior',
-            render: (data: any) => <a>${data.security.after_mod} mxn</a>,
+            title: 'Cupón',
+            render: (data: any) => <a>{data.coupon.code}</a>,
         },
         {
             title: 'Fecha',
@@ -68,12 +75,13 @@ const MovementsTable: FC<Props> = ({ movements }) => {
         },
     ];
 
-
     return (
         <>
-            <Table columns={columns} dataSource={movements} style={{ border: '1px solid #E6E6E6' }} />
+
+                <Table columns={columns} dataSource={commissions} style={{ border: '1px solid #E6E6E6' }} />
+
         </>
     );
 };
 
-export default MovementsTable;
+export default CommissionsTable;

@@ -8,6 +8,7 @@ import EmptyImg from "@/components/EmptyImg/EmptyImg";
 import CustomCard from "@/components/CustomCard/CustomCard";
 import Subtitle from "@/components/Subtitle/Subtitle";
 import { getStateCountry } from "@/utils/countries";
+import MovementsMadeBy from "@/components/tables/movements/madeBy/MovementsMadeBy";
 
 async function loadPromoter({ params }: any) {
     const promoters = await fetch(`${process.env.API_URL}/api/promoters/${params.id}`, { cache: 'no-store' })
@@ -15,22 +16,23 @@ async function loadPromoter({ params }: any) {
 
     return {
         promoter: promoters_response.user,
+        movements: promoters_response.movements
     }
 }
 
 export default async function Promotorer(props: any) {
-    const { promoter }: any = await loadPromoter(props)
+    const { promoter, movements }: any = await loadPromoter(props)
 
     return (
         <main className={styles.main}>
             <EndLoading />
             <CustomCard>
                 <AvatarUser
-                    letter={promoter.user?.name[0].toUpperCase()}
+                    letter={promoter?.user?.name[0].toUpperCase()}
                     size='large'
                     font='big'
                     color="#176CBA"
-                >{promoter.user.name}
+                >{promoter?.user.name}
                 </AvatarUser>
             </CustomCard>
             <br />
@@ -43,16 +45,16 @@ export default async function Promotorer(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Correo</strong></p>
-                                    <p>{promoter.user.email}</p>
+                                    <p>{promoter?.user.email}</p>
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Tipo de usuario</strong></p>
-                                    <p><RoleTag role={promoter.user.role} /></p>
+                                    <p><RoleTag role={promoter?.user.role} /></p>
                                 </div>
 
                                 <div className={styles.card_item}>
                                     <p><strong>Teléfono de casa</strong></p>
-                                    <p>{promoter.personal_info.phone}</p>
+                                    <p>{promoter?.personal_info.phone}</p>
                                 </div>
                             </article>
                         </Col>
@@ -60,16 +62,16 @@ export default async function Promotorer(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Teléfono celular</strong></p>
-                                    <p>{promoter.personal_info.mobile_phone}</p>
+                                    <p>{promoter?.personal_info.mobile_phone}</p>
                                 </div>
 
                                 <div className={styles.card_item}>
                                     <p><strong>RFC</strong></p>
-                                    <p>{promoter.personal_info.rfc}</p>
+                                    <p>{promoter?.personal_info.rfc}</p>
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Última modificación</strong></p>
-                                    <p><DateItem date={promoter.user.updated_at} /></p>
+                                    <p><DateItem date={promoter?.user.updated_at} /></p>
                                 </div>
                             </article>
                         </Col>
@@ -77,11 +79,11 @@ export default async function Promotorer(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Saldo Abonado</strong></p>
-                                    <p>${promoter.balance} MXN</p>
+                                    <p>${promoter?.balance} MXN</p>
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Fecha de creación</strong></p>
-                                    <p><DateItem date={promoter.user.created_at} /></p>
+                                    <p><DateItem date={promoter?.user.created_at} /></p>
                                 </div>
                             </article>
                         </Col>
@@ -93,11 +95,11 @@ export default async function Promotorer(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Calle</strong></p>
-                                    <p>{promoter.address.street}</p>
+                                    <p>{promoter?.address.street}</p>
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Colonia</strong></p>
-                                    <p>{promoter.address.district}</p>
+                                    <p>{promoter?.address.district}</p>
                                 </div>
                             </article>
                         </Col>
@@ -106,14 +108,14 @@ export default async function Promotorer(props: any) {
 
                                 <div className={styles.card_item}>
                                     <p><strong>Código postal</strong></p>
-                                    <p>{promoter.address.postal_code}</p>
+                                    <p>{promoter?.address.postal_code}</p>
 
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>País</strong></p>
                                     <p className={styles.text}>
                                         <img src="/countries/MX.svg" width={16} height={16} />
-                                        {promoter.address.country === 'US' ? 'Estados Unidos' : 'México'}
+                                        {promoter?.address.country === 'US' ? 'Estados Unidos' : 'México'}
                                     </p>
                                 </div>
                             </article>
@@ -122,11 +124,11 @@ export default async function Promotorer(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Ciudad</strong></p>
-                                    <p>{promoter.address.city}</p>
+                                    <p>{promoter?.address.city}</p>
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Estado</strong></p>
-                                    <p>{getStateCountry(promoter.address.state, promoter.address.country)}</p>
+                                    <p>{getStateCountry(promoter?.address.state, promoter?.address.country)}</p>
                                 </div>
 
                             </article>
@@ -136,24 +138,13 @@ export default async function Promotorer(props: any) {
             </CustomCard>
             <br />
             <Row gutter={[20, 20]}>
-                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                    <CustomCard>
-                        <article className={styles.card}>
-                            <h2>PAGOS</h2>
-                            <hr />
-                            <section>
-                                <EmptyImg />
-                            </section>
-                        </article>
-                    </CustomCard>
-                </Col>
-                <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <CustomCard>
                         <article className={styles.card}>
                             <h2>ESTADO DE CUENTA</h2>
                             <hr />
                             <section>
-                                <EmptyImg />
+                                <MovementsMadeBy movements={movements} />
                             </section>
                         </article>
                     </CustomCard>

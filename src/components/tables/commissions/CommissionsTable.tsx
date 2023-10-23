@@ -6,18 +6,18 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
 import CustomCard from '@/components/CustomCard/CustomCard';
-import { IMovementSchema } from '@/models/Movement';
+import { ICommissionSchema } from '@/models/Comissions';
 
 interface Props {
-    movements: IMovementSchema[];
+    commissions: ICommissionSchema[];
 }
 
-const MovementsTable: FC<Props> = ({ movements }) => {
+const CommissionsTable: FC<Props> = ({ commissions }) => {
     const router = useRouter()
     const [searchText, setSearchText] = useState<string>('');
 
     const handleActionClick = (_id: string) => {
-        router.push(`/movimientos?action=${_id}`);
+        router.push(`/comisiones?action=${_id}`);
     };
 
     const columns = [
@@ -43,16 +43,19 @@ const MovementsTable: FC<Props> = ({ movements }) => {
             render: (data: any) => <a>{data.user?.email}</a>,
         },
         {
-            title: 'Cantidad',
-            render: (data: any) => <a>${data.amount} mxn</a>,
+            title: 'Ganancias',
+            render: (data: any) =>
+                <a>
+                    {
+                        data.earnings.type === 'percentage' ?
+                            `%${data.earnings.amount}` :
+                            `$${data.earnings.amount} mxn`
+                    }
+                </a>,
         },
         {
-            title: 'Saldo anterior',
-            render: (data: any) => <a>${data.security.before_mod} mxn</a>,
-        },
-        {
-            title: 'Saldo posterior',
-            render: (data: any) => <a>${data.security.after_mod} mxn</a>,
+            title: 'Cupón',
+            render: (data: any) => <a>{data.coupon.code}</a>,
         },
         {
             title: 'Fecha',
@@ -65,9 +68,9 @@ const MovementsTable: FC<Props> = ({ movements }) => {
             render: (data: any) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Ver más información'}>
-                    <InfoCircleOutlined 
-                        style={{fontSize: '1.6rem', color: '#0D709A'}} 
-                        onClick={() => handleActionClick(data._id)} />
+                        <InfoCircleOutlined
+                            style={{ fontSize: '1.6rem', color: '#0D709A' }}
+                            onClick={() => handleActionClick(data._id)} />
                     </Tooltip>
 
                 </div>
@@ -76,16 +79,16 @@ const MovementsTable: FC<Props> = ({ movements }) => {
     ];
 
 
-    const filteredMovements = movements.filter((promoter) =>
-        Object.values(promoter.user)
+    const filteredCommission = commissions.filter((commission) =>
+        Object.values(commission.user)
             .join(' ')
             .toLowerCase()
             .includes(searchText.toLowerCase())
     );
 
     return (
-            <>
-            <SubitleSearch title='ESTADO DE CUENTA'>
+        <>
+            <SubitleSearch title='COMISIONES RECIENTES'>
                 <Input.Search
                     placeholder="Buscar"
                     onChange={(e) => setSearchText(e.target.value)}
@@ -95,12 +98,12 @@ const MovementsTable: FC<Props> = ({ movements }) => {
             <br />
             {/* @ts-ignore */}
             <CustomCard>
-                <Table columns={columns} dataSource={filteredMovements} style={{border: '1px solid #E6E6E6'}} />
-                <br/>
+                <Table columns={columns} dataSource={filteredCommission} style={{ border: '1px solid #E6E6E6' }} />
+                <br />
             </CustomCard>
-            
+
         </>
     );
 };
 
-export default MovementsTable;
+export default CommissionsTable;

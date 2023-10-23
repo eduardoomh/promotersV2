@@ -5,18 +5,22 @@ import CustomCard from "@/components/CustomCard/CustomCard";
 import Subtitle from "@/components/Subtitle/Subtitle";
 import DateItem from "@/components/utils/DateItem";
 import EmptyImg from "@/components/EmptyImg/EmptyImg";
+import OrdersTable from "@/components/tables/orders/OrdersTable";
 
 async function loadCupon({ params }: any) {
     const coupons = await fetch(`${process.env.API_URL}/api/coupons/${params.id}`, { cache: 'no-store' })
+    const orders = await fetch(`${process.env.API_URL}/api/orders`, { cache: 'no-store' })
     const coupons_response = await coupons.json()
+    const orders_response = await orders.json()
 
     return {
         coupon: coupons_response.coupon,
+        orders: orders_response.orders
     }
 }
 
 export default async function Cupon(props: any) {
-    const { coupon }: any = await loadCupon(props)
+    const { coupon, orders }: any = await loadCupon(props)
 
     return (
         <main className={styles.main}>
@@ -129,6 +133,18 @@ export default async function Cupon(props: any) {
                         </article>
                     </CustomCard>
                 </Col>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                    <CustomCard>
+                        <article className={styles.card}>
+                            <h2>PEDIDOS CON EL CUPÓN {coupon?.code?.toUpperCase()}</h2>
+                            <hr />
+                            <section>
+                                <OrdersTable orders={orders} couponId={coupon.id} />
+                            </section>
+                        </article>
+                    </CustomCard>
+                </Col>
+                
             </Row>
             <br />
         </main>

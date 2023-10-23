@@ -36,6 +36,9 @@ export async function GET(req: NextRequest) {
             message: 'Pedido encontrado',
             coupon: {
                 ...order.data,
+            },
+            order: {
+                ...order.data,
             } 
         }, {
             status: 200

@@ -101,16 +101,16 @@ const Menu: FC<props> = ({ expand = true }) => {
                 </li>
                 <li>
                     <Link 
-                        href='/pagos' 
-                        className={isActive('/pagos') ? styles.active_menu : ''}
-                        disabled={pathname === '/pagos'}
+                        href='/comisiones' 
+                        className={isActive('/comisiones') ? styles.active_menu : ''}
+                        disabled={pathname === '/comisiones'}
                         >
                         <span
                             style={expand ? {} : inlineStyles.no_expand}>
                             <DollarOutlined />
                         </span>
                         {expand ? <span className={styles.menu_text}>
-                            Pagos
+                            Comisiones
                         </span> : ''
                         }
 

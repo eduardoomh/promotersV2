@@ -9,6 +9,7 @@ import CustomCard from "@/components/CustomCard/CustomCard";
 import Subtitle from "@/components/Subtitle/Subtitle";
 import { getStateCountry } from "@/utils/countries";
 import MovementsMadeBy from "@/components/tables/movements/madeBy/MovementsMadeBy";
+import CommissionsTable from "@/components/tables/commissions/madeBy/CommissionsMadeBy";
 
 async function loadPromoter({ params }: any) {
     const promoters = await fetch(`${process.env.API_URL}/api/promoters/${params.id}`, { cache: 'no-store' })
@@ -16,12 +17,13 @@ async function loadPromoter({ params }: any) {
 
     return {
         promoter: promoters_response.user,
-        movements: promoters_response.movements
+        movements: promoters_response.movements,
+        commissions: promoters_response.commissions
     }
 }
 
 export default async function Promotorer(props: any) {
-    const { promoter, movements }: any = await loadPromoter(props)
+    const { promoter, movements, commissions }: any = await loadPromoter(props)
 
     return (
         <main className={styles.main}>
@@ -137,6 +139,20 @@ export default async function Promotorer(props: any) {
                 </div>
             </CustomCard>
             <br />
+            <Row gutter={[20, 20]}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                    <CustomCard>
+                        <article className={styles.card}>
+                            <h2>COMISIONES</h2>
+                            <hr />
+                            <section>
+                                <CommissionsTable commissions={commissions} />
+                            </section>
+                        </article>
+                    </CustomCard>
+                </Col>
+            </Row>
+            <br/>
             <Row gutter={[20, 20]}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <CustomCard>

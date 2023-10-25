@@ -1,7 +1,7 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from '../usuarios/Users.module.css'
 import PromotersTable from "@/components/tables/promoters/PromotersTable";
-import DeleteConfirm from "@/components/PageModals/promoters/DeleteConfirm";
+import DeleteConfirm from "@/components/PageModals/delete/DeleteConfirm";
 import PromotersTableMob from "@/components/tables/promoters/PromotersTableMob";
 import GenericForm from "@/components/PageModals/genericForm/GenericForm";
 import ActionsModal from "@/components/PageModals/actions/ActionsModal";
@@ -44,7 +44,7 @@ export default async function Promotores() {
 
         </div>
       </section>
-      <DeleteConfirm />
+      <DeleteConfirm type='promoters' url='/promotores' />
       <ActionsModal type='promoters' url='/promotores' />
       < GenericForm
           users={users}

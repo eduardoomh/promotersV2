@@ -2,7 +2,7 @@
 import React, { FC } from 'react';
 import { Table, Tooltip, Avatar } from 'antd';
 import moment from 'moment';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { RightCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { IMovementSchema } from '@/models/Movement';
 
@@ -14,7 +14,7 @@ const MovementsTable: FC<Props> = ({ movements }) => {
     const router = useRouter()
 
     const handleActionClick = (_id: string) => {
-        router.push(`/movimientos?action=${_id}`);
+        router.push(`/movimientos/${_id}`);
     };
 
     const columns = [
@@ -58,7 +58,7 @@ const MovementsTable: FC<Props> = ({ movements }) => {
             render: (data: any) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <InfoCircleOutlined
+                        <RightCircleOutlined
                             style={{ fontSize: '1.6rem', color: '#0D709A' }}
                             onClick={() => handleActionClick(data._id)} />
                     </Tooltip>

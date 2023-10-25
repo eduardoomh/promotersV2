@@ -16,8 +16,8 @@ const CommissionsTable: FC<Props> = ({ commissions }) => {
     const router = useRouter()
     const [searchText, setSearchText] = useState<string>('');
 
-    const handleActionClick = (_id: string) => {
-        router.push(`/comisiones?action=${_id}`);
+    const handleActionClick = (_id: string, email: string) => {
+        router.push(`/comisiones?action=${_id}&correo=${email}`);
     };
 
     const columns = [
@@ -70,7 +70,7 @@ const CommissionsTable: FC<Props> = ({ commissions }) => {
                     <Tooltip placement="top" title={'Ver más información'}>
                         <InfoCircleOutlined
                             style={{ fontSize: '1.6rem', color: '#0D709A' }}
-                            onClick={() => handleActionClick(data._id)} />
+                            onClick={() => handleActionClick(data._id, data.user?.email)} />
                     </Tooltip>
 
                 </div>

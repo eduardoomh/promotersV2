@@ -130,7 +130,11 @@ export default async function Cupon(props: any) {
                             <h2>COMISIONES QUE USAN EL CUPÓN</h2>
                             <hr />
                             <section>
-                                
+                                {
+                                    commissions?.length > 0 ?
+                                        <CommissionsTable commissions={commissions} /> :
+                                        <EmptyImg />
+                                }
                             </section>
                         </article>
                     </CustomCard>

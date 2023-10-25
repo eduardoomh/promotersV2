@@ -8,7 +8,7 @@ import { DeleteOutlined, EditOutlined, RightCircleOutlined } from "@ant-design/i
 import { GlobalContext } from "@/context/globalContext"
 
 interface props {
-    type: 'users' | 'promoters' | 'coupons',
+    type: 'users' | 'promoters' | 'coupons' | 'commissions',
     url: string;
 }
 
@@ -51,6 +51,8 @@ const ActionsModal: FC<props> = ({ type, url }) => {
                 return 'promotor'
             case 'coupons':
                 return 'cupón'
+            case 'commissions':
+                return 'comisión'
             default:
                 return 'usuario'
         }
@@ -65,7 +67,7 @@ const ActionsModal: FC<props> = ({ type, url }) => {
             >
                 <div className={styles.icons_container}>
                     {
-                        type !== 'coupons' && (
+                        type !== 'coupons' && type !== 'commissions' && (
                             <section
                                 className={styles.icons_item}
                                 onClick={() => handleUpdateClick(searchParams.get('action') || '')}>
@@ -85,7 +87,7 @@ const ActionsModal: FC<props> = ({ type, url }) => {
                                 onClick={() =>
                                     handleDeleteClick(searchParams.get('action') || '',
                                         searchParams.get('correo') || '')}>
-                                <Tooltip placement="top" title={'Actualizar usuario'}>
+                                <Tooltip placement="top" title={`Actualizar ${assignName()}`}>
                                     <DeleteOutlined
                                         //@ts-ignore
 
@@ -101,7 +103,7 @@ const ActionsModal: FC<props> = ({ type, url }) => {
                         onClick={() => handleDetailClick(searchParams.get('action') || '')}>
                         <Tooltip
                             placement="top"
-                            title={`Actualizar ${type === 'users' ? 'usuario' : 'promotor'}`}>
+                            title={`Actualizar ${assignName()}`}>
                             <RightCircleOutlined
                                 style={{ fontSize: '40px', color: '#0D709A', cursor: 'pointer' }}
                             />

@@ -1,6 +1,6 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from '../usuarios/Users.module.css'
-import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
+import DeleteConfirm from "@/components/PageModals/delete/DeleteConfirm";
 import ActionsModal from "@/components/PageModals/actions/ActionsModal";
 import CommissionsTable from "@/components/tables/commissions/CommissionsTable";
 
@@ -29,8 +29,8 @@ export default async function Commissions() {
           </div>
         </div>
       </section>
-      <DeleteConfirm />
-      <ActionsModal type='coupons' url='/cupones' />
+        <DeleteConfirm type='commissions' url='/comisiones' />
+      <ActionsModal type='commissions' url='/comisiones' />
     </main>
   
     )

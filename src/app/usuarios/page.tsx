@@ -2,7 +2,7 @@ import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from './Users.module.css'
 import UsersTable from "@/components/tables/users/UsersTable";
 import UsersTableMob from "@/components/tables/users/UsersTableMob";
-import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
+import DeleteConfirm from "@/components/PageModals/delete/DeleteConfirm";
 import ActionsModal from "@/components/PageModals/actions/ActionsModal";
 import GenericForm from "@/components/PageModals/genericForm/GenericForm";
 
@@ -36,7 +36,7 @@ export default async function Usuarios() {
 
         </div>
       </section>
-      <DeleteConfirm />
+      <DeleteConfirm type='users' url='/usuarios' />
       <ActionsModal type='users' url='/usuarios'/>
       < GenericForm
           users={users}

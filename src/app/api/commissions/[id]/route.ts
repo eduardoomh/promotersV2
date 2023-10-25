@@ -22,7 +22,8 @@ export async function GET(req: NextRequest) {
 
         const response = NextResponse.json({
             message: 'Comission encontrada',
-            user: findCommission
+            user: findCommission,
+            commission: findCommission
         }, {
             status: 200
         })

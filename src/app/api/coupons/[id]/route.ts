@@ -1,4 +1,5 @@
 import { connectMongoDB } from "@/libs/mongodb";
+import CommissionModel from "@/models/Comissions";
 import Promoter, { IPromoterSchema } from "@/models/Promoter";
 import Settings from "@/models/Settings";
 import { messages } from "@/utils/messages";
@@ -38,13 +39,16 @@ export async function GET(req: NextRequest) {
             include: coupon.data.product_ids
         };
 
+        const commissions = await CommissionModel.find({"coupon.code": coupon.data.code})
+
         const { data } = await WooApi.get(`products`, productParams)
         const response = NextResponse.json({
             message: 'Cupon encontrado',
             coupon: {
                 ...coupon.data,
                 product_ids: data
-            } 
+            },
+            commissions
         }, {
             status: 200
         })

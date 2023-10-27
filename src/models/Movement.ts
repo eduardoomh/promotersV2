@@ -58,7 +58,7 @@ const movementSchema = new Schema({
     made_by: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        rquired: false
+        rquired: true
     },
     created_at: {
         type: Schema.Types.Date,

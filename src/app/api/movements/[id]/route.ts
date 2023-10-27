@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/movements/')[1]
 
-        const findMovement = await Movement.findOne({ _id: id }).populate('user').populate('promoter').populate('commission')
+        const findMovement = await Movement.findOne({ _id: id }).populate('user').populate('promoter')
 
         if (!findMovement) {
             return NextResponse.json({
@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
 
         const response = NextResponse.json({
             message: 'Movmiento encontrado',
+            movement: findMovement,
             user: findMovement
         }, {
             status: 200

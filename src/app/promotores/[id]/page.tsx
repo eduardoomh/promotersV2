@@ -4,7 +4,6 @@ import { Col, Row } from "antd";
 import RoleTag from "@/components/utils/RoleTag";
 import DateItem from "@/components/utils/DateItem";
 import AvatarUser from "@/components/stats/AvatarUser/AvatarUser";
-import EmptyImg from "@/components/EmptyImg/EmptyImg";
 import CustomCard from "@/components/CustomCard/CustomCard";
 import Subtitle from "@/components/Subtitle/Subtitle";
 import { getStateCountry } from "@/utils/countries";
@@ -16,17 +15,20 @@ import GenericForm from "@/components/PageModals/genericForm/GenericForm";
 
 async function loadPromoter({ params }: any) {
     const promoters = await fetch(`${process.env.API_URL}/api/promoters/${params.id}`, { cache: 'no-store' })
+    const coupons = await fetch(`${process.env.API_URL}/api/coupons`, { cache: 'no-store' })
     const promoters_response = await promoters.json()
+    const coupons_response = await coupons.json()
 
     return {
         promoter: promoters_response.user,
         movements: promoters_response.movements,
-        commissions: promoters_response.commissions
+        commissions: promoters_response.commissions,
+        coupons: coupons_response.coupons
     }
 }
 
 export default async function Promotorer(props: any) {
-    const { promoter, movements, commissions }: any = await loadPromoter(props)
+    const { promoter, movements, commissions, coupons }: any = await loadPromoter(props)
 
     return (
         <main className={styles.main}>
@@ -178,6 +180,7 @@ export default async function Promotorer(props: any) {
                 promoters={[]} 
                 users={[]}
                 data={promoter}
+                coupons={coupons}
                 />
         </main>
 

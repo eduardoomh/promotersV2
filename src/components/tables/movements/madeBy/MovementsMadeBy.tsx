@@ -40,6 +40,10 @@ const MovementsTable: FC<Props> = ({ movements }) => {
             render: (data: any) => <a>${data.amount} mxn</a>,
         },
         {
+            title: 'Concepto',
+            render: (data: any) => <a>{data.description}</a>,
+        },
+        {
             title: 'Saldo anterior',
             render: (data: any) => <a>${data.security.before_mod} mxn</a>,
         },

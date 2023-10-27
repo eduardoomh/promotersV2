@@ -45,6 +45,11 @@ export default async function Commission(props: any) {
                                     <p>{movement.user.email}</p>
 
                                 </div>
+                                <div className={styles.card_item}>
+                                    <p><strong>Concepto del pago</strong></p>
+                                    <p>{movement.description}</p>
+
+                                </div>
                             </article>
                         </Col>
                         <Col xs={24} sm={24} md={12} lg={8} xl={8}>

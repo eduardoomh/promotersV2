@@ -26,7 +26,7 @@ const NewMovementForm: FC<props> = ({ url, data: allData, type }) => {
         await fetchPost({
             endpoint: 'movements',
             formData: {
-                new_commission: {
+                new_movement: {
                     user: allData.user._id,
                     promoter: allData._id,
                     description: data.description,

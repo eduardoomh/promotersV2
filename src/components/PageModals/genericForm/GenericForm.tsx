@@ -16,10 +16,11 @@ interface props {
     users: IUserSchema[];
     promoters: IPromoterSchema[];
     data: any;
+    coupons?: any;
     type: 'users' | 'promoters' | 'promoterActions';
 }
 
-const GenericForm: FC<props> = ({ users, promoters, url, type, data}) => {
+const GenericForm: FC<props> = ({ users, promoters, url, type, data, coupons = []}) => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [isOpenModal, setIsOpenModal] = useState(false)
@@ -65,6 +66,7 @@ const GenericForm: FC<props> = ({ users, promoters, url, type, data}) => {
                                          <NewCommissionForm 
                                             url={`/promotores/${data._id}`} 
                                             data={data}
+                                            coupons={coupons}
                                             />
                                      ) : (
                                         <>

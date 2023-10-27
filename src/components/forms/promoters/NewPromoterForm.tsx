@@ -10,9 +10,7 @@ import { IUserSchema } from '@/models/User'
 import { usePatch } from '@/hooks/usePatch'
 import styles from '../users/NewUser.module.css'
 import { IPromoterSchema } from '@/models/Promoter'
-import MXIcon from '@/../public/countries/MX.svg'
 import { MexicoStates, USAstates } from '@/utils/constants'
-import { set } from 'mongoose'
 
 interface props {
     promoters: IPromoterSchema[];

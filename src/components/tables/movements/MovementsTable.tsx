@@ -43,6 +43,10 @@ const MovementsTable: FC<Props> = ({ movements }) => {
             render: (data: any) => <a>{data.user?.email}</a>,
         },
         {
+            title: 'Concepto',
+            render: (data: any) => <a>{data.description}</a>,
+        },
+        {
             title: 'Cantidad',
             render: (data: any) => <a>${data.amount} mxn</a>,
         },

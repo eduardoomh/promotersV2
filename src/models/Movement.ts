@@ -14,6 +14,7 @@ export interface IMovementSchema extends Document {
         after_mod: number;
     }
     commission?: string | ICommissionSchema;
+    description: string;
     made_by?: string | IUserSchema;
     created_at: number;
     updated_at: number;
@@ -33,6 +34,9 @@ const movementSchema = new Schema({
     },
     amount: {
         type: Number
+    },
+    description: {
+        type: String
     },
     type: {
         type: String,

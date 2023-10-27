@@ -14,7 +14,7 @@ const MovementsTable: FC<Props> = ({ movements }) => {
     const router = useRouter()
 
     const handleActionClick = (_id: string) => {
-        router.push(`/movimientos/${_id}`);
+        router.push(`/estado-de-cuenta/${_id}`);
     };
 
     const columns = [

@@ -10,6 +10,9 @@ import Subtitle from "@/components/Subtitle/Subtitle";
 import { getStateCountry } from "@/utils/countries";
 import MovementsMadeBy from "@/components/tables/movements/madeBy/MovementsMadeBy";
 import CommissionsTable from "@/components/tables/commissions/madeBy/CommissionsMadeBy";
+import PromoterActions from "@/components/PageModals/actions/promoterActions/PromoterActions";
+import ActionsButton from "@/components/PageModals/actions/promoterActions/ActionsButton/ActionsButton";
+import GenericForm from "@/components/PageModals/genericForm/GenericForm";
 
 async function loadPromoter({ params }: any) {
     const promoters = await fetch(`${process.env.API_URL}/api/promoters/${params.id}`, { cache: 'no-store' })
@@ -135,6 +138,7 @@ export default async function Promotorer(props: any) {
 
                             </article>
                         </Col>
+                        <ActionsButton id={promoter._id} />
                     </Row>
                 </div>
             </CustomCard>
@@ -152,7 +156,7 @@ export default async function Promotorer(props: any) {
                     </CustomCard>
                 </Col>
             </Row>
-            <br/>
+            <br />
             <Row gutter={[20, 20]}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <CustomCard>
@@ -167,6 +171,14 @@ export default async function Promotorer(props: any) {
                 </Col>
             </Row>
             <br />
+            <PromoterActions id={promoter._id} />
+            < GenericForm
+                url={`/promotores/${promoter._id}`}
+                type='promoterActions'
+                promoters={[]} 
+                users={[]}
+                data={promoter}
+                />
         </main>
 
     )

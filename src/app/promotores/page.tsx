@@ -50,7 +50,9 @@ export default async function Promotores() {
           users={users}
           url='/promotores'
           type='promoters'
-          promoters={promoters} />
+          promoters={promoters} 
+          data={null}
+          />
     </main>
 
   )

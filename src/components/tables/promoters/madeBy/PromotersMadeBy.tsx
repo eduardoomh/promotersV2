@@ -2,7 +2,7 @@
 import React, { FC, useContext, useState } from 'react';
 import { Table, Tooltip, Avatar } from 'antd';
 import moment from 'moment';
-import { ArrowRightOutlined, RightCircleOutlined } from '@ant-design/icons';
+import { RightCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { IPromoterSchema } from '@/models/Promoter';
 import { GlobalContext } from '@/context/globalContext';
@@ -15,14 +15,6 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
     const router = useRouter()
     const { startLoading } = useContext(GlobalContext)
     const [searchText, setSearchText] = useState<string>('');
-
-    const handleDeleteClick = (_id: string, email: string) => {
-        router.push(`/promotores?eliminar=${_id}&correo=${email}`);
-    };
-
-    const handleUpdateClick = (_id: string) => {
-        router.push(`/promotores?actualizar=${_id}`);
-    };
 
     const handleDetailClick = (_id: string) => {
         startLoading()

@@ -4,11 +4,13 @@ import { Col, Row } from "antd";
 import CustomCard from "@/components/CustomCard/CustomCard";
 import Subtitle from "@/components/Subtitle/Subtitle";
 import DateItem from "@/components/utils/DateItem";
+import AvatarItem from "@/components/stats/AvatarItem/AvatarItem";
+import EmptyImg from "@/components/EmptyImg/EmptyImg";
 
 async function loadMovement({ params }: any) {
     const movement = await fetch(`${process.env.API_URL}/api/movements/${params.id}`, { cache: 'no-store' })
     const movement_response = await movement.json()
-    
+
     return {
         movement: movement_response.user,
     }
@@ -49,7 +51,7 @@ export default async function Commission(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Cantidad</strong></p>
-                                    <p>{movement.balance}</p>
+                                    <p>{movement.amount}</p>
 
                                 </div>
                                 <div className={styles.card_item}>
@@ -77,12 +79,32 @@ export default async function Commission(props: any) {
                             </article>
                         </Col>
                     </Row>
-                    <Subtitle>CUPÓN ASIGNADO</Subtitle>
-                    
+                    <Subtitle>PERFIL DEL PROMOTOR</Subtitle>
                     <hr />
+                    <article className={styles.card}>
+                        {
+                            movement.promoter ? (
+                                <>
+                                    <br />
+                                    <AvatarItem
+                                        key={movement.user._id}
+                                        letter={movement.user.name[0].toUpperCase()}
+                                        user={movement.user}
+                                        size='large'
+                                        color={'#0D709A'}
+                                        //@ts-ignore
+                                        url={`/promotores/${movement.promoter._id}`}
+                                    />
+                                </>
+                            ) : (
+                                <section>
+                                    <EmptyImg />
+                                </section>
+                            )
+                        }
+                    </article>
                 </div>
             </CustomCard>
-            <br />
             <br />
         </main>
 

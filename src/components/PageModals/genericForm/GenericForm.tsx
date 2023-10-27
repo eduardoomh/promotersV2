@@ -1,7 +1,8 @@
 'use client'
-import CustomButton from "@/components/Button"
 import FormCard from "@/components/FomCard/FormCard"
 import CustomModal from "@/components/Modal/CustomModal"
+import NewCommissionForm from "@/components/forms/commissions/NewCommissionForm"
+import NewMovementForm from "@/components/forms/movements/NewMovementForm"
 import NewPromoterForm from "@/components/forms/promoters/NewPromoterForm"
 import NewUserForm from "@/components/forms/users/NewUserForm"
 import { IPromoterSchema } from "@/models/Promoter"
@@ -13,11 +14,12 @@ import { FC, useEffect, useState } from "react"
 interface props {
     url: string;
     users: IUserSchema[];
-    promoters: IPromoterSchema[]
-    type: 'users' | 'promoters';
+    promoters: IPromoterSchema[];
+    data: any;
+    type: 'users' | 'promoters' | 'promoterActions';
 }
 
-const GenericForm: FC<props> = ({ users, promoters, url, type}) => {
+const GenericForm: FC<props> = ({ users, promoters, url, type, data}) => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [isOpenModal, setIsOpenModal] = useState(false)
@@ -27,7 +29,13 @@ const GenericForm: FC<props> = ({ users, promoters, url, type}) => {
     }
 
     useEffect(() => {
-        if (searchParams.get('actualizar') || searchParams.get('crear')) {
+        if (
+            searchParams.get('actualizar') || 
+            searchParams.get('crear') ||
+            searchParams.get('comision') || 
+            searchParams.get('add-amount') || 
+            searchParams.get('remove-amount')
+            ) {
             setIsOpenModal(true)
         } else {
             setIsOpenModal(false)
@@ -48,8 +56,38 @@ const GenericForm: FC<props> = ({ users, promoters, url, type}) => {
                         {
                             type === 'users' ? (
                                 <NewUserForm users={users} />
-                            ) : (
+                            ) : type === 'promoters' ? (
                                 <NewPromoterForm promoters={promoters} users={users} />
+                            ) :(
+                                <>
+                                {
+                                     searchParams.get('comision') ? (
+                                         <NewCommissionForm 
+                                            url={`/promotores/${data._id}`} 
+                                            data={data}
+                                            />
+                                     ) : (
+                                        <>
+                                        {
+                                            searchParams.get('remove-amount') ? (
+                                                <NewMovementForm 
+                                                    url={`/promotores/${data._id}`} 
+                                                    data={data}
+                                                    type={'discount'}
+                                                />
+                                            ) : (
+                                                <NewMovementForm 
+                                                    url={`/promotores/${data._id}`} 
+                                                    data={data}
+                                                    type={'payment'}
+                                                />
+                                            )
+                                        }
+                                        </>
+                                     )
+                                }
+                              
+                                </>
                             )
                         }
                     

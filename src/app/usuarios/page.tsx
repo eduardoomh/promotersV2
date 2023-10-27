@@ -42,7 +42,9 @@ export default async function Usuarios() {
           users={users}
           url='/usuarios'
           type='users'
-          promoters={[]} />
+          promoters={[]} 
+          data={null}
+          />
     </main>
 
   )

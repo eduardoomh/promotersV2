@@ -1,10 +1,11 @@
 'use client'
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { Table, Tooltip, Avatar } from 'antd';
 import moment from 'moment';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { RightCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { ICommissionSchema } from '@/models/Comissions';
+import { GlobalContext } from '@/context/globalContext';
 
 interface Props {
     commissions: ICommissionSchema[];
@@ -12,9 +13,11 @@ interface Props {
 
 const CommissionsTable: FC<Props> = ({ commissions }) => {
     const router = useRouter()
+    const {startLoading} = useContext(GlobalContext)
 
     const handleActionClick = (_id: string) => {
-        router.push(`/comisiones?action=${_id}`);
+        startLoading()
+        router.push(`/comisiones/${_id}`);
     };
 
     const columns = [
@@ -65,7 +68,7 @@ const CommissionsTable: FC<Props> = ({ commissions }) => {
             render: (data: any) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <InfoCircleOutlined
+                        <RightCircleOutlined
                             style={{ fontSize: '1.6rem', color: '#0D709A' }}
                             onClick={() => handleActionClick(data._id)} />
                     </Tooltip>

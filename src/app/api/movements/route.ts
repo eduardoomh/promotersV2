@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         await connectMongoDB()
         const body = await req.json()
         const { new_movement } = body
-        const { user, promoter, commission, amount, type } = new_movement
+        const { user, promoter, commission, amount, type, description } = new_movement
 
         const cookieStore = cookies()
         const auth_cookie: any = cookieStore.get('auth_cookie')
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
         //validar campos enviados
         if (
-            !user || !promoter || !commission || !amount || !type
+            !user || !promoter || !commission || !amount || !type || !description
         ) {
             return NextResponse.json({
                 message: messages.error.needProps
@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
             amount: Number(amount),
             type,
             commission,
+            description,
             security: {
                 before_mod: Number(promoterFind.balance),
                 after_mod: updateBalance

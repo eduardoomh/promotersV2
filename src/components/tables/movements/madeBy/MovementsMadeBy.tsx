@@ -1,10 +1,11 @@
 'use client'
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { Table, Tooltip, Avatar } from 'antd';
 import moment from 'moment';
 import { RightCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { IMovementSchema } from '@/models/Movement';
+import { GlobalContext } from '@/context/globalContext';
 
 interface Props {
     movements: IMovementSchema[];
@@ -12,8 +13,10 @@ interface Props {
 
 const MovementsTable: FC<Props> = ({ movements }) => {
     const router = useRouter()
+    const { startLoading } = useContext(GlobalContext)
 
     const handleActionClick = (_id: string) => {
+        startLoading()
         router.push(`/estado-de-cuenta/${_id}`);
     };
 

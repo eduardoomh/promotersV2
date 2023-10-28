@@ -12,6 +12,7 @@ import CommissionsTable from "@/components/tables/commissions/madeBy/Commissions
 import PromoterActions from "@/components/PageModals/actions/promoterActions/PromoterActions";
 import ActionsButton from "@/components/PageModals/actions/promoterActions/ActionsButton/ActionsButton";
 import GenericForm from "@/components/PageModals/genericForm/GenericForm";
+import EmptyImg from "@/components/EmptyImg/EmptyImg";
 
 async function loadPromoter({ params }: any) {
     const promoters = await fetch(`${process.env.API_URL}/api/promoters/${params.id}`, { cache: 'no-store' })
@@ -152,7 +153,11 @@ export default async function Promotorer(props: any) {
                             <h2>COMISIONES</h2>
                             <hr />
                             <section>
-                                <CommissionsTable commissions={commissions} />
+                                {
+                                    commissions?.length > 0 ?
+                                        <CommissionsTable commissions={commissions} /> :
+                                        <EmptyImg />
+                                }
                             </section>
                         </article>
                     </CustomCard>
@@ -166,7 +171,12 @@ export default async function Promotorer(props: any) {
                             <h2>ESTADO DE CUENTA</h2>
                             <hr />
                             <section>
-                                <MovementsMadeBy movements={movements} />
+                                {
+                                    movements?.length > 0 ?
+                                        <MovementsMadeBy movements={movements} /> :
+                                        <EmptyImg />
+                                }
+
                             </section>
                         </article>
                     </CustomCard>
@@ -177,11 +187,11 @@ export default async function Promotorer(props: any) {
             < GenericForm
                 url={`/promotores/${promoter._id}`}
                 type='promoterActions'
-                promoters={[]} 
+                promoters={[]}
                 users={[]}
                 data={promoter}
                 coupons={coupons}
-                />
+            />
         </main>
 
     )

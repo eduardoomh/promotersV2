@@ -45,13 +45,13 @@ const CommissionsTable: FC<Props> = ({ commissions }) => {
         {
             title: 'Ganancias',
             render: (data: any) =>
-                <a>
+                <p>
                     {
                         data.earnings.type === 'percentage' ?
-                            `%${data.earnings.amount}` :
+                            `${data.earnings.amount}%` :
                             `$${data.earnings.amount} mxn`
                     }
-                </a>,
+                </p>,
         },
         {
             title: 'Cupón',

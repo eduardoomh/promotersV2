@@ -1,5 +1,5 @@
 'use client'
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { Table, Tooltip, Input, Avatar } from 'antd';
 import moment from 'moment';
 import { RightCircleOutlined } from '@ant-design/icons';
@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import SubitleSearch from '../../SubtitleSearch/SubtitleSearch';
 import CustomCard from '@/components/CustomCard/CustomCard';
 import { IMovementSchema } from '@/models/Movement';
+import { GlobalContext } from '@/context/globalContext';
 
 interface Props {
     movements: IMovementSchema[];
@@ -15,8 +16,10 @@ interface Props {
 const MovementsTable: FC<Props> = ({ movements }) => {
     const router = useRouter()
     const [searchText, setSearchText] = useState<string>('');
+    const { startLoading } = useContext(GlobalContext)
 
     const handleActionClick = (_id: string) => {
+        startLoading()
         router.push(`/estado-de-cuenta/${_id}`);
     };
 
@@ -69,9 +72,9 @@ const MovementsTable: FC<Props> = ({ movements }) => {
             render: (data: any) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Ver más información'}>
-                    <RightCircleOutlined
-                        style={{fontSize: '1.6rem', color: '#0D709A'}} 
-                        onClick={() => handleActionClick(data._id)} />
+                        <RightCircleOutlined
+                            style={{ fontSize: '1.6rem', color: '#0D709A' }}
+                            onClick={() => handleActionClick(data._id)} />
                     </Tooltip>
 
                 </div>
@@ -88,7 +91,7 @@ const MovementsTable: FC<Props> = ({ movements }) => {
     );
 
     return (
-            <>
+        <>
             <SubitleSearch title='ESTADO DE CUENTA'>
                 <Input.Search
                     placeholder="Buscar"
@@ -99,10 +102,10 @@ const MovementsTable: FC<Props> = ({ movements }) => {
             <br />
             {/* @ts-ignore */}
             <CustomCard>
-                <Table columns={columns} dataSource={filteredMovements} style={{border: '1px solid #E6E6E6'}} />
-                <br/>
+                <Table columns={columns} dataSource={filteredMovements} style={{ border: '1px solid #E6E6E6' }} />
+                <br />
             </CustomCard>
-            
+
         </>
     );
 };

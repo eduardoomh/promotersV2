@@ -25,7 +25,7 @@ const ActionsButton: FC<props> = ({ id }) => {
                     fontSize: '1rem',
                     fontWeight: '600',
                     borderRadius: '6px',
-                    backgroundColor: '#bdd3e7',
+                    backgroundColor: '#efefef',
                     border: '1px solid #7cabd6',
                     cursor: 'pointer'
                 }}

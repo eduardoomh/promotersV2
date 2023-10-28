@@ -14,9 +14,15 @@ async function loadCupon({ params }: any) {
     const coupons_response = await coupons.json()
     const orders_response = await orders.json()
 
+    console.log(orders_response.orders.filter((order: any) => {
+        return order.coupon_lines.filter((coupon: any) => coupon.code === coupons_response.code);
+    }), "vemos")
+
     return {
         coupon: coupons_response.coupon,
-        orders: orders_response.orders,
+        orders: orders_response.orders.filter((order: any) => {
+            return order.coupon_lines.filter((coupon: any) => coupon.code === coupons_response.code);
+        }),
         commissions: coupons_response.commissions
     }
 }

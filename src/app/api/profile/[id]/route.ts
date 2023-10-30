@@ -3,10 +3,14 @@ import Promoter from '@/models/Promoter'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
+import User from '@/models/User'
 
 export async function POST(req: NextRequest) {
     try {
         await connectMongoDB()
+        const { pathname } = new URL(req.url)
+        const id = pathname.split('/api/promoters/')[1]
+        
 
         const response = NextResponse.json({
             message: messages.success.promoterCreated
@@ -29,32 +33,27 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
     try {
         await connectMongoDB()
-        const token = req.cookies.get('auth_cookie')
-        
-        if(!token){
-            console.log("fallaa", token)
+        const { pathname } = new URL(req.url)
+        const id = pathname.split('/api/profile/')[1]
+        const user = await User.findOne({_id: id}).sort({$natural: -1})
+
+        if(!user){
             return NextResponse.json({
-                message: messages.error.notAuthorized
-            },{
-                status: 400
+                message: 'El promotor no existe',
+            }, {
+                status: 500
+            })
+        }
+        const promoter = await Promoter.findOne({user: id}).populate('user').sort({$natural: -1})
+
+        if(!promoter){
+            return NextResponse.json({
+                message: 'El promotor no existe',
+            }, {
+                status: 500
             })
         }
 
-        const IsTokenValid = jwt.verify(token.value, 'secretch@mos@')
-        //@ts-ignore
-        const {data} = IsTokenValid
-
-        if(!data){
-            console.log("no se autoriza")
-            return NextResponse.json({
-                message: messages.error.notAuthorized
-            },{
-                status: 400
-            })
-        }
-
-        const promoter = await Promoter.findOne({user: data._id}).populate('user').sort({$natural: -1})
-        console.log(promoter, data)
         const response = NextResponse.json({
             promoter,
             messages: messages.success.authorized
@@ -63,7 +62,6 @@ export async function GET(req: NextRequest) {
         })
         return response
     } catch (error) {
-        console.log(error, "entra aca")
         return NextResponse.json({
             message: messages.error.default, error
         }, {

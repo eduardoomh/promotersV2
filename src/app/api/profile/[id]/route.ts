@@ -2,8 +2,9 @@ import { connectMongoDB } from '@/libs/mongodb'
 import Promoter from '@/models/Promoter'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
-import jwt from 'jsonwebtoken'
 import User from '@/models/User'
+import Movement from '@/models/Movement'
+import Commission from "@/models/Comissions";
 
 export async function POST(req: NextRequest) {
     try {
@@ -45,6 +46,8 @@ export async function GET(req: NextRequest) {
             })
         }
         const promoter = await Promoter.findOne({user: id}).populate('user').sort({$natural: -1})
+        const commissions = await Commission.find({user: id}).populate('user').sort({$natural: -1})
+        const movements = await Movement.find({user: id}).populate('user').sort({$natural: -1})
 
         if(!promoter){
             return NextResponse.json({
@@ -56,6 +59,8 @@ export async function GET(req: NextRequest) {
 
         const response = NextResponse.json({
             promoter,
+            movements,
+            commissions,
             messages: messages.success.authorized
         }, {
             status: 200

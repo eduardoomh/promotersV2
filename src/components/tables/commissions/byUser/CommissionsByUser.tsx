@@ -23,6 +23,10 @@ const CommissionsByUser: FC<Props> = ({ commissions, id }) => {
 
     const columns = [
         {
+            title: 'Cupón',
+            render: (data: any) => <a>{data.coupon.code}</a>,
+        },
+        {
             title: 'Ganancias',
             render: (data: any) =>
                 <p>
@@ -32,10 +36,6 @@ const CommissionsByUser: FC<Props> = ({ commissions, id }) => {
                             `$${data.earnings.amount} mxn`
                     }
                 </p>,
-        },
-        {
-            title: 'Cupón',
-            render: (data: any) => <a>{data.coupon.code}</a>,
         },
         {
             title: 'Fecha',

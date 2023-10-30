@@ -7,24 +7,23 @@ import Subtitle from "@/components/Subtitle/Subtitle";
 import RoleTag from "@/components/utils/RoleTag";
 import DateItem from "@/components/utils/DateItem";
 import { getStateCountry } from "@/utils/countries";
-/*
+
 async function loadProfile({ params }: any) {
-  console.log("se carga???", `${process.env.API_URL}/api/profile`, params)
-  const promoter = await fetch(`${process.env.API_URL}/api/profile`, { cache: 'no-store' })
-  console.log("se cargha?", await promoter?.json())
+  const promoter = await fetch(`${process.env.API_URL}/api/profile/${params.id}`, { cache: 'no-store' })
   const promoter_response = await promoter?.json()
+
+  console.log(promoter_response, "la repsuesta del promotr")
 
   return {
       promoter: promoter_response.promoter,
       
   }
 }
-*/
+
 export default async function Perfil(props: any) {
-  //const { promoter }: any = await loadProfile(props)
+  const { promoter }: any = await loadProfile(props)
 
   return (
-    {/*
     <main className={styles.main}>
         <EndLoading />
         <CustomCard>
@@ -139,7 +138,6 @@ export default async function Perfil(props: any) {
         </CustomCard>
         <br />
     </main>
-  */}
-  
+
 )
 }

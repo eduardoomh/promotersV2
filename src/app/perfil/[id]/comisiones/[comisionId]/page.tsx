@@ -119,7 +119,7 @@ export default async function Commission(props: any) {
                     <Row gutter={[25, 25]}>
                         {
                             coupon.product_ids.map((el: any) => (
-                                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                                <Col xs={24} sm={24} md={24} lg={24} xl={24} key={el.id}>
                                     <br />
                                     <article
                                         className={styles.product_card}

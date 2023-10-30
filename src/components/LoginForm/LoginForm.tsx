@@ -41,7 +41,7 @@ const LoginForm = () => {
 
             updateUserData(result.data.userLogged)
             if (result.data.userLogged.role === 'promoter') {
-                router.push('/perfil')
+                router.push(`/perfil/${result.data.userLogged._id}`)
             } else {
                 router.push('/')
             }

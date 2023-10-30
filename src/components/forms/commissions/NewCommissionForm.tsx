@@ -65,7 +65,7 @@ const NewCommissionForm: FC<props> = ({ url, data: allData, coupons = [] }) => {
                             filter={(input: any, option: any) => (option?.label.toLowerCase() ?? '').includes(input)}
                             optionsList={coupons?.map((el: any) => {
                                 return {
-                                    label: el.code,
+                                    label: `${el.code} - ${el.discount_type === 'percent' ? `${el.amount}%` : `${el.amount} mxn`}`,
                                     value: el.id
                                 }
                             }  ) || []}

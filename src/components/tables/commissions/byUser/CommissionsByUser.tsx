@@ -8,40 +8,20 @@ import { ICommissionSchema } from '@/models/Comissions';
 import { GlobalContext } from '@/context/globalContext';
 
 interface Props {
+    id: string;
     commissions: ICommissionSchema[];
 }
 
-const CommissionsMadeBy: FC<Props> = ({ commissions }) => {
+const CommissionsByUser: FC<Props> = ({ commissions, id }) => {
     const router = useRouter()
     const {startLoading} = useContext(GlobalContext)
 
     const handleActionClick = (_id: string) => {
         startLoading()
-        router.push(`/comisiones/${_id}`);
+        router.push(`/perfil/${id}/comisiones/${_id}`);
     };
 
     const columns = [
-        {
-            title: 'Nombre',
-            render: (data: any) =>
-                <>
-                    <Avatar
-                        style={{
-                            backgroundColor: '#528FA9',
-                            verticalAlign: 'middle',
-                            marginRight: '0.4rem'
-                        }}
-                        size='default'
-                        gap={1}>
-                        {data.user.name[0].toUpperCase()}
-                    </Avatar>
-                    {data.user.name}
-                </>
-        },
-        {
-            title: 'Correo',
-            render: (data: any) => <a>{data.user?.email}</a>,
-        },
         {
             title: 'Ganancias',
             render: (data: any) =>
@@ -64,7 +44,7 @@ const CommissionsMadeBy: FC<Props> = ({ commissions }) => {
             render: (date: string) => moment(date).format('DD/MM/YYYY'),
         },
         {
-            title: 'Acciones',
+            title: 'Detalles',
             render: (data: any) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Ver más información'}>
@@ -87,4 +67,4 @@ const CommissionsMadeBy: FC<Props> = ({ commissions }) => {
     );
 };
 
-export default CommissionsMadeBy;
+export default CommissionsByUser;

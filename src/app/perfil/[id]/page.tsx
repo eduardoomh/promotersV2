@@ -7,21 +7,24 @@ import Subtitle from "@/components/Subtitle/Subtitle";
 import RoleTag from "@/components/utils/RoleTag";
 import DateItem from "@/components/utils/DateItem";
 import { getStateCountry } from "@/utils/countries";
+import EmptyImg from "@/components/EmptyImg/EmptyImg";
+import CommissionsByUser from "@/components/tables/commissions/byUser/CommissionsByUser";
+import MovementsByUser from "@/components/tables/movements/byUser/MovementsByUser";
 
 async function loadProfile({ params }: any) {
   const promoter = await fetch(`${process.env.API_URL}/api/profile/${params.id}`, { cache: 'no-store' })
   const promoter_response = await promoter?.json()
 
-  console.log(promoter_response, "la repsuesta del promotr")
-
   return {
       promoter: promoter_response.promoter,
+      movements: promoter_response.movements,
+      commissions: promoter_response.commissions,
       
   }
 }
 
 export default async function Perfil(props: any) {
-  const { promoter }: any = await loadProfile(props)
+  const { promoter, movements, commissions }: any = await loadProfile(props)
 
   return (
     <main className={styles.main}>
@@ -137,6 +140,46 @@ export default async function Perfil(props: any) {
             </div>
         </CustomCard>
         <br />
+        <Row gutter={[20, 20]}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                    <CustomCard>
+                        <article className={styles.card}>
+                            <h2>COMISIONES Y CUPONES</h2>
+                            <hr />
+                            <section>
+                                {
+                                    commissions?.length > 0 ?
+                                        <CommissionsByUser
+                                            id={props.params.id}
+                                            commissions={commissions} 
+                                            /> :
+                                        <EmptyImg />
+                                }
+                            </section>
+                        </article>
+                    </CustomCard>
+                </Col>
+            </Row>
+            <br />
+            <Row gutter={[20, 20]}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                    <CustomCard>
+                        <article className={styles.card}>
+                            <h2>MOVIMIENTOS</h2>
+                            <hr />
+                            <section>
+                                {
+                                    movements?.length > 0 ?
+                                        <MovementsByUser movements={movements} /> :
+                                        <EmptyImg />
+                                }
+
+                            </section>
+                        </article>
+                    </CustomCard>
+                </Col>
+            </Row>
+            <br />
     </main>
 
 )

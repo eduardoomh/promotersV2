@@ -1,13 +1,12 @@
 import EndLoading from "@/components/EndLoading/EndLoading";
-import styles from '../../promotores/[id]/Promoter.module.css'
+import styles from '../../../../promotores/[id]/Promoter.module.css'
 import { Col, Row } from "antd";
 import CustomCard from "@/components/CustomCard/CustomCard";
 import Subtitle from "@/components/Subtitle/Subtitle";
 import DateItem from "@/components/utils/DateItem";
-import Link from "@/components/CustomLink/CustomLink";
 
 async function loadCommission({ params }: any) {
-    const commissions = await fetch(`${process.env.API_URL}/api/commissions/${params.id}`, { cache: 'no-store' })
+    const commissions = await fetch(`${process.env.API_URL}/api/commissions/${params.comisionId}`, { cache: 'no-store' })
     const commissions_response = await commissions.json()
     //@ts-ignore
     const coupon = await fetch(`${process.env.API_URL}/api/coupons/${commissions_response.user.coupon.id}`, { cache: 'no-store' })
@@ -86,38 +85,68 @@ export default async function Commission(props: any) {
                     <Row gutter={[25, 25]}>
                         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                             <br />
-                            <Link href={`/cupones/${coupon.id}`}>
-                                <article
-                                    className={styles.product_card}
-                                    key={coupon.id}
-                                >
-                                    <section className={styles.image_content}>
-                                        <img
-                                            src={coupon?.product_ids[0].images[0].src}
-                                            alt={coupon?.product_ids[0].name}
-                                            width={200}
-                                            height={200}
-                                        />
-                                    </section>
-                                    <section className={styles.content}>
-                                        <p
-                                            className={styles.content_title}>
-                                            <strong>{coupon.code}</strong>
-                                        </p>
-                                        <p>
-                                            <strong>Tipo de descuento:</strong> {coupon.discount_type}
-                                        </p>
-                                        <p>
-                                            <strong>Cantidad:</strong> {coupon.amount}
-                                        </p>
-                                        <br />
-                                    </section>
-                                </article>
-                            </Link>
-
+                            <article
+                                className={styles.product_card}
+                                key={coupon.id}
+                            >
+                                <section className={styles.image_content}>
+                                    <img
+                                        src={coupon?.product_ids[0].images[0].src}
+                                        alt={coupon?.product_ids[0].name}
+                                        width={200}
+                                        height={200}
+                                    />
+                                </section>
+                                <section className={styles.content}>
+                                    <p
+                                        className={styles.content_title}>
+                                        <strong>{coupon.code}</strong>
+                                    </p>
+                                    <p>
+                                        <strong>Tipo de descuento:</strong> {coupon.discount_type === 'percentage' ? 'Porcentaje' : 'Precio fijo'}
+                                    </p>
+                                    <p>
+                                        <strong>Cantidad:</strong> {coupon.amount}
+                                    </p>
+                                    <br />
+                                </section>
+                            </article>
                         </Col>
                     </Row>
                     <hr />
+                    <br/>
+                    <Subtitle>PRODUCTOS ASIGNADOS</Subtitle>
+                    <Row gutter={[25, 25]}>
+                        {
+                            coupon.product_ids.map((el: any) => (
+                                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                                    <br />
+                                    <article
+                                        className={styles.product_card}
+                                        key={coupon.id}
+                                    >
+                                        <section className={styles.image_content}>
+                                            <img
+                                                src={el.images[0].src}
+                                                alt={el.name}
+                                                width={200}
+                                                height={200}
+                                            />
+                                        </section>
+                                        <section className={styles.content}>
+                                            <p
+                                                className={styles.content_title}>
+                                                <strong>{el.name}</strong>
+                                            </p>
+                                            <p className={styles.description} dangerouslySetInnerHTML={{ __html: el.short_description }}/>
+                                            <br />
+                                        </section>
+                                    </article>
+                                </Col>
+                            ))
+                        }
+
+                    </Row>
                 </div>
             </CustomCard>
             <br />

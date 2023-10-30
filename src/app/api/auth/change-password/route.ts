@@ -2,7 +2,7 @@ import { connectMongoDB } from '@/libs/mongodb'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import { headers } from  'next/headers'
-import User, { IUserSchema } from '@/models/User'
+import User from '@/models/User'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 

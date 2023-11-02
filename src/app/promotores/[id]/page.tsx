@@ -13,6 +13,7 @@ import PromoterActions from "@/components/PageModals/actions/promoterActions/Pro
 import ActionsButton from "@/components/PageModals/actions/promoterActions/ActionsButton/ActionsButton";
 import GenericForm from "@/components/PageModals/genericForm/GenericForm";
 import EmptyImg from "@/components/EmptyImg/EmptyImg";
+import AccountState from "@/components/AccountState/AccountState";
 
 async function loadPromoter({ params }: any) {
     const promoters = await fetch(`${process.env.API_URL}/api/promoters/${params.id}`, { cache: 'no-store' })
@@ -168,7 +169,7 @@ export default async function Promotorer(props: any) {
                 <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                     <CustomCard>
                         <article className={styles.card}>
-                            <h2>ESTADO DE CUENTA</h2>
+                            <h2>MOVIMIENTOS</h2>
                             <hr />
                             <section>
                                 {
@@ -183,6 +184,28 @@ export default async function Promotorer(props: any) {
                 </Col>
             </Row>
             <br />
+            <Row gutter={[20, 20]}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                    <CustomCard>
+                        <article className={styles.card}>
+                            <h2>ESTADO DE CUENTA POR MES</h2>
+                            <hr />
+                            <section>
+                                {
+                                    movements?.length > 0 ? (
+                                        <>
+                                            <AccountState movements={movements} />
+                                        </>
+                                    ) : (
+                                        <EmptyImg />
+                                    )
+                                }
+
+                            </section>
+                        </article>
+                    </CustomCard>
+                </Col>
+            </Row>
             <PromoterActions id={promoter._id} />
             < GenericForm
                 url={`/promotores/${promoter._id}`}

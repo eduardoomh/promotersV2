@@ -50,7 +50,7 @@ const AccountState: FC<props> = ({ movements }) => {
                             <hr />
                             {
                                 movements && movements.length > 0 && filterMovementsByDateRange(movements, value[0], value[1]).map((movement: IMovementSchema) => (
-                                    <article>
+                                    <article key={movement._id}>
                                         <div style={{ display: 'flex' }}>
                                             <section style={{ width: '100%' }}>
                                                 <p><strong>Concepto: </strong> {movement.description} </p>

@@ -17,7 +17,7 @@ const MovementsByUser: FC<Props> = ({ movements }) => {
         },
         {
             title: 'Cantidad',
-            render: (data: any) => <a>${data.amount} mxn</a>,
+            render: (data: any) => <a>{data.type === 'discount' ? '-' : ''}${data.amount} mxn</a>,
         },
         {
             title: 'Saldo anterior',

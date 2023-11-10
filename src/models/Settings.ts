@@ -27,7 +27,7 @@ const SettingSchema = new mongoose.Schema({
     webhook: {
         data: {
             type: String,
-            required: false
+            required: true
         }
     }
 })

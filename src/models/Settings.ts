@@ -23,6 +23,12 @@ const SettingSchema = new mongoose.Schema({
             type: String,
             required: true
         }
+    },
+    webhook: {
+        data: {
+            type: String,
+            required: false
+        }
     }
 })
 

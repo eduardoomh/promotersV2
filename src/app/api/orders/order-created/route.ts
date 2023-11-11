@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
                                 },
                                 made_by: '650c8e1d0b4ae5ac87db3f6f'
                             })
-
+                            //success
                             await movement.save()
                             await Promoter.updateOne({ _id: promoterFound._id }, {
                                 $set: {

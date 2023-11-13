@@ -10,16 +10,14 @@ import CommissionsTable from "@/components/tables/commissions/madeBy/Commissions
 
 async function loadCupon({ params }: any) {
     const coupons = await fetch(`${process.env.API_URL}/api/coupons/${params.id}`, { cache: 'no-store' })
-    const orders = await fetch(`${process.env.API_URL}/api/orders`, { cache: 'no-store' })
+    const orders = await fetch(`${process.env.API_URL}/api/orders/by-coupon/${params.id}`, { cache: 'no-store' })
     const coupons_response = await coupons.json()
     const orders_response = await orders.json()
 
 
     return {
         coupon: coupons_response.coupon,
-        orders: orders_response.orders.filter((order: any) => {
-            return order.coupon_lines.filter((coupon: any) => coupon.code === coupons_response.code);
-        }),
+        orders: orders_response.orders,
         commissions: coupons_response.commissions
     }
 }

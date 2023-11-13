@@ -78,6 +78,14 @@ export async function POST(req: NextRequest) {
                 status: 500
             })
         }
+
+        if(body.status === 'pending'){
+            return NextResponse.json({
+                message: 'Pedido no habil para depositar comision',
+            }, {
+                status: 500
+            })
+        }
         //Get coupon used of the order
         const coupons = body.coupon_lines
         //if have coupon continue to process

@@ -7,7 +7,7 @@ interface props{
 }
 const DateItem: FC<props> = ({ date }) => {
     return (
-        <p>{moment(date).format('DD/MM/YYYY')}</p>
+        <p>{date ? moment(date).format('DD/MM/YYYY') : 'cargando..'}</p>
     )
 }
 

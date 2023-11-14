@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/libs/mongodb";
 import Promoter from "@/models/Promoter";
 import User, { IUserSchema } from "@/models/User";
 import { messages } from "@/utils/messages";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -27,7 +28,7 @@ export async function GET(req: NextRequest) {
         }else{
             const madeByUsers = await User.find({made_by: findUser._id})
             const madeByPromoters = await Promoter.aggregate([
-                { $match: {made_by: findUser._id} },
+                { $match: {made_by: new mongoose.Types.ObjectId(findUser._id)} },
                 {
                   $lookup: {
                     from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)

@@ -21,6 +21,8 @@ async function loadPromoter({ params }: any) {
     const promoters_response = await promoters.json()
     const coupons_response = await coupons.json()
 
+    console.log(promoters_response.user, "veamosss")
+
     return {
         promoter: promoters_response.user,
         movements: promoters_response.movements,
@@ -142,7 +144,7 @@ export default async function Promotorer(props: any) {
 
                             </article>
                         </Col>
-                        <ActionsButton id={promoter._id} />
+                        <ActionsButton id={promoter?._id} />
                     </Row>
                 </div>
             </CustomCard>

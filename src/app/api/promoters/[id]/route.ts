@@ -3,6 +3,7 @@ import Commission from "@/models/Comissions";
 import Movement from "@/models/Movement";
 import Promoter, { IPromoterSchema } from "@/models/Promoter";
 import { messages } from "@/utils/messages";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -12,7 +13,7 @@ export async function GET(req: NextRequest) {
         const id = pathname.split('/api/promoters/')[1]
 
         const findPromoter = await Promoter.aggregate([
-            { $match: {_id: id } },
+            { $match: {_id: new mongoose.Types.ObjectId(id)} },
             {
               $lookup: {
                 from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
         }
 
         const findMovements = await Movement.aggregate([
-            { $match: { promoter: id } },
+            { $match: { promoter: new mongoose.Types.ObjectId(id) } },
             {
                 $lookup: {
                     from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
@@ -55,7 +56,7 @@ export async function GET(req: NextRequest) {
             },
         ]);
         const findcommissions = await Commission.aggregate([
-            { $match: { promoter: id } },
+            { $match: { promoter: new mongoose.Types.ObjectId(id) } },
             {
                 $lookup: {
                     from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)

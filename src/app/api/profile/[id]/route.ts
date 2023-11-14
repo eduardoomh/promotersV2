@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import User from '@/models/User'
 import Movement from '@/models/Movement'
 import Commission from "@/models/Comissions";
+import mongoose from 'mongoose'
 
 export async function POST(req: NextRequest) {
     try {
@@ -46,7 +47,7 @@ export async function GET(req: NextRequest) {
             })
         }
         const promoter = await Promoter.aggregate([
-            { $match: {user: id} },
+            { $match: {user: new mongoose.Types.ObjectId(id)} },
             {
               $lookup: {
                 from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
@@ -63,7 +64,7 @@ export async function GET(req: NextRequest) {
             },
           ]);
         const commissions = await Commission.aggregate([
-            { $match: {user: id} },
+            { $match: {user: new mongoose.Types.ObjectId(id)} },
             {
               $lookup: {
                 from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
@@ -80,7 +81,7 @@ export async function GET(req: NextRequest) {
             },
           ]);
         const movements = await Movement.aggregate([
-            { $match: {user: id} },
+            { $match: {user: new mongoose.Types.ObjectId(id)} },
             {
               $lookup: {
                 from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)

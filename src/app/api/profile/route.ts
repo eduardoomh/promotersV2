@@ -3,6 +3,7 @@ import Promoter from '@/models/Promoter'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose'
 
 export async function POST(req: NextRequest) {
     try {
@@ -54,7 +55,7 @@ export async function GET(req: NextRequest) {
         }
 
         const promoter = await Promoter.aggregate([
-            { $match: { user: data._id } },
+            { $match: { user: new mongoose.Types.ObjectId(data._id )} },
             {
               $lookup: {
                 from: 'users',

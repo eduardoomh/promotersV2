@@ -148,29 +148,7 @@ export default async function Usuario(props: any) {
                                         }
                                     </article>
                                 </CustomCard>
-                            </Col>
-                            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                                <CustomCard>
-                                    <article className={styles.card}>
-                                        <h2>CUPONES</h2>
-                                        <hr />
-                                        <section>
-                                            <EmptyImg />
-                                        </section>
-                                    </article>
-                                </CustomCard>
-                            </Col>
-                            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                                <CustomCard>
-                                    <article className={styles.card}>
-                                        <h2>TRANSACCIONES</h2>
-                                        <hr />
-                                        <section>
-                                            <EmptyImg />
-                                        </section>
-                                    </article>
-                                </CustomCard>
-                            </Col>
+                            </Col>    
                         </>
                     ) : (
                         <>

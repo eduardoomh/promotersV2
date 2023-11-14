@@ -12,7 +12,7 @@ async function loadMovement({ params }: any) {
     const movement_response = await movement.json()
 
     return {
-        movement: movement_response.user,
+        movement: movement_response?.user,
     }
 }
 
@@ -37,12 +37,12 @@ export default async function Commission(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Usuario</strong></p>
-                                    <p>{movement.user.name}</p>
+                                    <p>{movement?.user?.name}</p>
 
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Correo</strong></p>
-                                    <p>{movement.user.email}</p>
+                                    <p>{movement?.user?.email}</p>
 
                                 </div>
                                 <div className={styles.card_item}>
@@ -92,9 +92,9 @@ export default async function Commission(props: any) {
                                 <>
                                     <br />
                                     <AvatarItem
-                                        key={movement.user._id}
-                                        letter={movement.user.name[0].toUpperCase()}
-                                        user={movement.user}
+                                        key={movement?.user._id}
+                                        letter={movement?.user?.name[0].toUpperCase()}
+                                        user={movement?.user}
                                         size='large'
                                         color={'#0D709A'}
                                         //@ts-ignore

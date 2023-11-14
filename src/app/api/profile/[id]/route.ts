@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
         }
         const promoter = await Promoter.findOne({user: id}).populate('user').sort({$natural: -1})
         const commissions = await Commission.find({user: id}).populate('user').sort({$natural: -1})
-        const movements = await Movement.find({user: id}).populate('user').sort({$natural: -1})
+        const movements = await Movement.find({user: id}).populate('user').sort({$natural: -1}) 
 
         if(!promoter){
             return NextResponse.json({

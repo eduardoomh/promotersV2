@@ -39,7 +39,23 @@ export async function GET(req: NextRequest) {
             include: coupon.data.product_ids
         };
 
-        const commissions = await Commission.find({"coupon.code": coupon.data.code}).populate('user').sort({$natural: -1})
+        const commissions = await Commission.aggregate([
+            { $match: { "coupon.code": coupon.data.code } },
+            {
+              $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user',
+              },
+            },
+            {
+              $unwind: '$user',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+          ]);
 
         const { data } = await WooApi.get(`products`, productParams)
         const response = NextResponse.json({
@@ -48,7 +64,7 @@ export async function GET(req: NextRequest) {
                 ...coupon.data,
                 product_ids: data
             },
-            commissions
+            commissions: commissions
         }, {
             status: 200
         })

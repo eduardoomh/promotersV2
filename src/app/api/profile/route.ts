@@ -53,10 +53,26 @@ export async function GET(req: NextRequest) {
             })
         }
 
-        const promoter = await Promoter.findOne({user: data._id}).populate('user').sort({$natural: -1})
-        console.log(promoter, data)
+        const promoter = await Promoter.aggregate([
+            { $match: { user: data._id } },
+            {
+              $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user',
+              },
+            },
+            {
+              $unwind: '$user',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+          ]);
+  
         const response = NextResponse.json({
-            promoter,
+            promoter: promoter[0],
             messages: messages.success.authorized
         }, {
             status: 200

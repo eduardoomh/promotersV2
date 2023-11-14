@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/libs/mongodb";
 import { ICommissionSchema } from "@/models/Comissions";
 import Commission from "@/models/Comissions";
 import { messages } from "@/utils/messages";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -10,7 +11,34 @@ export async function GET(req: NextRequest) {
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/commissions/')[1]
 
-        const findCommission = await Commission.findOne({ _id: id }).populate('user').populate('promoter')
+        const findCommission = await Commission.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(id) } },
+            {
+              $lookup: {
+                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user',
+              },
+            },
+            {
+              $lookup: {
+                from: 'promoters', // Nombre de la colección de promotores (ajusta según tu modelo)
+                localField: 'promoter',
+                foreignField: '_id',
+                as: 'promoter',
+              },
+            },
+            {
+              $unwind: '$user',
+            },
+            {
+              $unwind: '$promoter',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+          ]);
 
         if (!findCommission) {
             return NextResponse.json({
@@ -22,8 +50,8 @@ export async function GET(req: NextRequest) {
 
         const response = NextResponse.json({
             message: 'Comission encontrada',
-            user: findCommission,
-            commission: findCommission
+            user: findCommission[0],
+            commission: findCommission[0]
         }, {
             status: 200
         })

@@ -45,9 +45,57 @@ export async function GET(req: NextRequest) {
                 status: 500
             })
         }
-        const promoter = await Promoter.findOne({user: id}).populate('user').sort({$natural: -1})
-        const commissions = await Commission.find({user: id}).populate('user').sort({$natural: -1})
-        const movements = await Movement.find({user: id}).populate('user').sort({$natural: -1}) 
+        const promoter = await Promoter.aggregate([
+            { $match: {user: id} },
+            {
+              $lookup: {
+                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user',
+              },
+            },
+            {
+              $unwind: '$user',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+          ]);
+        const commissions = await Commission.aggregate([
+            { $match: {user: id} },
+            {
+              $lookup: {
+                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user',
+              },
+            },
+            {
+              $unwind: '$user',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+          ]);
+        const movements = await Movement.aggregate([
+            { $match: {user: id} },
+            {
+              $lookup: {
+                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user',
+              },
+            },
+            {
+              $unwind: '$user',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+          ]);
 
         if(!promoter){
             return NextResponse.json({
@@ -58,7 +106,7 @@ export async function GET(req: NextRequest) {
         }
 
         const response = NextResponse.json({
-            promoter,
+            promoter: promoter[0],
             movements,
             commissions,
             messages: messages.success.authorized

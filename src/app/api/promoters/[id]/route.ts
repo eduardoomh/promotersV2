@@ -11,7 +11,23 @@ export async function GET(req: NextRequest) {
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
 
-        const findPromoter = await Promoter.findOne({ _id: id }).populate('user')
+        const findPromoter = await Promoter.aggregate([
+            { $match: {_id: id } },
+            {
+              $lookup: {
+                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user',
+              },
+            },
+            {
+              $unwind: '$user',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+          ]);
 
         if (!findPromoter) {
             return NextResponse.json({
@@ -21,12 +37,55 @@ export async function GET(req: NextRequest) {
             })
         }
 
-        const findMovements = await Movement.find({ promoter: id }).populate('user').sort({$natural: -1})
-        const findcommissions = await Commission.find({ promoter: id }).populate('user').sort({$natural: -1})
+        const findMovements = await Movement.aggregate([
+            { $match: { promoter: id } },
+            {
+                $lookup: {
+                    from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'user',
+                },
+            },
+            {
+                $unwind: '$user',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+        ]);
+        const findcommissions = await Commission.aggregate([
+            { $match: { promoter: id } },
+            {
+                $lookup: {
+                    from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'user',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'promoters', // Nombre de la colección de promotores (ajusta según tu modelo)
+                    localField: 'promoter',
+                    foreignField: '_id',
+                    as: 'promoter',
+                },
+            },
+            {
+                $unwind: '$user',
+            },
+            {
+                $unwind: '$promoter',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+        ]);
 
         const response = NextResponse.json({
             message: 'Promotor encontrado',
-            user: findPromoter,
+            user: findPromoter[0],
             movements: findMovements,
             commissions: findcommissions
         }, {

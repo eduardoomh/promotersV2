@@ -26,7 +26,23 @@ export async function GET(req: NextRequest) {
             existPromoter = await Promoter.findOne({user: findUser._id})
         }else{
             const madeByUsers = await User.find({made_by: findUser._id})
-            const madeByPromoters = await Promoter.find({made_by: findUser._id}).populate('user')
+            const madeByPromoters = await Promoter.aggregate([
+                { $match: {made_by: findUser._id} },
+                {
+                  $lookup: {
+                    from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'user',
+                  },
+                },
+                {
+                  $unwind: '$user',
+                },
+                {
+                    $sort: { _id: -1 },
+                },
+              ]);
 
             userStats = {
                 users: madeByUsers,

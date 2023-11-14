@@ -105,9 +105,22 @@ export async function POST(req: NextRequest) {
 export async function GET() {
     try {
         await connectMongoDB()
-        const promoters = await Promoter.find().populate('user').sort({$natural: -1})
-
-        console.log("promoror", promoters)
+        const promoters = await Promoter.aggregate([
+            {
+              $lookup: {
+                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user',
+              },
+            },
+            {
+              $unwind: '$user',
+            },
+            {
+                $sort: { _id: -1 },
+            },
+          ]);
 
         const response = NextResponse.json({
             promoters,

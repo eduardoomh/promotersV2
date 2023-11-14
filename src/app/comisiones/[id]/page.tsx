@@ -93,7 +93,7 @@ export default async function Commission(props: any) {
                                 >
                                     <section className={styles.image_content}>
                                         <img
-                                            src={coupon?.product_ids[0]?.images[0]?.src}
+                                            src={coupon?.product_ids[0]?.images[0]?.src || '/no_image.png'}
                                             alt={coupon?.product_ids[0]?.name}
                                             width={200}
                                             height={200}

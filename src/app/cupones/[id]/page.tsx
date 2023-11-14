@@ -95,8 +95,8 @@ export default async function Cupon(props: any) {
                                         <article className={styles.product_card} key={el.id}>
                                             <section className={styles.image_content}>
                                                 <img
-                                                    src={el.images[0].src}
-                                                    alt={el.images[0].name}
+                                                    src={el?.images[0]?.src}
+                                                    alt={el?.images[0]?.name}
                                                     width={200}
                                                     height={200}
                                                 />

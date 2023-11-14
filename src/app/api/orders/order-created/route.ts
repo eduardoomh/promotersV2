@@ -1,13 +1,12 @@
 import { connectMongoDB } from "@/libs/mongodb"
 import Commission from "@/models/Comissions"
 import Logs from "@/models/Logs"
-import Movement, { IMovementSchema } from "@/models/Movement"
-import Promoter from "@/models/Promoter"
+import Movement from "@/models/Movement"
+import Promoter from '../../../../models/Promoter';
 import Settings, { ISettingSchema } from "@/models/Settings"
-import User, { IUserSchema } from "@/models/User"
+import User from "@/models/User"
 import { messages } from "@/utils/messages"
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api"
-import mongoose from "mongoose"
 import { NextRequest, NextResponse } from "next/server"
 
 

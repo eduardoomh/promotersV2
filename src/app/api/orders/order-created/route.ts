@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({
                 message: messages.error.default,
             }, {
-                status: 500
+                status: 200
             })
         }
         const { woo_keys: { client_id, client_secret, store_url } } = configurations[0]
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({
                 message: 'Ocurrio un error al guardar los datos',
             }, {
-                status: 500
+                status: 200
             })
         }
 
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({
                 message: 'Pedido no habil para depositar comision',
             }, {
-                status: 500
+                status: 200
             })
         }
 
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({
                 message: 'Pedido no habil para depositar comision',
             }, {
-                status: 500
+                status: 200
             })
         }
         //Get coupon used of the order

@@ -12,7 +12,7 @@ async function loadMovement({ params }: any) {
     const movement_response = await movement.json()
 
     return {
-        movement: movement_response?.user,
+        movement: movement_response?.movement,
     }
 }
 
@@ -88,7 +88,7 @@ export default async function Commission(props: any) {
                     <hr />
                     <article className={styles.card}>
                         {
-                            movement.promoter ? (
+                            movement?.promoter ? (
                                 <>
                                     <br />
                                     <AvatarItem

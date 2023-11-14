@@ -1,6 +1,5 @@
 import LoginSquare from '@/components/loginSquare/LoginSquare'
 import styles from './ChangePassword.module.css'
-import LoginForm from '@/components/LoginForm/LoginForm'
 import LoginChangeForm from '@/components/LoginChanceForm.tsx/LoginChangeForm'
 
 export default function changePassword() {

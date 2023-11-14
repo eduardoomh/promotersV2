@@ -47,7 +47,7 @@ export default async function Commission(props: any) {
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Concepto del pago</strong></p>
-                                    <p>{movement.description}</p>
+                                    <p>{movement?.description}</p>
 
                                 </div>
                             </article>
@@ -56,17 +56,17 @@ export default async function Commission(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Cantidad</strong></p>
-                                    <p>{movement.amount}</p>
+                                    <p>{movement?.amount}</p>
 
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Saldo anterior</strong></p>
-                                    <p>{movement.security.before_mod}</p>
+                                    <p>{movement?.security.before_mod}</p>
 
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Saldo posterior</strong></p>
-                                    <p>{movement.security.after_mod}</p>
+                                    <p>{movement?.security.after_mod}</p>
 
                                 </div>
                             </article>
@@ -92,13 +92,13 @@ export default async function Commission(props: any) {
                                 <>
                                     <br />
                                     <AvatarItem
-                                        key={movement?.user._id}
+                                        key={movement?.user?._id}
                                         letter={movement?.user?.name[0].toUpperCase()}
                                         user={movement?.user}
                                         size='large'
                                         color={'#0D709A'}
                                         //@ts-ignore
-                                        url={`/promotores/${movement.promoter._id}`}
+                                        url={`/promotores/${movement?.promoter?._id}`}
                                     />
                                 </>
                             ) : (

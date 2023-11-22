@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
     try {
+        console.log("entraaaa")
         //WEBHOOK
         await connectMongoDB()
         //Get body
@@ -94,25 +95,33 @@ export async function POST(req: NextRequest) {
                 status: 200
             })
         }
+        console.log("es success", body.status)
         //Get coupon used of the order
         const coupons = body.coupon_lines
         //if have coupon continue to process
         if (coupons && coupons.length > 0) {
+            console.log("hay cupones")
             //for each coupon
             for (let coupon of coupons) {
+                console.log("por cada cupon")
                 //get the commission associated with the coupon
                 const commission = await Commission.findOne({ "coupon.id": coupon.meta_data[0].value.id, "coupon.code": coupon.meta_data[0].value.code })
                 if (commission) {
+                    console.log("encontre una comision", commission)
                     try {
+                        console.log("intenta algo")
                         //Get the user and the promoter asociated with that commission
                         const userFound = await User.findOne({ _id: commission.user })
                         const promoterFound = await Promoter.findOne({ user: commission.user })
                         //get the all data of the coupon
                         const couponFind = await WooApi.get(`coupons/${coupon.meta_data[0].value.id}`);
                         //get the products assocciated with the coupon
+                        console.log("existe cupon", couponFind.data.id)
                         const coupon_products = couponFind.data.product_ids.map((el: any) => Number(el))
                         //for each product in the order evaluates the product exists in the coupon rules and returns an array
                         //with the total amounts
+
+                        console.log("existe pridcuftos", coupon_products)
                         let totalAmount = 0
                         body.line_items.map((el: any) => {
                             if (coupon_products.includes(Number(el.product_id))) {
@@ -121,6 +130,7 @@ export async function POST(req: NextRequest) {
                         })
                         //continue
                         if (userFound && promoterFound) {
+                            console.log("foundd")
                             //sum balance
                             const newAmount = commission.earnings.type === 'percentage' ?
                                 Number(totalAmount) * Number(commission.earnings.amount / 100) :
@@ -138,7 +148,8 @@ export async function POST(req: NextRequest) {
                                     before_mod: promoterFound.balance,
                                     after_mod: newPromoterBalance
                                 },
-                                made_by: '650c8e1d0b4ae5ac87db3f6f'
+                               made_by: '650c8e1d0b4ae5ac87db3f6f'
+                               //made_by: '6445b2ec556376f80c88a366'
                             })
                             //success
                             await movement.save()
@@ -155,6 +166,8 @@ export async function POST(req: NextRequest) {
                             data: JSON.stringify(error)
                         })
                     }
+                }else{
+                    console.log("no hay cupones")
                 }
             }
         }

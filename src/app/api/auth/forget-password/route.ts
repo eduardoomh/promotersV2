@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
 
         //@ts-ignore
         await resend.emails.send({
-            from: 'onboarding@resend.dev',
+            from: 'onboarding@chamosa.jesusmh.com',
             to: email,
             subject: 'Cambio de contraseña - Chamosa Promotores',
             html: chamosa_mail(forgetUrl, prod_url, email)

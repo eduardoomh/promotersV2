@@ -12,6 +12,7 @@ const AccountState: FC<props> = ({ movements }) => {
         moment().startOf('month').format('YYYY-MM-DD'),
         moment().endOf('month').format('YYYY-MM-DD')
     ])
+    const [filteredMovements, setFilteredMovements] = useState<IMovementSchema[]>([])
     const { RangePicker } = DatePicker;
     const dateFormat = 'DD/MM/YYYY';
 
@@ -23,7 +24,7 @@ const AccountState: FC<props> = ({ movements }) => {
     };
 
     useEffect(() => {
-        console.log(value)
+        setFilteredMovements(filterMovementsByDateRange(movements, value[0], value[1]).reverse())
     }, [value])
 
     return (
@@ -36,50 +37,60 @@ const AccountState: FC<props> = ({ movements }) => {
                 />
             </Col>
             {
-                filterMovementsByDateRange(movements, value[0], value[1]).length > 0 ? (
+                filteredMovements.length > 0 ? (
                     <>
                         <Col span={24}>
                             <article style={{ display: 'flex', width: '100%', fontSize: '1rem' }}>
                                 <section style={{ width: '100%' }}>
-                                    <p><strong>Saldo anterior:</strong></p>
+                                    <p><strong>Saldo inicial:</strong></p>
                                 </section>
                                 <section style={{ width: '9rem', display: 'flex', justifyContent: 'center' }}>
-                                    <p><strong>{movements.reverse()[0].security.before_mod} mxn</strong></p>
+                                    <p><strong>{filteredMovements[0].security.before_mod} mxn</strong></p>
                                 </section>
                             </article>
                             <hr />
                             {
-                                movements && movements.length > 0 && filterMovementsByDateRange(movements, value[0], value[1]).map((movement: IMovementSchema) => (
+                                filteredMovements && filteredMovements.length > 0 && filteredMovements.map((movement: IMovementSchema) => (
                                     <article key={movement._id}>
                                         <div style={{ display: 'flex' }}>
                                             <section style={{ width: '100%' }}>
                                                 <p><strong>Concepto: </strong> {movement.description} </p>
                                                 <p><strong>Fecha: </strong> {moment(movement.created_at).format('DD/MM/YYYY')}</p>
                                             </section>
-                                            <section style={{ width: '9rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                <p style={{ fontSize: '1rem' }}>{movement.type === 'discount' ? '-' : ''}${movement.amount} mxn </p>
+                                            <section style={{
+                                                width: '18rem',
+                                                display: 'flex',
+                                                justifyContent: 'flex-end',
+                                                alignItems: 'flex-end',
+                                                flexDirection: 'column'
+                                            }}>
+                                                <p style={{ fontSize: '0.9rem', color: 'gray' }}>Anterior: ${movement.security.before_mod} mxn </p>
+                                                <p style={{ fontSize: '0.9rem', color: 'gray' }}>Posterior: ${movement.security.after_mod} mxn </p>
+                                                <br/>
+                                                <p style={{ fontSize: '1.2rem', color: movement.type === 'discount' ? 'red' : 'black' }}>
+                                                {movement.type === 'discount' ? 'Descontado:' : 'Depositado:'} {movement.type === 'discount' ? '-' : ''}${movement.amount} mxn </p>
                                             </section>
                                         </div>
                                         <hr />
                                     </article>
                                 ))
                             }
-                            <article style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', fontSize: '1.2rem' }}>
+                            <article style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', fontSize: '1.4rem' }}>
                                 <section style={{ width: '100%' }}>
                                     <p><strong>Total:</strong></p>
                                 </section>
-                                <section style={{ width: '9rem', display: 'flex', justifyContent: 'center' }}>
-                                    <p><strong>${movements[movements.length - 1].security.after_mod} mxn</strong></p>
+                                <section style={{ width: '12rem', display: 'flex', justifyContent: 'center' }}>
+                                    <p><strong>${filteredMovements[filteredMovements.length -1].security.after_mod} mxn</strong></p>
                                 </section>
                             </article>
                         </Col>
                     </>
                 ) : (
-                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '4rem'}}>
-                        <p style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                             No hay datos paa mostrar
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '4rem' }}>
+                        <p style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            No hay datos paa mostrar
                         </p>
-                       
+
                     </div>
                 )
             }

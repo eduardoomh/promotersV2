@@ -23,6 +23,19 @@ const AccountState: FC<props> = ({ movements }) => {
         });
     };
 
+    const sumAllMovements = () =>{
+        let total = 0
+        filteredMovements.map(el => {
+            if(el.type === 'discount'){
+                total = total - el.amount
+            }else{
+                total = total + el.amount
+            }
+        })
+
+        return total
+    }
+
     useEffect(() => {
         setFilteredMovements(filterMovementsByDateRange(movements, value[0], value[1]).reverse())
     }, [value])
@@ -40,15 +53,8 @@ const AccountState: FC<props> = ({ movements }) => {
                 filteredMovements.length > 0 ? (
                     <>
                         <Col span={24}>
-                            <article style={{ display: 'flex', width: '100%', fontSize: '1rem' }}>
-                                <section style={{ width: '100%' }}>
-                                    <p><strong>Saldo inicial:</strong></p>
-                                </section>
-                                <section style={{ width: '9rem', display: 'flex', justifyContent: 'center' }}>
-                                    <p><strong>{filteredMovements[0].security.before_mod} mxn</strong></p>
-                                </section>
-                            </article>
-                            <hr />
+                            <br/>
+                            <hr/>
                             {
                                 filteredMovements && filteredMovements.length > 0 && filteredMovements.map((movement: IMovementSchema) => (
                                     <article key={movement._id}>
@@ -77,10 +83,10 @@ const AccountState: FC<props> = ({ movements }) => {
                             }
                             <article style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', fontSize: '1.4rem' }}>
                                 <section style={{ width: '100%' }}>
-                                    <p><strong>Total:</strong></p>
+                                    <p><strong>Suma Total:</strong></p>
                                 </section>
                                 <section style={{ width: '12rem', display: 'flex', justifyContent: 'center' }}>
-                                    <p><strong>${filteredMovements[filteredMovements.length -1].security.after_mod} mxn</strong></p>
+                                    <p><strong>${sumAllMovements()} mxn</strong></p>
                                 </section>
                             </article>
                         </Col>
@@ -88,7 +94,7 @@ const AccountState: FC<props> = ({ movements }) => {
                 ) : (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '4rem' }}>
                         <p style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            No hay datos paa mostrar
+                            No hay datos por mostrar
                         </p>
 
                     </div>

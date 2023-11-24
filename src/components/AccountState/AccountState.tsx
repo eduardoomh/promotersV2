@@ -45,7 +45,7 @@ const AccountState: FC<props> = ({ movements }) => {
             <Col span={24} style={{ display: 'flex', justifyContent: 'center' }}>
                 <RangePicker
                     style={{ width: '50%', display: 'flex', justifyContent: 'center' }}
-                    onChange={(val: any) => setValue([moment(val[0].$d).format('YYYY-MM-DD'), moment(val[1].$d).format('YYYY-MM-DD')])}
+                    onChange={(val: any) => setValue([moment(val[0].$d).format('YYYY-MM-DD'), moment(val[1].$d).add(1, 'days').format('YYYY-MM-DD')])}
                     format={dateFormat}
                 />
             </Col>

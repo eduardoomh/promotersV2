@@ -45,7 +45,7 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
         },
         {
             title: 'Teléfono',
-            render: (data: any) => <a>{data.personal_info?.mobile_phone}</a>,
+            render: (data: any) => <a>{data.user_info?.mobile_phone}</a>,
         },
         {
             title: 'Fecha',
@@ -60,7 +60,7 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
                     <Tooltip placement="top" title={'Ver más información'}>
                     <InfoCircleOutlined 
                         style={{fontSize: '1.6rem', color: '#0D709A'}} 
-                        onClick={() => handleActionClick(data._id, data.user?.email)} />
+                        onClick={() => handleActionClick(data.id, data.user?.email)} />
                     </Tooltip>
 
                 </div>

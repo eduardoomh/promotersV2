@@ -47,9 +47,9 @@ const CommissionsTable: FC<Props> = ({ commissions }) => {
             render: (data: any) =>
                 <p>
                     {
-                        data.earnings.type === 'percentage' ?
-                            `${data.earnings.amount}%` :
-                            `$${data.earnings.amount} mxn`
+                        data.earning_type === 'percentage' ?
+                            `${data.earning_amount}%` :
+                            `$${data.earning_amount} mxn`
                     }
                 </p>,
         },
@@ -70,7 +70,7 @@ const CommissionsTable: FC<Props> = ({ commissions }) => {
                     <Tooltip placement="top" title={'Ver más información'}>
                         <InfoCircleOutlined
                             style={{ fontSize: '1.6rem', color: '#0D709A' }}
-                            onClick={() => handleActionClick(data._id, data.user?.email)} />
+                            onClick={() => handleActionClick(data.id, data.user?.email)} />
                     </Tooltip>
 
                 </div>

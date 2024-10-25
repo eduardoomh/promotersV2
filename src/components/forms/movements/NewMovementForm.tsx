@@ -27,8 +27,8 @@ const NewMovementForm: FC<props> = ({ url, data: allData, type }) => {
             endpoint: 'movements',
             formData: {
                 new_movement: {
-                    user: allData.user._id,
-                    promoter: allData._id,
+                    user: allData.user.id,
+                    promoter: allData.id,
                     description: data.description,
                     amount: data.amount,
                     type

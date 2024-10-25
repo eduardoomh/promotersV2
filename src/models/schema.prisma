@@ -1,0 +1,180 @@
+model User {
+    id                 String       @id @default(cuid())
+    name               String
+    email              String       @unique
+    password           String
+    role               Role         @default(promoter)
+    //Ids con los que se realizará una relación
+    made_by_id         String?
+    //Relaciones
+    promoter_created   Promoter[]   @relation("UserMadeBy")
+    created_users      User[]       @relation("UserCreatedBy")
+    made_by            User?        @relation("UserCreatedBy", fields: [made_by_id], references: [id])
+    commissions        Commission[] @relation("UserCommission")
+    commission_made_by Commission[] @relation("UserCommissionMadeBy")
+    movement           Movement[]   @relation("UserMovement")
+    made_by_movement   Movement[]   @relation("UserMadeMovement")
+    promoters          Promoter[]
+    //Fechas de creación y actualización
+    created_at         DateTime     @default(now())
+    updated_at         DateTime     @updatedAt
+
+    @@map("users")
+}
+
+enum Role {
+    promoter
+    admin
+}
+
+model Promoter {
+    id           String         @id @default(cuid())
+    type         PromoterStatus @default(pending)
+    balance      Float
+    //Ids para realizar las relaciones
+    user_id      String
+    address_id   String
+    user_info_id String
+    made_by_id   String
+    //Objetos que tendrán el objeto con la relación uno a muchos de los IDS
+    user         User           @relation(fields: [user_id], references: [id])
+    address      Address        @relation(fields: [address_id], references: [id])
+    user_info    PersonalInfo   @relation(fields: [user_info_id], references: [id])
+    made_by      User           @relation("UserMadeBy", fields: [made_by_id], references: [id])
+    commissions  Commission[]   @relation("PromoterCommission")
+    //Indica las fechas de creación y de actualización
+    created_at   DateTime       @default(now())
+    updated_at   DateTime       @updatedAt
+    movement     Movement[]
+
+    @@map("promoters")
+}
+
+enum PromoterStatus {
+    active
+    inactive
+    pending
+}
+
+//PersonalInfo
+model PersonalInfo {
+    id           String     @id @default(cuid())
+    phone        String
+    mobile_phone String
+    rfc          String
+    promoter     Promoter[]
+}
+
+//Address
+model Address {
+    id          String     @id @default(cuid())
+    street      String
+    postal_code String
+    district    String
+    state       String
+    city        String
+    country     String
+    promoter    Promoter[]
+}
+
+//Logs
+model Logs {
+    id         String   @id @default(cuid())
+    data       String
+    created_at DateTime @default(now())
+}
+
+//Settings
+model Setting {
+    id          String  @id @default(cuid())
+    //IDS para realizar relaciones
+    woo_keys_id String  @unique
+    webhook_id  String  @unique
+    //Relaciones
+    woo_keys    WooKeys @relation(fields: [woo_keys_id], references: [id])
+    webhook     Webhook @relation(fields: [webhook_id], references: [id])
+}
+
+//WooKeys
+model WooKeys {
+    id            String   @id @default(cuid())
+    client_id     String
+    client_secret String
+    store_url     String
+    settings      Setting? @relation
+}
+
+//Webhooks
+model Webhook {
+    id       String   @id @default(cuid())
+    data     String
+    settings Setting? @relation
+}
+
+//Commissions
+model Commission {
+    id             String       @id @default(cuid())
+    //Ids para hacer relaciones
+    user_id        String
+    promoter_id    String
+    made_by_id     String
+    coupon_id      String       @unique
+    //Detalles
+    earning_type   EarningsType @default(percentage)
+    earning_amount Float
+    //Relaciones
+    user           User         @relation("UserCommission", fields: [user_id], references: [id])
+    promoter       Promoter     @relation("PromoterCommission", fields: [promoter_id], references: [id])
+    made_by        User         @relation("UserCommissionMadeBy", fields: [made_by_id], references: [id])
+    coupon         Coupon       @relation(fields: [coupon_id], references: [id])
+    //Fechas de creación y modificación
+    created_at     DateTime     @default(now())
+    updated_at     DateTime     @updatedAt
+    movement       Movement[]
+
+    @@map("commissions") // Asegura que la tabla se llame "commissions"
+}
+
+model Coupon {
+    id         String      @id @default(cuid())
+    code       String
+    products   String
+    commission Commission?
+}
+
+// Enum para el tipo de ganancias
+enum EarningsType {
+    percentage
+    fixed_price
+}
+
+model Movement {
+    id            String       @id @default(cuid())
+    //Ids para realizar relaciones
+    user_id       String
+    promoter_id   String
+    commission_id String?
+    made_by_id    String
+    //Datos
+    description   String
+    amount        Float
+    type          MovementType @default(payment)
+    before_mod    Float
+    after_mod     Float
+    //Relaciones
+    user          User         @relation("UserMovement", fields: [user_id], references: [id])
+    promoter      Promoter     @relation(fields: [promoter_id], references: [id])
+    commission    Commission?  @relation(fields: [commission_id], references: [id])
+    made_by       User         @relation("UserMadeMovement", fields: [made_by_id], references: [id])
+    //Fechas de creación y actualización
+    created_at    DateTime     @default(now())
+    updated_at    DateTime     @updatedAt
+
+    @@map("movements")
+}
+
+// Enum para el tipo de movimiento
+enum MovementType {
+    discount
+    payment
+}

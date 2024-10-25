@@ -1,18 +1,21 @@
-import { connectMongoDB } from "@/libs/mongodb";
 import Commission from "@/models/Comissions";
 import Promoter, { IPromoterSchema } from "@/models/Promoter";
-import Settings from "@/models/Settings";
 import { messages } from "@/utils/messages";
+import { PrismaClient } from "@prisma/client";
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/coupons/')[1]
-        const configurations = await Settings.find()
-
+        const prisma = new PrismaClient()
+        const configurations = await prisma.setting.findFirst({
+            include:{
+                woo_keys: true
+            }
+        })
+        
         if (!configurations) {
             return NextResponse.json({
                 message: messages.error.default,
@@ -21,7 +24,7 @@ export async function GET(req: NextRequest) {
             })
         }
 
-        const { woo_keys: { client_id, client_secret, store_url } } = configurations[0]
+        const { woo_keys: { client_id, client_secret, store_url } } = configurations
 
         const WooApi = new WooCommerceRestApi({
             url: store_url,
@@ -39,23 +42,21 @@ export async function GET(req: NextRequest) {
             include: coupon.data.product_ids
         };
 
-        const commissions = await Commission.aggregate([
-            { $match: { "coupon.code": coupon.data.code } },
-            {
-              $lookup: {
-                from: 'users',
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
+          const commissions = await prisma.commission.findMany({
+            where: {
+              coupon: {
+                code: coupon.data.code,
               },
             },
-            {
-              $unwind: '$user',
+            include: {
+              user: true,
+              promoter: true,
+              coupon: true
             },
-            {
-                $sort: { _id: -1 },
+            orderBy: {
+              id: 'desc',
             },
-          ]);
+          });
 
         const { data } = await WooApi.get(`products`, productParams)
         const response = NextResponse.json({
@@ -83,7 +84,6 @@ export async function GET(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
 
@@ -98,10 +98,10 @@ export async function PATCH(req: NextRequest) {
         }
 
         const { update_promoter } = await req.json()
-        const { personal_info, address } = update_promoter
+        const { user_info, address } = update_promoter
         const updatePromoter = await Promoter.updateOne({ _id: id }, {
             $set: {
-                personal_info,
+                user_info,
                 address,
                 updated_at: Date.now()
             }
@@ -138,9 +138,9 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
+        const prisma = new PrismaClient()
 
         const existPromoter = await Promoter.findOne({ _id: id })
 

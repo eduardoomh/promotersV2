@@ -10,7 +10,7 @@ async function loadCommission({ params }: any) {
     const commissions = await fetch(`${process.env.API_URL}/api/commissions/${params.id}`, { cache: 'no-store' })
     const commissions_response = await commissions.json()
     //@ts-ignore
-    const coupon = await fetch(`${process.env.API_URL}/api/coupons/${commissions_response.user.coupon.id}`, { cache: 'no-store' })
+    const coupon = await fetch(`${process.env.API_URL}/api/coupons/${commissions_response.user.coupon.coupon_id}`, { cache: 'no-store' })
     const coupons_response = await coupon.json()
 
     return {
@@ -54,15 +54,15 @@ export default async function Commission(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Tipo de pago</strong></p>
-                                    <p>{commission.earnings.type === 'fixed_price' ? 'Precio fijo' : 'porcentaje'}</p>
+                                    <p>{commission.earning_type === 'fixed_price' ? 'Precio fijo' : 'porcentaje'}</p>
 
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Ganancia</strong></p>
                                     <p>{
-                                        commission.earnings.type === 'fixed_price' ?
-                                            `$${commission.earnings.amount} mxn` :
-                                            `${commission.earnings.amount}%`
+                                        commission.earning_type === 'fixed_price' ?
+                                            `$${commission.earning_amount} mxn` :
+                                            `${commission.earning_amount}%`
                                     }
                                     </p>
 

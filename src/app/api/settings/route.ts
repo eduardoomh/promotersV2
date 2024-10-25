@@ -1,29 +1,36 @@
-import { connectMongoDB } from '@/libs/mongodb'
-import Settings, { ISettingSchema } from '@/models/Settings'
 import { messages } from '@/utils/messages'
+import { PrismaClient } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
     try {
-        await connectMongoDB()
         const body = await req.json()
         const { woo_keys } = body
+        const prisma = new PrismaClient()
 
-        const newSettings: ISettingSchema = new Settings({
-            woo_keys: {
-                client_id: woo_keys.client_id,
-                client_secret: woo_keys.client_secret,
-                store_url: woo_keys.store_url,
+        const newSettings = await prisma.setting.create({
+            data: {
+                woo_keys: {
+                    create: {
+                        client_id: woo_keys.client_id,
+                        client_secret: woo_keys.client_secret,
+                        store_url: woo_keys.store_url,
+                    },
+                },
+                webhook: {
+                    create: {
+                        data: "default"
+                    }
+                }
             },
-        })
-
-        //@ts-ignore
-        const settingsCreated = newSettings._doc
-
-        await newSettings.save()
+            include: {
+                woo_keys: true,
+                webhook: true
+            }
+        });
 
         const response = NextResponse.json({
-            settings: settingsCreated,
+            settings: newSettings,
             messages: messages.success.userCreated
         }, {
             status: 200
@@ -43,8 +50,12 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
     try {
-        await connectMongoDB()
-        const settings = await Settings.find()
+        const prisma = new PrismaClient()
+        const settings = await prisma.setting.findMany({
+            include:{
+                woo_keys: true
+            }
+        })
 
         const response = NextResponse.json({
             settings,

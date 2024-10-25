@@ -55,11 +55,11 @@ const MovementsTable: FC<Props> = ({ movements }) => {
         },
         {
             title: 'Saldo anterior',
-            render: (data: any) => <a>${data.security.before_mod} mxn</a>,
+            render: (data: any) => <a>${data.before_mod} mxn</a>,
         },
         {
             title: 'Saldo posterior',
-            render: (data: any) => <a>${data.security.after_mod} mxn</a>,
+            render: (data: any) => <a>${data.after_mod} mxn</a>,
         },
         {
             title: 'Fecha',
@@ -74,7 +74,7 @@ const MovementsTable: FC<Props> = ({ movements }) => {
                     <Tooltip placement="top" title={'Ver más información'}>
                         <RightCircleOutlined
                             style={{ fontSize: '1.6rem', color: '#0D709A' }}
-                            onClick={() => handleActionClick(data._id)} />
+                            onClick={() => handleActionClick(data.id)} />
                     </Tooltip>
 
                 </div>

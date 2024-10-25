@@ -1,19 +1,16 @@
-import { connectMongoDB } from "@/libs/mongodb"
-import Commission from "@/models/Comissions"
-import Logs from "@/models/Logs"
-import Movement from "@/models/Movement"
-import Promoter from '../../../../models/Promoter';
-import Settings, { ISettingSchema } from "@/models/Settings"
-import User from "@/models/User"
 import { messages } from "@/utils/messages"
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api"
 import { NextRequest, NextResponse } from "next/server"
-
+import { PrismaClient } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
     try {
-        await connectMongoDB()
-        const findSettings: ISettingSchema | null = await Settings.findOne()
+        const prisma = new PrismaClient()
+        const findSettings = await prisma.setting.findFirst({
+            include: {
+                woo_keys: true
+            }
+        })
 
         if (!findSettings) {
             return NextResponse.json({
@@ -42,13 +39,16 @@ export async function GET(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
     try {
-        console.log("entraaaa")
         //WEBHOOK
-        await connectMongoDB()
+        const prisma = new PrismaClient()
         //Get body
         const body = await req.json()
         //Call configurations
-        const configurations = await Settings.find()
+        const configurations = await prisma.setting.findFirst({
+            include: {
+                woo_keys: true
+            }
+        })
         if (!configurations) {
             return NextResponse.json({
                 message: messages.error.default,
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
                 status: 200
             })
         }
-        const { woo_keys: { client_id, client_secret, store_url } } = configurations[0]
+        const { woo_keys: { client_id, client_secret, store_url } } = configurations
         //call woo api
         const WooApi = new WooCommerceRestApi({
             url: store_url,
@@ -66,12 +66,14 @@ export async function POST(req: NextRequest) {
             queryStringAuth: true
 
         })
-        //call initial log
-        const createLog = await Logs.create({
-            data: JSON.stringify(body)
-        })
+        //call initial log        
+        const logCreated = await prisma.logs.create({
+            data: {
+                data: JSON.stringify(body),
+            }
+        });
 
-        if (!createLog) {
+        if (!logCreated) {
             return NextResponse.json({
                 message: 'Ocurrio un error al guardar los datos',
             }, {
@@ -79,7 +81,7 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        if(body.status === 'pending'){
+        if (body.status === 'pending') {
             return NextResponse.json({
                 message: 'Pedido no habil para depositar comision',
             }, {
@@ -88,40 +90,48 @@ export async function POST(req: NextRequest) {
         }
 
 
-        if(body.status !== 'processing'){
+        if (body.status !== 'processing') {
             return NextResponse.json({
                 message: 'Pedido no habil para depositar comision',
             }, {
                 status: 200
             })
         }
-        console.log("es success", body.status)
         //Get coupon used of the order
         const coupons = body.coupon_lines
         //if have coupon continue to process
         if (coupons && coupons.length > 0) {
-            console.log("hay cupones")
             //for each coupon
             for (let coupon of coupons) {
-                console.log("por cada cupon")
                 //get the commission associated with the coupon
-                const commission = await Commission.findOne({ "coupon.id": coupon.meta_data[0].value.id, "coupon.code": coupon.meta_data[0].value.code })
+                const commission = await prisma.commission.findFirst({
+                    where: {
+                        coupon: {
+                            coupon_id: coupon.meta_data[0].value.id,
+                            code: coupon.meta_data[0].value.code
+                        }
+                    }
+                })
                 if (commission) {
-                    console.log("encontre una comision", commission)
                     try {
-                        console.log("intenta algo")
                         //Get the user and the promoter asociated with that commission
-                        const userFound = await User.findOne({ _id: commission.user })
-                        const promoterFound = await Promoter.findOne({ user: commission.user })
+                        const userFound = await prisma.user.findUnique({
+                            where: {
+                                id: commission.user_id
+                            }
+                        })
+                        const promoterFound = await prisma.promoter.findFirst({
+                            where: {
+                                user_id: commission.user_id
+                            }
+                        })
                         //get the all data of the coupon
                         const couponFind = await WooApi.get(`coupons/${coupon.meta_data[0].value.id}`);
                         //get the products assocciated with the coupon
-                        console.log("existe cupon", couponFind.data.id)
                         const coupon_products = couponFind.data.product_ids.map((el: any) => Number(el))
                         //for each product in the order evaluates the product exists in the coupon rules and returns an array
                         //with the total amounts
 
-                        console.log("existe pridcuftos", coupon_products)
                         let totalAmount = 0
                         body.line_items.map((el: any) => {
                             if (coupon_products.includes(Number(el.product_id))) {
@@ -130,43 +140,54 @@ export async function POST(req: NextRequest) {
                         })
                         //continue
                         if (userFound && promoterFound) {
-                            console.log("foundd")
                             //sum balance
-                            const newAmount = commission.earnings.type === 'percentage' ?
-                                Number(totalAmount) * Number(commission.earnings.amount / 100) :
-                                commission.earnings.amount
+                            const newAmount = commission.earning_type === 'percentage' ?
+                                Number(totalAmount) * Number(commission.earning_amount / 100) :
+                                commission.earning_amount
 
                             const newPromoterBalance = Number(promoterFound.balance) + Number(newAmount)
                             //create the movement
-                           const movement = new Movement({
-                                user: userFound._id,
-                                promoter: promoterFound._id,
-                                amount: newAmount,
-                                type: 'payment',
-                                description: `Comisión pagada por pedido #${body.id}`,
-                                security: {
+                            await prisma.movement.create({
+                                data: {
+                                    user: {
+                                        connect: { id: userFound.id },
+                                    },
+                                    promoter: {
+                                        connect: { id: promoterFound.id },
+                                    },
+                                    amount: newAmount,
+                                    type: 'payment',
+                                    description: `Comisión pagada por pedido #${body.id}`,
                                     before_mod: promoterFound.balance,
-                                    after_mod: newPromoterBalance
-                                },
-                               made_by: '650c8e1d0b4ae5ac87db3f6f'
-                               //made_by: '6445b2ec556376f80c88a366'
+                                    after_mod: newPromoterBalance,
+                                    made_by:{
+                                        connect: {
+                                            id: process.env.WEBHOOK_DEFAULT_USER_MADE_BY
+                                        }
+                                    }
+                                }
                             })
                             //success
-                            await movement.save()
-                            await Promoter.updateOne({ _id: promoterFound._id }, {
-                                $set: {
-                                    balance: newPromoterBalance
+                            await prisma.promoter.update({
+                                where: {
+                                    id: promoterFound.id
+                                },
+                                data: {
+                                    balance: newPromoterBalance,
+                                    updated_at: new Date()
                                 }
                             })
                         }
 
                     } catch (error) {
                         console.log(error)
-                        await Logs.create({
-                            data: JSON.stringify(error)
-                        })
+                        await prisma.logs.create({
+                            data: {
+                                data: JSON.stringify(error),
+                            }
+                        });
                     }
-                }else{
+                } else {
                     console.log("no hay cupones")
                 }
             }
@@ -174,7 +195,7 @@ export async function POST(req: NextRequest) {
 
         const response = NextResponse.json({
             message: 'Los ajustes se ha actualizado',
-            log: createLog
+            log: logCreated
         }, {
             status: 200
         })

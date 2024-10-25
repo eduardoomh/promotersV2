@@ -1,18 +1,19 @@
-import { connectMongoDB } from '@/libs/mongodb'
-import Promoter from '@/models/Promoter'
-import User from '@/models/User'
 import { messages } from '@/utils/messages'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
-import Commission, { ICommissionSchema } from '@/models/Comissions'
+import { PrismaClient } from '@prisma/client'
+import { arrayToString, stringToArray } from '../../../utils/arraysToString';
 
 export async function POST(req: NextRequest) {
     try {
-        await connectMongoDB()
+        const prisma = new PrismaClient()
         const body = await req.json()
         const { new_commission } = body
-        const { user, promoter, coupon, earnings } = new_commission
+
+        const { 
+            user, promoter, coupon, earnings: { type, amount }, coupon: { id: couponId, code, products } 
+        } = new_commission
 
         const cookieStore = cookies()
         const auth_cookie: any = cookieStore.get('auth_cookie')
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const IsTokenValid = jwt.verify(auth_cookie.value, 'secretch@mos@')
+        const IsTokenValid = jwt.verify(auth_cookie.value, 'secretch@mos@S48=ov6.TD^q8F')
         //@ts-ignore
         const { data } = IsTokenValid
 
@@ -40,8 +41,16 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const userFind = await User.findOne({ _id: user })
-        const promoterFind = await Promoter.findOne({ user })
+        const userFind = await prisma.user.findUnique({
+            where:{
+                id: user
+            }
+        })
+        const promoterFind = await prisma.promoter.findFirst({
+            where:{
+                user_id: user
+            }
+        })
 
         if (!userFind) {
             return NextResponse.json({
@@ -59,21 +68,43 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const newCommission: ICommissionSchema = new Commission({
-            user,
-            promoter,
-            coupon,
-            earnings,
-            made_by: data._id
-        })
-
-        //@ts-ignore
-        const commissionCreated = newCommission._doc
-
-        await newCommission.save()
+        const commissionCreated = await prisma.commission.create({
+            data: {
+                user: {
+                    connect: { id: user },
+                },
+                promoter: {
+                    connect: { id: promoter },
+                },
+                coupon: {
+                    create: {
+                        code,
+                        coupon_id: `${couponId}`,
+                        products: arrayToString(products),
+                    },
+                },
+                earning_amount: amount,
+                earning_type: type,
+                made_by: {
+                    connect: { id: data.id },
+                },
+            },
+            include: {
+                user: true,
+                promoter: true,
+                coupon: true,
+                made_by: true,
+            }
+        });
 
         const response = NextResponse.json({
-            commission: commissionCreated,
+            commission: {
+                ...commissionCreated,
+                coupon: {
+                    ...commissionCreated.coupon,
+                    products: stringToArray(commissionCreated.coupon.products)
+                }
+            },
             message: messages.success.promoterCreated
         }, {
             status: 200
@@ -93,35 +124,17 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
     try {
-        await connectMongoDB()
-        const commissions = await Commission.aggregate([
-            {
-              $lookup: {
-                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
-              },
+        const prisma = new PrismaClient()
+        const commissions = await prisma.commission.findMany({
+            include: {
+                user: true,
+                promoter: true,
+                coupon: true
             },
-            {
-              $lookup: {
-                from: 'promoters', // Nombre de la colección de promotores (ajusta según tu modelo)
-                localField: 'promoter',
-                foreignField: '_id',
-                as: 'promoter',
-              },
-            },
-            {
-              $unwind: '$user',
-            },
-            {
-              $unwind: '$promoter',
-            },
-            {
-                $sort: { _id: -1 },
-            },
-          ]);
-          
+            orderBy: {
+                created_at: 'desc'
+            }
+        })
 
         const response = NextResponse.json({
             commissions,

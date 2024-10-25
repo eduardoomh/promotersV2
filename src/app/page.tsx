@@ -5,7 +5,7 @@ import { Col, Row } from 'antd'
 import PromotersCard from '@/components/stats/Promoters/Promoters'
 import CouponsCard from '@/components/stats/coupons/CouponsCard'
 import { cookies } from 'next/headers'
-import styles from  './home.module.css'
+import styles from './home.module.css'
 
 async function loadStats(cookie: any) {
   const token = cookie.value
@@ -27,8 +27,8 @@ export default async function Home() {
     <>
       <EndLoading />
       <Row gutter={[20, 20]} className={styles.scroll_view}>
-        <Col span={24}> 
-        <General stats={data.stats[0]} />
+        <Col span={24}>
+          <General stats={data.stats[0]} />
         </Col>
         <Col xs={24} sm={24} md={24} xl={12}>
           <ProfileCard user={data.user[0]} stats={data.user[0]} />

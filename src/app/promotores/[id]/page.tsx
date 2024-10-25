@@ -21,7 +21,7 @@ async function loadPromoter({ params }: any) {
     const promoters_response = await promoters.json()
     const coupons_response = await coupons.json()
 
-    console.log(promoters_response.user, "veamosss")
+    console.log(promoters_response, "veamosss")
 
     return {
         promoter: promoters_response.user,
@@ -65,7 +65,7 @@ export default async function Promotorer(props: any) {
 
                                 <div className={styles.card_item}>
                                     <p><strong>Teléfono de casa</strong></p>
-                                    <p>{promoter?.personal_info.phone}</p>
+                                    <p>{promoter?.user_info.phone}</p>
                                 </div>
                             </article>
                         </Col>
@@ -73,12 +73,12 @@ export default async function Promotorer(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Teléfono celular</strong></p>
-                                    <p>{promoter?.personal_info.mobile_phone}</p>
+                                    <p>{promoter?.user_info.mobile_phone}</p>
                                 </div>
 
                                 <div className={styles.card_item}>
                                     <p><strong>RFC</strong></p>
-                                    <p>{promoter?.personal_info.rfc}</p>
+                                    <p>{promoter?.user_info.rfc}</p>
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Última modificación</strong></p>
@@ -144,7 +144,7 @@ export default async function Promotorer(props: any) {
 
                             </article>
                         </Col>
-                        <ActionsButton id={promoter?._id} />
+                        <ActionsButton id={promoter?.id} />
                     </Row>
                 </div>
             </CustomCard>
@@ -208,9 +208,9 @@ export default async function Promotorer(props: any) {
                     </CustomCard>
                 </Col>
             </Row>
-            <PromoterActions id={promoter._id} />
+            <PromoterActions id={promoter?.id} />
             < GenericForm
-                url={`/promotores/${promoter._id}`}
+                url={`/promotores/${promoter?.id}`}
                 type='promoterActions'
                 promoters={[]}
                 users={[]}

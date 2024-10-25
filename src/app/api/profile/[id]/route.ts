@@ -1,18 +1,11 @@
-import { connectMongoDB } from '@/libs/mongodb'
-import Promoter from '@/models/Promoter'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
-import User from '@/models/User'
-import Movement from '@/models/Movement'
-import Commission from "@/models/Comissions";
-import mongoose from 'mongoose'
+import { PrismaClient } from '@prisma/client'
 
 export async function POST(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
-        
 
         const response = NextResponse.json({
             message: messages.success.promoterCreated
@@ -34,10 +27,15 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/profile/')[1]
-        const user = await User.findOne({_id: id}).sort({$natural: -1})
+        const prisma = new PrismaClient()
+
+        const user = await prisma.user.findUnique({
+            where: {
+                id,
+            },
+        })
 
         if(!user){
             return NextResponse.json({
@@ -46,57 +44,46 @@ export async function GET(req: NextRequest) {
                 status: 500
             })
         }
-        const promoter = await Promoter.aggregate([
-            { $match: {user: new mongoose.Types.ObjectId(id)} },
-            {
-              $lookup: {
-                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
-              },
+
+          const promoter = await prisma.promoter.findFirst({
+            where: {
+                user_id: id,
             },
-            {
-              $unwind: '$user',
+            include:{
+                user: true,               
+                address: true, 
+                user_info: true,  
+                made_by: true, 
+            }
+        })
+
+          const commissions = await prisma.commission.findMany({
+            where: {
+                user_id: id,
             },
-            {
-                $sort: { _id: -1 },
+            include:{
+                user: true,    
+                promoter: true,           
+                made_by: true, 
             },
-          ]);
-        const commissions = await Commission.aggregate([
-            { $match: {user: new mongoose.Types.ObjectId(id)} },
-            {
-              $lookup: {
-                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
-              },
+            orderBy:{
+                created_at: 'desc'
+            }
+        })
+
+        const movements = await prisma.movement.findMany({
+            where: {
+                user_id: id,
             },
-            {
-              $unwind: '$user',
+            include:{
+                user: true,    
+                promoter: true,           
+                made_by: true, 
             },
-            {
-                $sort: { _id: -1 },
-            },
-          ]);
-        const movements = await Movement.aggregate([
-            { $match: {user: new mongoose.Types.ObjectId(id)} },
-            {
-              $lookup: {
-                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
-              },
-            },
-            {
-              $unwind: '$user',
-            },
-            {
-                $sort: { _id: -1 },
-            },
-          ]);
+            orderBy:{
+                created_at: 'desc'
+            }
+        })
 
         if(!promoter){
             return NextResponse.json({
@@ -107,7 +94,7 @@ export async function GET(req: NextRequest) {
         }
 
         const response = NextResponse.json({
-            promoter: promoter[0],
+            promoter: promoter,
             movements,
             commissions,
             messages: messages.success.authorized

@@ -24,9 +24,9 @@ const PromotersMobileMadeBy: FC<Props> = ({ promoters }) => {
             {
                 promoters.map(el => (
                     <section 
-                        key={el._id}
+                        key={el.id}
                         className={styles.section} 
-                        onClick={() => handleDetailClick(el._id)}>
+                        onClick={() => handleDetailClick(el.id)}>
                         <Avatar
                             style={{
                                 backgroundColor: '#0D709A',

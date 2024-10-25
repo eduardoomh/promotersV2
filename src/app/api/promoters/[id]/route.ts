@@ -1,34 +1,24 @@
-import { connectMongoDB } from "@/libs/mongodb";
-import Commission from "@/models/Comissions";
-import Movement from "@/models/Movement";
-import Promoter, { IPromoterSchema } from "@/models/Promoter";
 import { messages } from "@/utils/messages";
-import mongoose from "mongoose";
+import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
-
-        const findPromoter = await Promoter.aggregate([
-            { $match: {_id: new mongoose.Types.ObjectId(id)} },
-            {
-              $lookup: {
-                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
-              },
+        const prisma = new PrismaClient()
+        
+          const findPromoter = await prisma.promoter.findUnique({
+            where:{
+                id
             },
-            {
-              $unwind: '$user',
-            },
-            {
-                $sort: { _id: -1 },
-            },
-          ]);
+            include: {
+              user: true,               
+              address: true, 
+              user_info: true,  
+              made_by: true, 
+            }
+          });
 
         if (!findPromoter) {
             return NextResponse.json({
@@ -38,57 +28,37 @@ export async function GET(req: NextRequest) {
             })
         }
 
-        const findMovements = await Movement.aggregate([
-            { $match: { promoter: new mongoose.Types.ObjectId(id) } },
-            {
-                $lookup: {
-                    from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                    localField: 'user',
-                    foreignField: '_id',
-                    as: 'user',
-                },
+        const findMovements = await prisma.movement.findMany({
+            where:{
+                promoter_id: id
             },
-            {
-                $unwind: '$user',
+            include: {
+              user: true
             },
-            {
-                $sort: { _id: -1 },
+            orderBy:{
+                created_at: 'desc'
+            }
+          });
+
+          const findCommissions = await prisma.commission.findMany({
+            where:{
+                promoter_id: id
             },
-        ]);
-        const findcommissions = await Commission.aggregate([
-            { $match: { promoter: new mongoose.Types.ObjectId(id) } },
-            {
-                $lookup: {
-                    from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                    localField: 'user',
-                    foreignField: '_id',
-                    as: 'user',
-                },
+            include: {
+              user: true,
+              promoter: true,
+              coupon: true
             },
-            {
-                $lookup: {
-                    from: 'promoters', // Nombre de la colección de promotores (ajusta según tu modelo)
-                    localField: 'promoter',
-                    foreignField: '_id',
-                    as: 'promoter',
-                },
-            },
-            {
-                $unwind: '$user',
-            },
-            {
-                $unwind: '$promoter',
-            },
-            {
-                $sort: { _id: -1 },
-            },
-        ]);
+            orderBy:{
+                created_at: 'desc'
+            }
+          });
 
         const response = NextResponse.json({
             message: 'Promotor encontrado',
-            user: findPromoter[0],
+            user: findPromoter,
             movements: findMovements,
-            commissions: findcommissions
+            commissions: findCommissions
         }, {
             status: 200
         })
@@ -107,11 +77,15 @@ export async function GET(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
+        const prisma = new PrismaClient()
 
-        const findPromoter: IPromoterSchema | null = await Promoter.findOne({ _id: id })
+        const findPromoter = await prisma.promoter.findUnique({
+            where:{
+                id
+            }
+          });
 
         if (!findPromoter) {
             return NextResponse.json({
@@ -122,24 +96,35 @@ export async function PATCH(req: NextRequest) {
         }
 
         const { update_promoter } = await req.json()
-        const { personal_info, address } = update_promoter
-        const updatePromoter = await Promoter.updateOne({ _id: id }, {
-            $set: {
-                personal_info,
-                address,
-                updated_at: Date.now()
+        const { user_info, address } = update_promoter
+        const updatedPromoter = await prisma.promoter.update({
+            where: {
+                id: id,
+            },
+            data: {
+                user_info: {
+                    update: user_info,
+                },
+                address: {
+                    update: address,
+                },
+                updated_at: new Date(),
+            },
+            include:{
+                user: true,
+                user_info: true,
+                address: true,
+                made_by: true
             }
-        })
+        });
 
-        if (updatePromoter.modifiedCount < 1) {
+        if (!updatedPromoter) {
             return NextResponse.json({
                 message: 'El promotor no pudo ser actualizado',
             }, {
                 status: 500
             })
         }
-
-        const updatedPromoter = await Promoter.findOne({ _id: id })
 
         const response = NextResponse.json({
             message: 'El promotor se ha actualizado',
@@ -162,11 +147,15 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
+        const prisma = new PrismaClient()
 
-        const existPromoter = await Promoter.findOne({ _id: id })
+        const existPromoter = await prisma.promoter.findUnique({
+            where: {
+                id,
+            },
+        })
 
         if (!existPromoter) {
             return NextResponse.json({
@@ -176,8 +165,19 @@ export async function DELETE(req: NextRequest) {
             })
         }
 
-        const deletePromoter = await Promoter.deleteOne({ _id: id })
-        if (deletePromoter.deletedCount < 1) {
+        const deletePromoter = await prisma.promoter.delete({
+            where: {
+              id: id,
+            },
+            include: {
+                user: true,               
+                address: true, 
+                user_info: true,  
+                made_by: true, 
+              }
+          });
+
+        if (!deletePromoter) {
             return NextResponse.json({
                 message: 'El promotor no pudo ser eliminado',
             }, {
@@ -187,7 +187,7 @@ export async function DELETE(req: NextRequest) {
 
         const response = NextResponse.json({
             message: 'Promotor eliminado exitosamente',
-            deleted_promoter: existPromoter
+            deleted_promoter: deletePromoter
         }, {
             status: 200
         })

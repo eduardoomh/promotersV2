@@ -26,7 +26,7 @@ const NewUserForm: FC<props> = ({ users }) => {
 
     useEffect(() => {
         if (searchParams.get('actualizar')) {
-            const currentUser = users.find(el => el._id.toString() === searchParams.get('actualizar'))
+            const currentUser = users.find(el => el.id.toString() === searchParams.get('actualizar'))
             if (currentUser) {
                 setCurrentUser(currentUser)
                 form.setFieldsValue({

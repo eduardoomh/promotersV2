@@ -72,7 +72,7 @@ const UsersTable: FC<Props> = ({ users }) => {
             render: (data: IUserSchema) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <RightCircleOutlined style={{fontSize: '2rem', color: '#0D709A'}} onClick={() => handleDetailClick(data._id)} />
+                        <RightCircleOutlined style={{fontSize: '2rem', color: '#0D709A'}} onClick={() => handleDetailClick(data.id)} />
                     </Tooltip>
 
                 </div>

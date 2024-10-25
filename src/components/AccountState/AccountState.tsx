@@ -57,7 +57,7 @@ const AccountState: FC<props> = ({ movements }) => {
                             <hr/>
                             {
                                 filteredMovements && filteredMovements.length > 0 && filteredMovements.map((movement: IMovementSchema) => (
-                                    <article key={movement._id}>
+                                    <article key={movement.id}>
                                         <div style={{ display: 'flex' }}>
                                             <section style={{ width: '100%' }}>
                                                 <p><strong>Concepto: </strong> {movement.description} </p>
@@ -70,8 +70,8 @@ const AccountState: FC<props> = ({ movements }) => {
                                                 alignItems: 'flex-end',
                                                 flexDirection: 'column'
                                             }}>
-                                                <p style={{ fontSize: '0.9rem', color: 'gray' }}>Anterior: ${movement.security.before_mod} mxn </p>
-                                                <p style={{ fontSize: '0.9rem', color: 'gray' }}>Posterior: ${movement.security.after_mod} mxn </p>
+                                                <p style={{ fontSize: '0.9rem', color: 'gray' }}>Anterior: ${movement.before_mod} mxn </p>
+                                                <p style={{ fontSize: '0.9rem', color: 'gray' }}>Posterior: ${movement.after_mod} mxn </p>
                                                 <br/>
                                                 <p style={{ fontSize: '1.2rem', color: movement.type === 'discount' ? 'red' : 'black' }}>
                                                 {movement.type === 'discount' ? 'Descontado:' : 'Depositado:'} {movement.type === 'discount' ? '-' : ''}${movement.amount} mxn </p>

@@ -1,4 +1,3 @@
-import User, { IUserSchema } from '@/models/User'
 import { validateEmail } from '@/utils/isValidEmail'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'

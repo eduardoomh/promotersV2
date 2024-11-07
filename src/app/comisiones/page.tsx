@@ -1,3 +1,4 @@
+/*
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from '../usuarios/Users.module.css'
 import DeleteConfirm from "@/components/PageModals/delete/DeleteConfirm";
@@ -35,4 +36,7 @@ export default async function Commissions() {
   
     )
   }
-  
+  */
+  export default async function Commissions() {
+    return <></>
+  }

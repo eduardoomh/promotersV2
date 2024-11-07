@@ -1,3 +1,4 @@
+/*
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from '../usuarios/Users.module.css'
 import PromotersTable from "@/components/tables/promoters/PromotersTable";
@@ -27,13 +28,6 @@ export default async function Promotores() {
     <main className={styles.main}>
       <EndLoading />
       <section className={styles.content}>
-      {/*
-        <div className={styles.form}>
-                  <FormCard>
-                    <NewPromoterForm promoters={promoters} users={users} />
-                  </FormCard>
-                </div>
-       */ }
         <div className={styles.table_content}>
           <div className={styles.table_desktop}>
             <PromotersTable promoters={promoters} />
@@ -56,4 +50,9 @@ export default async function Promotores() {
     </main>
 
   )
+}
+*/
+
+export default async function Promotores() {
+  return <></>
 }

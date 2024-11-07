@@ -1,3 +1,4 @@
+/*
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from './Users.module.css'
 import UsersTable from "@/components/tables/users/UsersTable";
@@ -19,13 +20,6 @@ export default async function Usuarios() {
     <main className={styles.main}>
       <EndLoading />
       <section className={styles.content}>
-        {/*
-          <div className={styles.form}>
-            <FormCard>
-              <NewUserForm users={users} />
-            </FormCard>
-          </div>
-       */ }
         <div className={styles.table_content}>
           <div className={styles.table_desktop}>
             <UsersTable users={users} />
@@ -48,4 +42,8 @@ export default async function Usuarios() {
     </main>
 
   )
+}
+*/
+export default async function Usuarios() {
+  return <></>
 }

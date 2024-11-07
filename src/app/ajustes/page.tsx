@@ -1,3 +1,4 @@
+/*
 import EndLoading from "@/components/EndLoading/EndLoading";
 import TitleCard from "@/components/TitleCard/TitleCard";
 import styles from './Ajustes.module.css'
@@ -40,4 +41,8 @@ export default async function Ajustes() {
     </main>
 
   )
+}
+  */
+export default async function Ajustes() {
+  return <></>
 }

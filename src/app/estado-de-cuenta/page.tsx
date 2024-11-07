@@ -1,3 +1,4 @@
+/*
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from '../usuarios/Users.module.css'
 import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
@@ -36,4 +37,7 @@ export default async function Movements() {
   
     )
   }
-  
+  */
+  export default async function Movements() {
+    return <></>
+  }

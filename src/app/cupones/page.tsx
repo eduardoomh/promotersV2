@@ -1,3 +1,4 @@
+/*
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from '../usuarios/Users.module.css'
 import DeleteConfirm from "@/components/PageModals/users/DeleteConfirm";
@@ -21,13 +22,6 @@ export default async function Cupones() {
       <main className={styles.main}>
       <EndLoading />
       <section className={styles.content}>
-      {/*
-        <div className={styles.form}>
-                  <FormCard>
-                    <NewPromoterForm promoters={promoters} users={users} />
-                  </FormCard>
-                </div>
-       */ }
         <div className={styles.table_content}>
           <div className={styles.table_desktop}>
             <CouponsTable coupons={coupons} />
@@ -43,4 +37,7 @@ export default async function Cupones() {
   
     )
   }
-  
+  */
+  export default async function Cupones() {
+    return <></>
+  }

@@ -34,7 +34,7 @@ export default async function Usuarios() {
       <ActionsModal type='users' url='/usuarios'/>
       < GenericForm
           users={users}
-          url='/usuarios'
+          url='/usuarios'git bran
           type='users'
           promoters={[]} 
           data={null}

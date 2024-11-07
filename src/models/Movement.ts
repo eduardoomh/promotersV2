@@ -9,10 +9,8 @@ export interface IMovementSchema extends Document {
     promoter: string | IPromoterSchema;
     amount: number;
     type: 'discount' | 'payment',
-    security: {
-        before_mod: number;
-        after_mod: number;
-    }
+    before_mod: number;
+    after_mod: number;
     commission?: string | ICommissionSchema;
     description: string;
     made_by?: string | IUserSchema;

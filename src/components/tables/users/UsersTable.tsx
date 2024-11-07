@@ -85,7 +85,7 @@ const UsersTable: FC<Props> = ({ users }) => {
                     <Tooltip placement="top" title={'Ver más información'}>
                     <InfoCircleOutlined 
                         style={{fontSize: '1.6rem', color: '#0D709A'}} 
-                        onClick={() => handleActionClick(data._id, data.email)} />
+                        onClick={() => handleActionClick(data.id, data.email)} />
                     </Tooltip>
 
                 </div>

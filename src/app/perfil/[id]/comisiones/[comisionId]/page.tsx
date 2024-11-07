@@ -53,15 +53,15 @@ export default async function Commission(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Tipo de pago</strong></p>
-                                    <p>{commission.earnings.type === 'fixed_price' ? 'Precio fijo' : 'porcentaje'}</p>
+                                    <p>{commission.earning_type === 'fixed_price' ? 'Precio fijo' : 'porcentaje'}</p>
 
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Ganancia</strong></p>
                                     <p>{
-                                        commission.earnings.type === 'fixed_price' ?
-                                            `$${commission.earnings.amount} mxn` :
-                                            `${commission.earnings.amount}%`
+                                        commission.earning_type === 'fixed_price' ?
+                                            `$${commission.earning_amount} mxn` :
+                                            `${commission.earning_amount}%`
                                     }
                                     </p>
 

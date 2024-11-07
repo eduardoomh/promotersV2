@@ -58,7 +58,7 @@ export default async function Perfil(props: any) {
 
                                 <div className={styles.card_item}>
                                     <p><strong>Teléfono de casa</strong></p>
-                                    <p>{promoter?.personal_info.phone}</p>
+                                    <p>{promoter?.user_info.phone}</p>
                                 </div>
                             </article>
                         </Col>
@@ -66,12 +66,12 @@ export default async function Perfil(props: any) {
                             <article className={styles.card_container}>
                                 <div className={styles.card_item}>
                                     <p><strong>Teléfono celular</strong></p>
-                                    <p>{promoter?.personal_info.mobile_phone}</p>
+                                    <p>{promoter?.user_info.mobile_phone}</p>
                                 </div>
 
                                 <div className={styles.card_item}>
                                     <p><strong>RFC</strong></p>
-                                    <p>{promoter?.personal_info.rfc}</p>
+                                    <p>{promoter?.user_info.rfc}</p>
                                 </div>
                                 <div className={styles.card_item}>
                                     <p><strong>Última modificación</strong></p>

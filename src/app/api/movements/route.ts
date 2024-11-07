@@ -1,18 +1,15 @@
-import { connectMongoDB } from '@/libs/mongodb'
-import Promoter from '@/models/Promoter'
-import User from '@/models/User'
 import { messages } from '@/utils/messages'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
-import Movement, { IMovementSchema } from '@/models/Movement'
+import { PrismaClient } from '@prisma/client'
 
 export async function POST(req: NextRequest) {
     try {
-        await connectMongoDB()
         const body = await req.json()
         const { new_movement } = body
         const { user, promoter, amount, type, description } = new_movement
+        const prisma = new PrismaClient()
 
         const cookieStore = cookies()
         const auth_cookie: any = cookieStore.get('auth_cookie')
@@ -25,13 +22,13 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const IsTokenValid = jwt.verify(auth_cookie.value, 'secretch@mos@')
+        const IsTokenValid = jwt.verify(auth_cookie.value, 'secretch@mos@S48=ov6.TD^q8F')
         //@ts-ignore
         const { data } = IsTokenValid
 
         //validar campos enviados
         if (
-            !user || !promoter || !amount || !type || !description
+            !user || !promoter || !amount || !type || !description 
         ) {
             return NextResponse.json({
                 message: messages.error.needProps
@@ -40,8 +37,17 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const userFind = await User.findOne({ _id: user })
-        const promoterFind = await Promoter.findOne({ user })
+        const userFind = await prisma.user.findUnique({
+            where:{
+                id: user
+            }
+        })
+
+        const promoterFind = await prisma.promoter.findFirst({
+            where:{
+                user_id: user
+            }
+        })
 
         if (!userFind) {
             return NextResponse.json({
@@ -59,40 +65,54 @@ export async function POST(req: NextRequest) {
             })
         }
         let updateBalance
-        if(type === 'discount'){
-            await Promoter.updateOne({user},{
-                $set: {
-                   balance: Number(promoterFind.balance) - Number(amount.toFixed(2)) 
+        if (type === 'discount') {
+            await prisma.promoter.update({
+                where:{
+                    id: promoterFind.id
+                },
+                data:{
+                    balance: Number(promoterFind.balance) - Number(amount.toFixed(2)),
+                    updated_at: new Date(),
                 }
             })
             updateBalance = Number(promoterFind.balance) - Number(amount.toFixed(2))
-        }else{
-            await Promoter.updateOne({user},{
-                $set: {
-                   balance: Number(promoterFind.balance) + Number(amount.toFixed(2)) 
+        } else {
+            await prisma.promoter.update({
+                where:{
+                    id: promoterFind.id
+                },
+                data:{
+                    balance: Number(promoterFind.balance) + Number(amount.toFixed(2)),
+                    updated_at: new Date(),
                 }
             })
             updateBalance = Number(promoterFind.balance) + Number(amount.toFixed(2))
         }
-       
 
-        const newMovement: IMovementSchema = new Movement({
-            user,
-            promoter,
-            amount: Number(amount),
-            type,
-            description,
-            security: {
+        const movementCreated = await prisma.movement.create({
+            data: {
+                user: {
+                    connect: { id: user },
+                },
+                promoter: {
+                    connect: { id: promoterFind.id },
+                },
+                amount: Number(amount),
+                type,
+                description,
                 before_mod: Number(promoterFind.balance),
-                after_mod: updateBalance
+                after_mod: updateBalance,
+                made_by:{
+                    connect: {
+                        id: data.id
+                    }
+                }
             },
-            made_by: data._id
+            include:{
+                user: true,
+                promoter: true
+            }
         })
-
-        //@ts-ignore
-        const movementCreated = newMovement._doc
-
-        await newMovement.save()
 
         const response = NextResponse.json({
             movement: movementCreated,
@@ -115,34 +135,16 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
     try {
-        await connectMongoDB()
-        const movements = await Movement.aggregate([
-            {
-              $lookup: {
-                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
-              },
+        const prisma = new PrismaClient()
+        const movements = await prisma.movement.findMany({
+            include:{
+                user: true,
+                promoter: true
             },
-            {
-              $lookup: {
-                from: 'promoters', // Nombre de la colección de promotores (ajusta según tu modelo)
-                localField: 'promoter',
-                foreignField: '_id',
-                as: 'promoter',
-              },
-            },
-            {
-              $unwind: '$user',
-            },
-            {
-              $unwind: '$promoter',
-            },
-            {
-                $sort: { _id: -1 },
-            },
-          ]);
+            orderBy:{
+                created_at: 'desc'
+            }
+        })
 
         const response = NextResponse.json({
             movements,

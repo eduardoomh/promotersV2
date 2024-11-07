@@ -1,17 +1,16 @@
-import { connectMongoDB } from '@/libs/mongodb'
-import User, { IUserSchema } from '@/models/User'
 import { validateEmail } from '@/utils/isValidEmail'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
+import { PrismaClient } from '@prisma/client'
 
 export async function POST(req: NextRequest) {
     try {
-        await connectMongoDB()
+        const prisma = new PrismaClient()
         const body = await req.json()
-        const {name, email, password, confirm_password, role} = body
+        const { name, email, password, confirm_password, role } = body
 
         const cookieStore = cookies()
         const auth_cookie: any = cookieStore.get('auth_cookie')
@@ -24,62 +23,75 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const IsTokenValid = jwt.verify(auth_cookie.value, 'secretch@mos@')
+        const IsTokenValid = jwt.verify(auth_cookie.value, 'secretch@mos@S48=ov6.TD^q8F')
         //@ts-ignore
         const { data } = IsTokenValid
 
         //validar campos enviados
-        if(!email || !password || !confirm_password){
+        if (!email || !password || !confirm_password) {
             return NextResponse.json({
                 message: messages.error.needProps
-            },{
+            }, {
                 status: 400
             })
         }
-        if(!validateEmail(email)){
+        if (!validateEmail(email)) {
             return NextResponse.json({
                 message: messages.error.emailNotValid
-            },{
+            }, {
                 status: 400
             })
         }
 
-        if(password !== confirm_password){
+        if (password !== confirm_password) {
             return NextResponse.json({
                 message: messages.error.passwordNotMatch
-            },{
+            }, {
                 status: 400
             })
         }
 
-        const userFind = await User.findOne({email})
+        const userFind = await prisma.user.findUnique({
+            where: {
+                email,
+            },
+        })
 
-        if(userFind){
+        if (userFind) {
             return NextResponse.json({
                 message: messages.error.emailExist
-            },{
+            }, {
                 status: 400
             })
         }
 
         const hashedPassword = await bcryptjs.hash(password, 10)
 
-        const newUser: IUserSchema = new User({
-            name,
-            email,
-            role,
-            made_by: data._id,
-            password: hashedPassword
+        const newUser = await prisma.user.create({
+            data: {
+                name,
+                email,
+                role,
+                password: hashedPassword,
+                made_by_id: data.id,
+            },
+            include: {
+                made_by: {
+                    select: {
+                        email: true,
+                        name: true,
+                    },
+                },
+            }
         })
 
         //@ts-ignore
-        const {password: passw, ...rest} = newUser._doc
+        const { password: passw, ...rest } = newUser
 
-        await newUser.save()
-        const response =  NextResponse.json({
+        const response = NextResponse.json({
             newUser: rest,
             message: messages.success.userCreated
-        },{
+        }, {
             status: 200
         })
 
@@ -90,7 +102,7 @@ export async function POST(req: NextRequest) {
         console.log(error)
         return NextResponse.json({
             message: messages.error.default, error
-        },{
+        }, {
             status: 500
         })
     }

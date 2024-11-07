@@ -14,7 +14,7 @@ interface Props {
 const PromotersTable: FC<Props> = ({ promoters }) => {
     const router = useRouter()
     const { startLoading } = useContext(GlobalContext)
-    const [searchText, setSearchText] = useState<string>('');
+    const [searchText] = useState<string>('');
 
     const handleDetailClick = (_id: string) => {
         startLoading()
@@ -46,7 +46,7 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
         },
         {
             title: 'Teléfono',
-            render: (data: any) => <a>{data.personal_info?.mobile_phone}</a>,
+            render: (data: any) => <a>{data.user_info?.mobile_phone}</a>,
         },
         {
             title: 'Fecha',
@@ -59,7 +59,7 @@ const PromotersTable: FC<Props> = ({ promoters }) => {
             render: (data: IPromoterSchema) => (
                 <div className='flex gap-3'>
                     <Tooltip placement="top" title={'Ver más información'}>
-                        <RightCircleOutlined style={{ fontSize: '2rem', color: '#0D709A' }} onClick={() => handleDetailClick(data._id)} />
+                        <RightCircleOutlined style={{ fontSize: '2rem', color: '#0D709A' }} onClick={() => handleDetailClick(data.id)} />
                     </Tooltip>
                 </div>
             ),

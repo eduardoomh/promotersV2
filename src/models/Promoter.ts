@@ -4,7 +4,7 @@ import { IUserSchema } from './User';
 export interface IPromoterSchema extends Document {
     _id: string;
     user: string | IUserSchema;
-    personal_info: {
+    user_info: {
         phone: string;
         mobile_phone: string;
         rfc: string;
@@ -30,7 +30,7 @@ const promoterSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    personal_info: {
+    user_info: {
         phone: {
             type: String,
             required: true,

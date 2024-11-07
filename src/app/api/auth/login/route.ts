@@ -4,10 +4,11 @@ import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import { PrismaClient } from '@prisma/client'
 
 export async function POST(req: NextRequest) {
     try {
-        await connectMongoDB()
+        const prisma = new PrismaClient()
         const body: IUserSchema = await req.json()
         const { email, password } = body
 
@@ -19,7 +20,11 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const userFind = await User.findOne({ email })
+        const userFind = await prisma.user.findUnique({
+            where: {
+                email,
+            },
+        })
 
         if (!userFind) {
             return NextResponse.json({
@@ -33,29 +38,29 @@ export async function POST(req: NextRequest) {
             password,
             userFind.password
         )
-        if(!isCorrectPassw){
+        if (!isCorrectPassw) {
             return NextResponse.json({
                 message: messages.error.incorrectPassw
             }, {
                 status: 400
-            }) 
+            })
         }
 
-         //@ts-ignore
-         const {password: passw, ...rest} = userFind._doc
+        //@ts-ignore
+        const { password: passw, ...rest } = userFind
 
-         const token = jwt.sign({data: rest}, 'secretch@mos@',{
+        const token = jwt.sign({ data: rest }, 'secretch@mos@S48=ov6.TD^q8F', {
             expiresIn: 86400
         })
 
-        const response =  NextResponse.json({
+        const response = NextResponse.json({
             userLogged: rest,
             messages: messages.success.userLogged
-        },{
+        }, {
             status: 200
         })
 
-        response.cookies.set('auth_cookie', token,{
+        response.cookies.set('auth_cookie', token, {
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
             maxAge: 86400,

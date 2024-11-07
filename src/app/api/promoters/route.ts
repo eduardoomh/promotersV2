@@ -1,18 +1,18 @@
-import { connectMongoDB } from '@/libs/mongodb'
 import Promoter, { IPromoterSchema } from '@/models/Promoter'
 import User from '@/models/User'
 import { messages } from '@/utils/messages'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
+import { PrismaClient } from '@prisma/client'
 
 export async function POST(req: NextRequest) {
     try {
-        await connectMongoDB()
         const body = await req.json()
         const { new_promoter } = body
-        const { user, personal_info, address } = new_promoter
-
+        const { user, user_info, address } = new_promoter
+        const prisma = new PrismaClient()
+ 
         const cookieStore = cookies()
         const auth_cookie: any = cookieStore.get('auth_cookie')
 
@@ -24,13 +24,13 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const IsTokenValid = jwt.verify(auth_cookie.value, 'secretch@mos@')
+        const IsTokenValid = jwt.verify(auth_cookie.value, 'secretch@mos@S48=ov6.TD^q8F')
         //@ts-ignore
         const { data } = IsTokenValid
 
         //validar campos enviados
         if (
-            !user || !personal_info || !address
+            !user || !user_info || !address
         ) {
             return NextResponse.json({
                 message: messages.error.needProps
@@ -39,8 +39,16 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const userFind = await User.findOne({ _id: user })
-        const promoterFind = await Promoter.findOne({ user })
+        const userFind = await prisma.user.findUnique({
+            where: {
+                id: user,
+            },
+        })
+        const promoterFind = await prisma.promoter.findFirst({
+            where: {
+                user_id: user,
+            },
+        })
 
         if (!userFind) {
             return NextResponse.json({
@@ -58,30 +66,41 @@ export async function POST(req: NextRequest) {
             })
         }
 
-        const newPromoter: IPromoterSchema = new Promoter({
-            user,
-            personal_info: {
-                phone: personal_info.phone,
-                mobile_phone: personal_info.mobile_phone,
-                rfc: personal_info.rfc,
+        const promoterCreated = await prisma.promoter.create({
+            data: {
+              user: {
+                connect: { id: userFind.id },
+              },
+              user_info: {
+                create: {
+                  phone: user_info.phone,
+                  mobile_phone: user_info.mobile_phone,
+                  rfc: user_info.rfc,
+                },
+              },
+              address: {
+                create: {
+                  street: address.street,
+                  postal_code: address.postal_code,
+                  district: address.district,
+                  state: address.state,
+                  city: address.city,
+                  country: address.country,
+                },
+              },
+              balance: 0,
+              type: 'active',
+              made_by: {
+                connect: { id: data.id },
+              },
             },
-            address: {
-                street: address.street,
-                postal_code: address.postal_code,
-                district: address.district,
-                state: address.state,
-                city: address.city,
-                country: address.country,
-            },
-            balance: 0,
-            type: 'active',
-            made_by: data._id
-        })
-
-        //@ts-ignore
-        const promoterCreated = newPromoter._doc
-
-        await newPromoter.save()
+            include: {
+                user: true,
+                user_info: true,
+                address: true, 
+                made_by: true, 
+            }
+          });
 
         const response = NextResponse.json({
             promoter: promoterCreated,
@@ -104,23 +123,18 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
     try {
-        await connectMongoDB()
-        const promoters = await Promoter.aggregate([
-            {
-              $lookup: {
-                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
-              },
+        const prisma = new PrismaClient()
+        const promoters = await prisma.promoter.findMany({
+            include: {
+              user: true,               
+              address: true, 
+              user_info: true,  
+              made_by: true, 
             },
-            {
-              $unwind: '$user',
+            orderBy: {
+              created_at: 'desc',       // Ordenar por fecha de creación de manera descendente
             },
-            {
-                $sort: { _id: -1 },
-            },
-          ]);
+          });
 
         const response = NextResponse.json({
             promoters,
@@ -141,10 +155,10 @@ export async function GET() {
 
 export async function DELETE(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { search } = new URL(req.url)
         const params = new URLSearchParams(search);
         const id = params.get('id')
+        const prisma = new PrismaClient()
 
         const existPromoter = await Promoter.findOne({ _id: id })
 
@@ -186,10 +200,10 @@ export async function DELETE(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { search } = new URL(req.url)
         const params = new URLSearchParams(search);
         const id = params.get('id')
+        const prisma = new PrismaClient()
 
         const findPromoter: IPromoterSchema | null = await Promoter.findOne({ _id: id })
 

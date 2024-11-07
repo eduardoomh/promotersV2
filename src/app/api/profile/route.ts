@@ -1,14 +1,10 @@
-import { connectMongoDB } from '@/libs/mongodb'
-import Promoter from '@/models/Promoter'
 import { messages } from '@/utils/messages'
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
-import mongoose from 'mongoose'
+import { PrismaClient } from '@prisma/client'
 
 export async function POST(req: NextRequest) {
     try {
-        await connectMongoDB()
-
         const response = NextResponse.json({
             message: messages.success.promoterCreated
         }, {
@@ -29,51 +25,43 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
     try {
-        await connectMongoDB()
+        const prisma = new PrismaClient()
         const token = req.cookies.get('auth_cookie')
-        
-        if(!token){
-            console.log("fallaa", token)
+
+        if (!token) {
             return NextResponse.json({
                 message: messages.error.notAuthorized
-            },{
+            }, {
                 status: 400
             })
         }
 
-        const IsTokenValid = jwt.verify(token.value, 'secretch@mos@')
+        const IsTokenValid = jwt.verify(token.value, 'secretch@mos@S48=ov6.TD^q8F')
         //@ts-ignore
-        const {data} = IsTokenValid
+        const { data } = IsTokenValid
 
-        if(!data){
-            console.log("no se autoriza")
+        if (!data) {
             return NextResponse.json({
                 message: messages.error.notAuthorized
-            },{
+            }, {
                 status: 400
             })
         }
 
-        const promoter = await Promoter.aggregate([
-            { $match: { user: new mongoose.Types.ObjectId(data._id )} },
-            {
-              $lookup: {
-                from: 'users',
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
-              },
+        const promoter = await prisma.promoter.findFirst({
+            where:{
+                user_id: data.id
             },
-            {
-              $unwind: '$user',
-            },
-            {
-                $sort: { _id: -1 },
-            },
-          ]);
-  
+            include: {
+              user: true,               
+              address: true, 
+              user_info: true,  
+              made_by: true, 
+            }
+          });
+
         const response = NextResponse.json({
-            promoter: promoter[0],
+            promoter: promoter,
             messages: messages.success.authorized
         }, {
             status: 200

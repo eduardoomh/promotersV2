@@ -21,11 +21,11 @@ const MovementsByUser: FC<Props> = ({ movements }) => {
         },
         {
             title: 'Saldo anterior',
-            render: (data: any) => <a>${data.security.before_mod} mxn</a>,
+            render: (data: any) => <a>${data.before_mod} mxn</a>,
         },
         {
             title: 'Saldo posterior',
-            render: (data: any) => <a>${data.security.after_mod} mxn</a>,
+            render: (data: any) => <a>${data.after_mod} mxn</a>,
         },
         {
             title: 'Fecha',

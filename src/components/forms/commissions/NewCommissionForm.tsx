@@ -27,8 +27,8 @@ const NewCommissionForm: FC<props> = ({ url, data: allData, coupons = [] }) => {
             endpoint: 'commissions',
             formData: {
                 new_commission: {
-                    user: allData.user._id,
-                    promoter: allData._id,
+                    user: allData.user.id,
+                    promoter: allData.id,
                     coupon: {
                         id: coupons.find(el => el.id === data.coupon)?.id as string,
                         code: coupons.find(el => el.id === data.coupon)?.code as string,

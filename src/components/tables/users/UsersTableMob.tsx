@@ -33,9 +33,9 @@ const UsersTable: FC<Props> = ({ users }) => {
                     {
                         users.map(el => (
                             <section
-                                key={el._id}
+                                key={el.id}
                                 className={styles.section}
-                                onClick={() => handleActionClick(el._id, el.email)}>
+                                onClick={() => handleActionClick(el.id, el.email)}>
                                 <Avatar
                                     style={{
                                         backgroundColor: '#0D709A',

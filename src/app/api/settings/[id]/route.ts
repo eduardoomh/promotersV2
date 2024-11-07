@@ -1,12 +1,11 @@
-import { connectMongoDB } from "@/libs/mongodb"
-import Settings, { ISettingSchema } from "@/models/Settings"
 import { messages } from "@/utils/messages"
+import { PrismaClient } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function PATCH(req: NextRequest) {
     try {
-        await connectMongoDB()
-        const findSettings: ISettingSchema | null = await Settings.findOne()
+        const prisma = new PrismaClient()
+        const findSettings = await prisma.setting.findFirst()
 
         if (!findSettings) {
             return NextResponse.json({
@@ -18,38 +17,37 @@ export async function PATCH(req: NextRequest) {
 
         const { woo_keys } = await req.json()
         const { client_id, client_secret, store_url } = woo_keys
-        const updateSetting = await Settings.updateOne({ _id: findSettings._id }, {
-            $set: {
-                woo_keys:{
-                    client_id,
-                    client_secret,
-                    store_url
-                }
-            }
-        })
 
-        if (updateSetting.modifiedCount < 1) {
-            return NextResponse.json({
-                message: 'Los ajustes han sido actualizados',
-            }, {
-                status: 500
-            })
-        }
-        const updatedSettings: ISettingSchema | null = await Settings.findOne();
+        const updatedSettings = await prisma.setting.update({
+            where: {
+                id: findSettings.id,
+            },
+            data: {
+                woo_keys: {
+                    update: {
+                        client_id,
+                        client_secret,
+                        store_url
+                    },
+                }
+            },
+            include:{
+                woo_keys: true,
+                webhook: true,
+            }
+        });
 
         if (!updatedSettings) {
             return NextResponse.json({
-                message: 'Los ajustes no han sido actualizados',
+                message: 'Los ajustes NO han sido actualizados',
             }, {
                 status: 500
             })
         }
-        //@ts-ignore
-        const finalSettings = updatedSettings._doc
 
         const response = NextResponse.json({
             message: 'Los ajustes se ha actualizado',
-            updated_settings: finalSettings
+            updated_settings: updatedSettings
         }, {
             status: 200
         })

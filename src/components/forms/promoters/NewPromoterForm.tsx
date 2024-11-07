@@ -31,15 +31,15 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
 
     useEffect(() => {
         if (searchParams.get('actualizar')) {
-            const currentPromoter = promoters.find(el => el._id.toString() === searchParams.get('actualizar'))
+            const currentPromoter = promoters.find(el => el.id.toString() === searchParams.get('actualizar'))
             if (currentPromoter) {
                 setCurrentPromoter(currentPromoter)
                 form.setFieldsValue({
                     //@ts-ignore
-                    user: currentPromoter.user._id,
-                    phone: currentPromoter.personal_info.phone,
-                    mobile_phone: currentPromoter.personal_info.mobile_phone,
-                    rfc: currentPromoter.personal_info.rfc,
+                    user: currentPromoter.user.id,
+                    phone: currentPromoter.user_info.phone,
+                    mobile_phone: currentPromoter.user_info.mobile_phone,
+                    rfc: currentPromoter.user_info.rfc,
                     street: currentPromoter.address.street,
                     postal_code: currentPromoter.address.postal_code,
                     district: currentPromoter.address.district,
@@ -65,7 +65,7 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
             formData: {
                 new_promoter: {
                     user: data.user,
-                    personal_info: {
+                    user_info: {
                         phone: data.phone,
                         mobile_phone: data.mobile_phone,
                         rfc: data.rfc
@@ -91,7 +91,7 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
             endpoint: `promoters/${searchParams.get('actualizar')}`,
             formData: {
                 update_promoter: {
-                    personal_info: {
+                    user_info: {
                         phone: data.phone,
                         mobile_phone: data.mobile_phone,
                         rfc: data.rfc
@@ -133,7 +133,7 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
                     optionsList={users.map((el: IUserSchema) => {
                         return {
                             label: el.email,
-                            value: el._id
+                            value: el.id
                         }
                     })}
                 />

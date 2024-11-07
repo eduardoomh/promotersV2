@@ -64,7 +64,7 @@ const GenericForm: FC<props> = ({ users, promoters, url, type, data, coupons = [
                                 {
                                      searchParams.get('comision') ? (
                                          <NewCommissionForm 
-                                            url={`/promotores/${data._id}`} 
+                                            url={`/promotores/${data?.id}`} 
                                             data={data}
                                             coupons={coupons}
                                             />
@@ -73,13 +73,13 @@ const GenericForm: FC<props> = ({ users, promoters, url, type, data, coupons = [
                                         {
                                             searchParams.get('remove-amount') ? (
                                                 <NewMovementForm 
-                                                    url={`/promotores/${data._id}`} 
+                                                    url={`/promotores/${data?.id}`} 
                                                     data={data}
                                                     type={'discount'}
                                                 />
                                             ) : (
                                                 <NewMovementForm 
-                                                    url={`/promotores/${data._id}`} 
+                                                    url={`/promotores/${data?.id}`} 
                                                     data={data}
                                                     type={'payment'}
                                                 />

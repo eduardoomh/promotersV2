@@ -1,16 +1,19 @@
-import { connectMongoDB } from "@/libs/mongodb";
 import Promoter, { IPromoterSchema } from "@/models/Promoter";
-import Settings from "@/models/Settings";
 import { messages } from "@/utils/messages";
+import { PrismaClient } from "@prisma/client";
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/orders/')[1]
-        const configurations = await Settings.find()
+        const prisma = new PrismaClient()
+        const configurations = await prisma.setting.findFirst({
+            include:{
+                woo_keys: true
+            }
+        })
 
         if (!configurations) {
             return NextResponse.json({
@@ -20,7 +23,7 @@ export async function GET(req: NextRequest) {
             })
         }
 
-        const { woo_keys: { client_id, client_secret, store_url } } = configurations[0]
+        const { client_id, client_secret, store_url } = configurations?.woo_keys
 
         const WooApi = new WooCommerceRestApi({
             url: store_url,
@@ -58,7 +61,6 @@ export async function GET(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
 
@@ -73,10 +75,10 @@ export async function PATCH(req: NextRequest) {
         }
 
         const { update_promoter } = await req.json()
-        const { personal_info, address } = update_promoter
+        const { user_info, address } = update_promoter
         const updatePromoter = await Promoter.updateOne({ _id: id }, {
             $set: {
-                personal_info,
+                user_info,
                 address,
                 updated_at: Date.now()
             }
@@ -113,7 +115,6 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        await connectMongoDB()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/promoters/')[1]
 

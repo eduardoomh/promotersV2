@@ -162,13 +162,13 @@ export default async function Usuario(props: any) {
                                                 <>
                                                     <br />
                                                     <AvatarItem
-                                                        key={user._id}
+                                                        key={user.id}
                                                         letter={user.name[0].toUpperCase()}
                                                         user={user}
                                                         size='large'
                                                         color={'#0D709A'}
                                                         //@ts-ignore
-                                                        url={`/promotores/${promoter._id}`}
+                                                        url={`/promotores/${promoter?.id}`}
                                                     />
                                                 </>
                                             ) : (

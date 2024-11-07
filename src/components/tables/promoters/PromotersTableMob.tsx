@@ -32,9 +32,9 @@ const PromotersTableMob: FC<Props> = ({ promoters }) => {
                     {
                         promoters.map((el: any) => (
                             <section
-                                key={el._id}
+                                key={el.id}
                                 className={styles.section}
-                                onClick={() => handleActionClick(el._id, el.user.email)}>
+                                onClick={() => handleActionClick(el.id, el.user.email)}>
                                 <Avatar
                                     style={{
                                         backgroundColor: '#0D709A',

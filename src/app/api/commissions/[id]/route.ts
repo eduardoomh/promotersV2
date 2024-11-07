@@ -1,44 +1,25 @@
-import { connectMongoDB } from "@/libs/mongodb";
-import { ICommissionSchema } from "@/models/Comissions";
-import Commission from "@/models/Comissions";
+import { arrayToString, stringToArray } from "@/utils/arraysToString";
 import { messages } from "@/utils/messages";
-import mongoose from "mongoose";
+import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
-        await connectMongoDB()
+        const prisma = new PrismaClient()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/commissions/')[1]
 
-        const findCommission = await Commission.aggregate([
-            { $match: { _id: new mongoose.Types.ObjectId(id) } },
-            {
-              $lookup: {
-                from: 'users', // Nombre de la colección de usuarios (ajusta según tu modelo)
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user',
-              },
+        const findCommission = await prisma.commission.findUnique({
+            where:{
+                id
             },
-            {
-              $lookup: {
-                from: 'promoters', // Nombre de la colección de promotores (ajusta según tu modelo)
-                localField: 'promoter',
-                foreignField: '_id',
-                as: 'promoter',
-              },
-            },
-            {
-              $unwind: '$user',
-            },
-            {
-              $unwind: '$promoter',
-            },
-            {
-                $sort: { _id: -1 },
-            },
-          ]);
+            include:{
+                user: true,
+                promoter: true,
+                coupon: true,
+                made_by: true
+            }
+        })
 
         if (!findCommission) {
             return NextResponse.json({
@@ -50,8 +31,20 @@ export async function GET(req: NextRequest) {
 
         const response = NextResponse.json({
             message: 'Comission encontrada',
-            user: findCommission[0],
-            commission: findCommission[0]
+            user: {
+                ...findCommission,
+                coupon: {
+                    ...findCommission.coupon,
+                    products: stringToArray(findCommission.coupon.products)
+                }
+            },
+            commission: {
+                ...findCommission,
+                coupon: {
+                    ...findCommission.coupon,
+                    products: stringToArray(findCommission.coupon.products)
+                }
+            }
         }, {
             status: 200
         })
@@ -70,11 +63,15 @@ export async function GET(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
     try {
-        await connectMongoDB()
+        const prisma = new PrismaClient()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/commissions/')[1]
 
-        const findCommission: ICommissionSchema | null = await Commission.findOne({ _id: id })
+        const findCommission = await prisma.commission.findUnique({
+            where:{
+                id
+            }
+        })
 
         if (!findCommission) {
             return NextResponse.json({
@@ -85,18 +82,35 @@ export async function PATCH(req: NextRequest) {
         }
 
         const { update_commission } = await req.json()
-        const { user, promoter, coupon, earnings } = update_commission
-        const updateCommission = await Commission.updateOne({ _id: id }, {
-            $set: {
-                user,
-                promoter,
-                coupon,
-                earnings,
-                updated_at: Date.now()
-            }
-        })
+        const { 
+            earnings: { type, amount }, coupon: { id: couponId, code, products } 
+        } = update_commission
 
-        if (updateCommission.modifiedCount < 1) {
+        const updatedComission = await prisma.commission.update({
+            where: {
+                id: id,
+            },
+            data: {
+                coupon: {
+                    update: {
+                        coupon_id: `${couponId}`,
+                        code,
+                        products: arrayToString(products)
+                    },
+                },
+                earning_type: type,
+                earning_amount: amount,
+                updated_at: new Date(),
+            },
+            include:{
+                user: true,
+                coupon: true,
+                promoter: true,
+                made_by: true
+            }
+        });
+
+        if (!updatedComission) {
             return NextResponse.json({
                 message: 'La comisión no pudo ser actualizada',
             }, {
@@ -104,11 +118,15 @@ export async function PATCH(req: NextRequest) {
             })
         }
 
-        const updatedComission = await Commission.findOne({ _id: id })
-
         const response = NextResponse.json({
             message: 'La comisión se ha actualizado',
-            updated_commission: updatedComission
+            updated_commission: {
+                ...updatedComission,
+                coupon: {
+                    ...updatedComission.coupon,
+                    products: stringToArray(updatedComission.coupon.products)
+                }
+            },
         }, {
             status: 200
         })
@@ -127,11 +145,15 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        await connectMongoDB()
+        const prisma = new PrismaClient()
         const { pathname } = new URL(req.url)
         const id = pathname.split('/api/commissions/')[1]
 
-        const existCommission = await Commission.findOne({ _id: id })
+        const existCommission = await prisma.commission.findUnique({
+            where:{
+                id
+            }
+        })
 
         if (!existCommission) {
             return NextResponse.json({
@@ -141,8 +163,19 @@ export async function DELETE(req: NextRequest) {
             })
         }
 
-        const deleteCommission = await Commission.deleteOne({ _id: id })
-        if (deleteCommission.deletedCount < 1) {
+        const deletedCommission = await prisma.commission.delete({
+            where: {
+              id: id,
+            },
+            include: {
+                user: true,               
+                promoter: true, 
+                coupon: true,  
+                made_by: true, 
+              }
+          });
+
+        if (!deletedCommission) {
             return NextResponse.json({
                 message: 'La comisión no pudo ser eliminada',
             }, {
@@ -152,7 +185,7 @@ export async function DELETE(req: NextRequest) {
 
         const response = NextResponse.json({
             message: 'Comisión eliminada exitosamente',
-            deleted_commission: existCommission
+            deleted_commission: deletedCommission
         }, {
             status: 200
         })

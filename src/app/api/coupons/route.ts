@@ -1,13 +1,16 @@
-import { connectMongoDB } from "@/libs/mongodb";
-import Settings from "@/models/Settings";
 import { messages } from "@/utils/messages";
+import { PrismaClient } from "@prisma/client";
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
-        await connectMongoDB()
-        const configurations = await Settings.find()
+        const prisma = new PrismaClient()
+        const configurations = await prisma.setting.findFirst({
+            include:{
+                woo_keys: true
+            }
+        })
 
         if (!configurations) {
             return NextResponse.json({
@@ -17,7 +20,7 @@ export async function GET(req: NextRequest) {
             })
         }
 
-        const { woo_keys: { client_id, client_secret, store_url } } = configurations[0]
+        const { woo_keys: { client_id, client_secret, store_url } } = configurations
 
         const WooApi = new WooCommerceRestApi({
             url: store_url,
@@ -48,12 +51,10 @@ export async function GET(req: NextRequest) {
     }
 }
 
-
 export async function DELETE(req: NextRequest) {
     try {
-        await connectMongoDB()
         const response = NextResponse.json({
-            message: 'Promotor eliminado exitosamente',
+            message: 'Cupón eliminado exitosamente',
             deleted_promoter: []
         }, {
             status: 200

@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
     try {
+        //TESTING ROUTE 2
         const prisma = new PrismaClient()
         const userFind = await prisma.user.findUnique({
             where: {

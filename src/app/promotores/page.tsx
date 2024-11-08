@@ -1,4 +1,3 @@
-/*
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from '../usuarios/Users.module.css'
 import PromotersTable from "@/components/tables/promoters/PromotersTable";
@@ -50,9 +49,4 @@ export default async function Promotores() {
     </main>
 
   )
-}
-*/
-
-export default async function Promotores() {
-  return <></>
 }

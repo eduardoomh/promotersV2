@@ -1,4 +1,3 @@
-/*
 import EndLoading from "@/components/EndLoading/EndLoading";
 import styles from './Users.module.css'
 import UsersTable from "@/components/tables/users/UsersTable";
@@ -34,7 +33,7 @@ export default async function Usuarios() {
       <ActionsModal type='users' url='/usuarios'/>
       < GenericForm
           users={users}
-          url='/usuarios'git bran
+          url='/usuarios'
           type='users'
           promoters={[]} 
           data={null}
@@ -42,8 +41,4 @@ export default async function Usuarios() {
     </main>
 
   )
-}
-*/
-export default async function Usuarios() {
-  return <></>
 }

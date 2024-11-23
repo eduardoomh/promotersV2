@@ -9,6 +9,7 @@ import { FC, useEffect, useState } from 'react'
 import { IUserSchema } from '@/models/User'
 import { usePatch } from '@/hooks/usePatch'
 import styles from './NewUser.module.css'
+import CustomAlert from '@/components/CustomAlert/CustomAlert'
 interface props {
     users: IUserSchema[]
 }
@@ -137,6 +138,17 @@ const NewUserForm: FC<props> = ({ users }) => {
                     disabled={currentUser ? true : false}
                     style={{ padding: '0.6rem', fontSize: '1rem' }}
                 />
+                {
+                    !currentUser && (
+                        <>
+                      
+                            <CustomAlert title='RECORDATORIO'>
+                                Si va a crear un usuario con rol de promotor, no olvide acceder a la sección de Promotores para finalizar la alta de sus datos.
+                            </CustomAlert>
+                            <br/>
+                        </>
+                    )
+                }
                 <CustomButton>{currentUser ? 'Actualizar Usuario' : 'Crear Usuario'}</CustomButton>
 
                 <section className="mt-4">

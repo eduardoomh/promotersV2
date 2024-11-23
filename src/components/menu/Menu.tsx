@@ -203,7 +203,7 @@ const Menu: FC<props> = ({ expand = true }) => {
                                 <Link
                                     href='/perfil'
                                     className={isActiveAllPaths('/perfil') ? styles.active_menu : ''}
-                                    disabled={pathname === '/'}
+                                    disabled={pathname?.includes('perfil')}
                                 >
                                     <span
                                         style={expand ? {} : inlineStyles.no_expand}>

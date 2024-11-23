@@ -84,6 +84,7 @@ const NewPromoterForm: FC<props> = ({ promoters, users }) => {
             reloadPage: true,
             cleanForm: form.resetFields
         })
+        finishEditMode()
     }
 
     const onUpdate = async (data: any) => {

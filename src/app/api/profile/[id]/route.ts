@@ -64,7 +64,8 @@ export async function GET(req: NextRequest) {
             include:{
                 user: true,    
                 promoter: true,           
-                made_by: true, 
+                made_by: true,
+                coupon: true 
             },
             orderBy:{
                 created_at: 'desc'

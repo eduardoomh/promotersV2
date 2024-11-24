@@ -40,6 +40,12 @@ const Menu: FC<props> = ({ expand = true }) => {
         }
     }
 
+    const getPerfilId = (url: string) => {
+        const regex = /\/perfil\/([^/]+)/; // Captura todo lo que viene después de /perfil/ hasta el próximo /
+        const match = url.match(regex);
+        return match ? match[1] : null; // Devuelve el ID si se encuentra, o null si no
+    }
+
 
     useEffect(() => {
 
@@ -53,7 +59,6 @@ const Menu: FC<props> = ({ expand = true }) => {
                 }
             })
             const response = await res.json()
-            console.log(response.user, "la res")
 
             if (response.user.role === 'promoter') {
                 return true
@@ -67,7 +72,6 @@ const Menu: FC<props> = ({ expand = true }) => {
 
     useEffect(() => {
         const cookieValue = Cookies.get('auth_cookie');
-        console.log(cookieValue)
         if (cookieValue) {
             checkIsPromoter(cookieValue).then((data) => {
                 setIsPromoter(data)
@@ -201,9 +205,9 @@ const Menu: FC<props> = ({ expand = true }) => {
                         <>
                             <li>
                                 <Link
-                                    href='/perfil'
+                                    href={`/perfil/${getPerfilId(pathname)}`}
                                     className={isActiveAllPaths('/perfil') ? styles.active_menu : ''}
-                                    disabled={pathname?.includes('perfil')}
+                                    disabled={pathname?.includes('perfil') && !pathname?.includes('comisiones') }
                                 >
                                     <span
                                         style={expand ? {} : inlineStyles.no_expand}>

@@ -105,7 +105,7 @@ export default async function Commission(props: any) {
                                             <strong>{coupon.code}</strong>
                                         </p>
                                         <p>
-                                            <strong>Tipo de descuento:</strong> {coupon.discount_type}
+                                            <strong>Tipo de descuento:</strong> {coupon?.discount_type === 'percentage' ? 'Porcentaje' : 'Precio fijo'}
                                         </p>
                                         <p>
                                             <strong>Cantidad:</strong> {coupon.amount}

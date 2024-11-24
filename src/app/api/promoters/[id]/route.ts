@@ -168,7 +168,6 @@ export async function DELETE(req: NextRequest) {
                 { status: 404 }
             );
         }
-console.log(existPromoter, "VEE")
         // Perform deletions in the correct order
         await prisma.$transaction([
             // Delete commissions related to the promoter

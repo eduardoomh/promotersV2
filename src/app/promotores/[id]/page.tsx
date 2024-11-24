@@ -21,8 +21,6 @@ async function loadPromoter({ params }: any) {
     const promoters_response = await promoters.json()
     const coupons_response = await coupons.json()
 
-    console.log(promoters_response, "veamosss")
-
     return {
         promoter: promoters_response.user,
         movements: promoters_response.movements,

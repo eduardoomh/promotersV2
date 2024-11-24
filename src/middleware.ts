@@ -20,7 +20,6 @@ export async function middleware(request: NextRequest) {
     }
 
     if(data.user.role == 'promoter'){
-      console.log("dime que se actualiza")
       return NextResponse.redirect(new URL(`/perfil/${data.user.id}`, request.url))
     }
 

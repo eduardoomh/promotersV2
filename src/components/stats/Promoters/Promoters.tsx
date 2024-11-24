@@ -10,7 +10,6 @@ interface props {
     user?: boolean
 }
 const PromotersCard: FC<props> = ({ data, user = false }) => {
-    console.log(data, "hay algo?")
     return (
         <article className={styles.general}>
             <h2>{user ? 'USUARIOS' : 'PROMOTORES'} RECIENTES</h2>

@@ -77,7 +77,7 @@ const CommissionsMadeBy: FC<Props> = ({ commissions }) => {
             ),
         },
     ];
-console.log(commissions, "hayy")
+
     return (
         <>
 

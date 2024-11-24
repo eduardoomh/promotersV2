@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
         })
         return response
     } catch (error) {
-        console.log(error, "entra aca")
+        console.log(error)
         return NextResponse.json({
             message: messages.error.default, error
         }, {

@@ -31,7 +31,6 @@ const PromoterActions: FC<props> = ({id}) => {
     };
 
     useEffect(() => {
-        console.log(searchParams.get('actions'))
         if (searchParams.get('actions')) {
             setIsOpenModal(true)
         } else {

@@ -1,6 +1,6 @@
 'use client'
-import React, { FC, useContext } from 'react';
-import { Table, Tooltip, Avatar } from 'antd';
+import React, { FC, useContext, useEffect } from 'react';
+import { Table, Tooltip } from 'antd';
 import moment from 'moment';
 import { RightCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -24,7 +24,7 @@ const CommissionsByUser: FC<Props> = ({ commissions, id }) => {
     const columns = [
         {
             title: 'Cupón',
-            render: (data: any) => <a>{data.coupon.code}</a>,
+            render: (data: any) => <a>{data?.coupon?.code}</a>,
         },
         {
             title: 'Ganancias',

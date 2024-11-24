@@ -4,12 +4,13 @@ import { Col, Row } from "antd";
 import CustomCard from "@/components/CustomCard/CustomCard";
 import Subtitle from "@/components/Subtitle/Subtitle";
 import DateItem from "@/components/utils/DateItem";
+import CustomAlert from "@/components/CustomAlert/CustomAlert";
 
 async function loadCommission({ params }: any) {
     const commissions = await fetch(`${process.env.API_URL}/api/commissions/${params.comisionId}`, { cache: 'no-store' })
     const commissions_response = await commissions.json()
     //@ts-ignore
-    const coupon = await fetch(`${process.env.API_URL}/api/coupons/${commissions_response.user.coupon.id}`, { cache: 'no-store' })
+    const coupon = await fetch(`${process.env.API_URL}/api/coupons/${commissions_response?.user?.coupon?.coupon_id}`, { cache: 'no-store' })
     const coupons_response = await coupon.json()
 
     return {
@@ -91,8 +92,8 @@ export default async function Commission(props: any) {
                             >
                                 <section className={styles.image_content}>
                                     <img
-                                        src={coupon?.product_ids[0].images[0].src}
-                                        alt={coupon?.product_ids[0].name}
+                                        src={coupon?.product_ids[0]?.images[0]?.src}
+                                        alt={coupon?.product_ids[0]?.name}
                                         width={200}
                                         height={200}
                                     />
@@ -100,7 +101,7 @@ export default async function Commission(props: any) {
                                 <section className={styles.content}>
                                     <p
                                         className={styles.content_title}>
-                                        <strong>{coupon.code}</strong>
+                                        <strong>{coupon?.code}</strong>
                                     </p>
                                     <p>
                                         <strong>Tipo de descuento:</strong> {coupon.discount_type === 'percentage' ? 'Porcentaje' : 'Precio fijo'}
@@ -118,6 +119,13 @@ export default async function Commission(props: any) {
                     <Subtitle>PRODUCTOS ASIGNADOS</Subtitle>
                     <Row gutter={[25, 25]}>
                         {
+                            !coupon.product_ids || coupon?.product_ids?.length === 0 ? (
+                                <>
+                                <CustomAlert title='NO HAY PRODUCTOS'>
+                                    No hay productos asignados para este cupón, consulta a tu asesor.
+                                </CustomAlert>
+                                </>
+                            ) :
                             coupon.product_ids.map((el: any) => (
                                 <Col xs={24} sm={24} md={24} lg={24} xl={24} key={el.id}>
                                     <br />

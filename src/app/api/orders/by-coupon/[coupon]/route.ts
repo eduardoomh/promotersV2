@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
 
         const orders = await WooApi.get(`orders`);
         const finalOrders = orders.data.map((el: any) => {
-            if(el.coupon_lines.some((coupon: any) => coupon.meta_data[0].value.id == id)){
+            if(el.coupon_lines.some((coupon: any) => coupon.meta_data[0].value.includes(id))){
                 return el
             }else{
                 return null

@@ -103,6 +103,31 @@ export async function POST(req: NextRequest) {
             })
         }
 
+        const movementFound = await prisma.movement.findFirst({
+            where:{
+                description: `Comisión pagada por pedido #${body.id}`
+            }
+        })
+
+        if(movementFound){
+            await prisma.logs.create({
+                data: {
+                    data: JSON.stringify({
+                        id: body.id,
+                        status: body.status,
+                        description: "La comisión del pedido ya ha sido realizada",
+                        date_created: body.date_created,
+                        date_modified: body.date_modified
+                    }),
+                }
+            });
+            return NextResponse.json({
+                message: 'La comisión del pedido ya ha sido realizada',
+            }, {
+                status: 200
+            })          
+        }
+
         const order_request = await WooApi.get(`orders/${body.id}`);
 
         if(order_request?.status !== 200){
